@@ -8,10 +8,11 @@ namespace FeedSleepRepeatLibrary
 {
     public class Baby
     {
+        public int Id { get; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime DateOfBirth { get; set; }
-        //public List<BabyDay> BabyDays { get; set; }
+        public List<BabyDay> BabyDays { get; set; }
 
         public string FullName
         {

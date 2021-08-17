@@ -13,20 +13,21 @@ namespace FeedSleepRepeatUI
 {
     public partial class FeedForm : Form
     {
-        List<Baby> babies;
+        List<Baby> Babies;
+        Baby CurrentBaby;
 
         public FeedForm()
         {
             InitializeComponent();
             LoadBabyList();
             ConnectBabyList();
-            dateOfBirthPicker.MaxDate = DateTime.Today.Date;
-            datePicker.MaxDate = DateTime.Today.Date;
+            dateOfBirthPicker.MaxDate = DateTime.Today;
+            datePicker.MaxDate = DateTime.Today;
         }
 
         private void babyNameCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            List<Baby> babySearch = babies.Where(b => b.FullName == babyNameCombo.Text).ToList();
+            List<Baby> babySearch = Babies.Where(b => b.FullName == babyNameCombo.Text).ToList();
 
             if (!babySearch.Any())
             {
@@ -34,9 +35,9 @@ namespace FeedSleepRepeatUI
             }
             else
             {
-                Baby currentBaby = babySearch.First();
-                dateOfBirthPicker.Value = currentBaby.DateOfBirth;
-                ageBox.Text = CalculateAge(currentBaby.DateOfBirth);
+                Baby CurrentBaby = babySearch.First();
+                dateOfBirthPicker.Value = CurrentBaby.DateOfBirth;
+                ageBox.Text = CalculateAge(CurrentBaby.DateOfBirth);
                 nappiesTotal.Text = UpdateTotalNappies();
             }
         }
@@ -55,18 +56,19 @@ namespace FeedSleepRepeatUI
         {
             string[] name = babyNameCombo.Text.Split();
 
-            if (babies.Any(b => b.FullName == babyNameCombo.Text))
+            if (Babies.Any(b => b.FullName == babyNameCombo.Text))
             {
-                // To do: add pop up to tell user baby already exists
+                // TODO: add pop up to tell user baby already exists
             }
             else if (name.Length != 2)
             {
-                // To do: add pop up to tell user baby needs exactly two names
+                // TODO: add pop up to tell user baby needs exactly two names
             }
             else
             {
                 Baby b = GenerateBabyInstance();
-                SqliteDataAccess.CreateBaby(b);
+                BabyDay d = GenerateBabyDayInstance();
+                SqliteDataAccess.CreateBaby(b, d);
                 ResetValues();
                 LoadBabyList();
                 ConnectBabyList();
@@ -93,7 +95,9 @@ namespace FeedSleepRepeatUI
 
         private void ResetValues()
         {
+            CurrentBaby = null;
             dateOfBirthPicker.Value = DateTime.Today.Date;
+            ageBox.Text = "0y 0m 0d";
             wetNappiesNumericUpDown.Value = 0;
             dirtyNappiesNumericUpDown.Value = 0;
             nappiesTotal.Text = "0";
@@ -101,8 +105,8 @@ namespace FeedSleepRepeatUI
 
         private void LoadBabyList()
         {
-            babies = SqliteDataAccess.LoadBabies();
-            babies.Insert(0, new Baby()
+            Babies = SqliteDataAccess.LoadBabies();
+            Babies.Insert(0, new Baby()
             {
                 FirstName = String.Empty,
                 LastName = String.Empty,
@@ -113,7 +117,7 @@ namespace FeedSleepRepeatUI
         private void ConnectBabyList()
         {
             babyNameCombo.DataSource = null;
-            babyNameCombo.DataSource = babies;
+            babyNameCombo.DataSource = Babies;
             babyNameCombo.DisplayMember = "FullName";
         }
 
@@ -135,6 +139,18 @@ namespace FeedSleepRepeatUI
             TimeSpan timeSpan = DateTime.Now.Subtract(dateOfBirth);
             DateTime age = DateTime.MinValue + timeSpan;
             return $"{age.Year - 1}y {age.Month - 1}m {age.Day - 1}d";
+        }
+
+        private BabyDay GenerateBabyDayInstance()
+        {
+            BabyDay d = new();
+
+            d.Date = datePicker.Value;
+            d.Weight = weightBox.Text;
+            d.WetNappies = wetNappiesNumericUpDown.Value;
+            d.DirtyNappies = dirtyNappiesNumericUpDown.Value;
+
+            return d;
         }
 
         private string UpdateTotalNappies()

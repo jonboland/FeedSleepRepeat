@@ -17,24 +17,28 @@ namespace FeedSleepRepeatLibrary
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
-                var output = cnn.Query<Baby>("SELECT * FROM BabyTable ORDER BY LastName", new DynamicParameters());
+                var output = cnn.Query<Baby>("SELECT * FROM Baby ORDER BY LastName", new DynamicParameters());
                 return output.ToList();
             }
         }
 
-        public static void CreateBaby(Baby baby)
+        public static void CreateBaby(Baby baby, BabyDay babyDay)
         {
-            string sql = "INSERT INTO BabyTable (FirstName, LastName, DateOfBirth) VALUES (@FirstName, @LastName, @DateOfBirth)";
+            string babySql = @"INSERT INTO Baby (FirstName, LastName, DateOfBirth) VALUES (@FirstName, @LastName, @DateOfBirth); SELECT last_insert_rowid()";
+
+            string babyDaySql = @"INSERT INTO BabyDay (BabyId, Date, Weight, WetNappies, DirtyNappies) VALUES (@BabyId, @Date, @Weight, @WetNappies, @DirtyNappies)";
 
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
-                cnn.Execute(sql, baby);
+                babyDay.BabyId = cnn.QueryFirst<int>(babySql, baby);
+
+                cnn.Execute(babyDaySql, babyDay);
             }
         }
 
         public static void UpdateBaby(Baby baby)
         {
-            string sql = "UPDATE BabyTable SET DateOfBirth = @DateOfBirth WHERE FirstName = @FirstName AND LastName = @LastName";
+            string sql = "UPDATE Baby SET DateOfBirth = @DateOfBirth WHERE FirstName = @FirstName AND LastName = @LastName";
 
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
@@ -44,7 +48,7 @@ namespace FeedSleepRepeatLibrary
 
         public static void DeleteBaby(Baby baby)
         {
-            string sql = "DELETE FROM BabyTable WHERE FirstName = @FirstName AND LastName = @LastName";
+            string sql = "DELETE FROM Baby WHERE FirstName = @FirstName AND LastName = @LastName";
 
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
