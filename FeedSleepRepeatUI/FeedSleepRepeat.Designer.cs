@@ -528,7 +528,6 @@ namespace FeedSleepRepeatUI
         private System.Windows.Forms.Label dateOfBirthLabel;
         private System.Windows.Forms.Label ageLabel;
         private System.Windows.Forms.TextBox ageBox;
-        private System.Windows.Forms.DateTimePicker dateOfBirthPicker;
         private System.Windows.Forms.Label dateLabel;
         private System.Windows.Forms.DateTimePicker datePicker;
         private System.Windows.Forms.Label weightLabel;
@@ -566,6 +565,7 @@ namespace FeedSleepRepeatUI
         private System.Windows.Forms.Button createButton;
         private System.Windows.Forms.Button deleteButton;
         private System.Windows.Forms.Button updateButton;
+        internal System.Windows.Forms.DateTimePicker dateOfBirthPicker;
     }
 }
 

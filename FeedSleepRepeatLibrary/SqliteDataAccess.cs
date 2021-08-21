@@ -11,7 +11,7 @@ using Dapper;
 
 namespace FeedSleepRepeatLibrary
 {
-    public class SqliteDataAccess
+    public static class SqliteDataAccess
     {
         public static List<Baby> LoadBabies()
         {
