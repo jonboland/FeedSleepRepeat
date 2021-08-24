@@ -15,6 +15,8 @@ namespace FeedSleepRepeatUI
             CurrentBaby = null;
             dateOfBirthPicker.Value = DateTime.Today.Date;
             ageBox.Text = "0y 0m 0d";
+            datePicker.Value = DateTime.Today.Date;
+            weightBox.Text = string.Empty;
             wetNappiesNumericUpDown.Value = 0;
             dirtyNappiesNumericUpDown.Value = 0;
             nappiesTotal.Text = "0";
@@ -23,6 +25,7 @@ namespace FeedSleepRepeatUI
         public void LoadBabyList()
         {
             Babies = SqliteDataAccess.LoadBabies();
+            // Insert default baby that can be used to reset all values
             Babies.Insert(0, new Baby()
             {
                 FirstName = String.Empty,

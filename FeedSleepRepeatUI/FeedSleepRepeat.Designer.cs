@@ -260,7 +260,7 @@ namespace FeedSleepRepeatUI
             this.babyNameCombo.Location = new System.Drawing.Point(110, 55);
             this.babyNameCombo.Name = "babyNameCombo";
             this.babyNameCombo.Size = new System.Drawing.Size(98, 25);
-            this.babyNameCombo.TabIndex = 26;
+            this.babyNameCombo.TabIndex = 0;
             this.babyNameCombo.SelectedIndexChanged += new System.EventHandler(this.babyNameCombo_SelectedIndexChanged);
             // 
             // sleepEndBox
@@ -513,6 +513,7 @@ namespace FeedSleepRepeatUI
             this.Controls.Add(this.dateOfBirthLabel);
             this.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.Name = "FeedForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Feed Sleep Repeat";
             ((System.ComponentModel.ISupportInitialize)(this.wetNappiesNumericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dirtyNappiesNumericUpDown)).EndInit();

@@ -10,7 +10,7 @@ namespace FeedSleepRepeatLibrary
     {
         public int Id { get; }
         public int BabyId { get; set; }
-        public DateTime Date { get; set; } = DateTime.Now.Date;
+        public DateTime Date { get; set; } = DateTime.Today;
         public string Weight { get; set; }
         public decimal WetNappies { get; set; } = 0;
         public decimal DirtyNappies { get; set; } = 0;

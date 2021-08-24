@@ -14,7 +14,9 @@ namespace FeedSleepRepeatUI
     public partial class FeedForm : Form
     {
         List<Baby> Babies;
+        List<BabyDay> BabyDays;
         Baby CurrentBaby;
+        //BabyDay CurrentDay;
 
         public FeedForm()
         {
@@ -26,18 +28,23 @@ namespace FeedSleepRepeatUI
 
         private void babyNameCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            List<Baby> babySearch = Babies.Where(b => b.FullName == babyNameCombo.Text).ToList();
+            ResetValues();
+            CurrentBaby = Babies.FirstOrDefault(b => b.FullName == babyNameCombo.Text);
 
-            if (!babySearch.Any())
+            if (CurrentBaby != null && CurrentBaby.FirstName != String.Empty)
             {
-                ResetValues();
-            }
-            else
-            {
-                CurrentBaby = babySearch.First();
                 dateOfBirthPicker.Value = CurrentBaby.DateOfBirth;
                 ageBox.Text = CalculateAge(CurrentBaby.DateOfBirth);
-                nappiesTotal.Text = UpdateTotalNappies();
+                BabyDays = SqliteDataAccess.LoadBabyDays(CurrentBaby);
+                BabyDay today = BabyDays.FirstOrDefault(bd => bd.Date == DateTime.Today);
+
+                if (today != null)
+                {
+                    weightBox.Text = today.Weight;
+                    wetNappiesNumericUpDown.Value = today.WetNappies;
+                    dirtyNappiesNumericUpDown.Value = today.DirtyNappies;
+                    nappiesTotal.Text = UpdateTotalNappies();
+                }
             }
         }
 
@@ -57,20 +64,20 @@ namespace FeedSleepRepeatUI
 
             if (Babies.Any(b => b.FullName == babyNameCombo.Text))
             {
-                // TODO: add pop up to tell user baby already exists
+                MessageBox.Show("Creation was unsuccessful because a baby with this name already exists.");
             }
             else if (name.Length != 2)
             {
-                // TODO: add pop up to tell user baby needs exactly two names
+                MessageBox.Show("Creation was unsuccessful because babies must have exactly one first name and one last name.");
             }
             else
             {
                 Baby b = GenerateBabyInstance();
                 BabyDay d = GenerateBabyDayInstance();
                 SqliteDataAccess.CreateBaby(b, d);
-                ResetValues();
                 LoadBabyList();
                 ConnectBabyList();
+                ResetValues();
             }        
         }
 
