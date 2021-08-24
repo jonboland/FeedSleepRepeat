@@ -15,9 +15,11 @@ namespace FeedSleepRepeatLibrary
     {
         public static List<Baby> LoadBabies()
         {
+            string sql = "SELECT * FROM Baby ORDER BY LastName";
+
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
-                var output = cnn.Query<Baby>("SELECT * FROM Baby ORDER BY LastName", new DynamicParameters());
+                var output = cnn.Query<Baby>(sql, new DynamicParameters());
                 return output.ToList();
             }
         }
@@ -30,8 +32,9 @@ namespace FeedSleepRepeatLibrary
 
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
+                // Insert baby into Baby table and add Id to babyDay
                 babyDay.BabyId = cnn.QueryFirst<int>(babySql, baby);
-
+                // Insert babyDay into BabyDay table with BabyId as foreign key
                 cnn.Execute(babyDaySql, babyDay);
             }
         }
@@ -46,13 +49,30 @@ namespace FeedSleepRepeatLibrary
             }
         }
 
+        public static void UpdateBabyDay(BabyDay babyDay)
+        {
+
+        }
+
         public static void DeleteBaby(Baby baby)
         {
-            string sql = "DELETE FROM Baby WHERE FirstName = @FirstName AND LastName = @LastName";
+            // ON DELETE CASCADE is applied to FOREIGN KEY in BabyDay TABLE
+            string sql = "PRAGMA foreign_keys = ON; DELETE FROM Baby WHERE FirstName = @FirstName AND LastName = @LastName";
 
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
                 cnn.Execute(sql, baby);
+            }
+        }
+
+        public static List<BabyDay> LoadBabyDays(Baby currentBaby)
+        {
+            string sql = "SELECT * FROM BabyDay WHERE BabyId = @Id";
+
+            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+            {
+                var output = cnn.Query<BabyDay>(sql, currentBaby);
+                return output.ToList();
             }
         }
 
