@@ -73,7 +73,15 @@ namespace FeedSleepRepeatUI
             return d;
         }
 
-        private string UpdateTotalNappies()
+        private void RefreshBabyDayValues(BabyDay babyDay)
+        {
+            weightBox.Text = babyDay.Weight;
+            wetNappiesNumericUpDown.Value = babyDay.WetNappies;
+            dirtyNappiesNumericUpDown.Value = babyDay.DirtyNappies;
+            nappiesTotal.Text = RefreshTotalNappies();
+        }
+
+        private string RefreshTotalNappies()
         {
             decimal totalNappies = wetNappiesNumericUpDown.Value + dirtyNappiesNumericUpDown.Value;
             return totalNappies.ToString();
