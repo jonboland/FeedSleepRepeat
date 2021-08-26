@@ -30,6 +30,7 @@ namespace FeedSleepRepeatLibrary
 
             string babyDaySql = @"INSERT INTO BabyDay (BabyId, Date, Weight, WetNappies, DirtyNappies) VALUES (@BabyId, @Date, @Weight, @WetNappies, @DirtyNappies)";
 
+            // TODO: Consider converting baby creation into a transaction
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
                 // Insert baby into Baby table and add Id to babyDay
@@ -49,9 +50,35 @@ namespace FeedSleepRepeatLibrary
             }
         }
 
+        public static List<BabyDay> LoadBabyDays(Baby currentBaby)
+        {
+            string sql = "SELECT * FROM BabyDay WHERE BabyId = @Id";
+
+            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+            {
+                var output = cnn.Query<BabyDay>(sql, currentBaby);
+                return output.ToList();
+            }
+        }
+
+        public static void CreateBabyDay(BabyDay babyDay)
+        {
+            string sql = @"INSERT INTO BabyDay (BabyId, Date, Weight, WetNappies, DirtyNappies) VALUES (@BabyId, @Date, @Weight, @WetNappies, @DirtyNappies)";
+
+            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+            {
+                cnn.Execute(sql, babyDay);
+            }
+        }
+
         public static void UpdateBabyDay(BabyDay babyDay)
         {
+            string sql = "UPDATE BabyDay SET Weight = @Weight, WetNappies = @WetNappies, DirtyNappies = @DirtyNappies WHERE BabyId = @BabyId AND Date = @Date";
 
+            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+            {
+                cnn.Execute(sql, babyDay);
+            }
         }
 
         public static void DeleteBaby(Baby baby)
@@ -62,17 +89,6 @@ namespace FeedSleepRepeatLibrary
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
                 cnn.Execute(sql, baby);
-            }
-        }
-
-        public static List<BabyDay> LoadBabyDays(Baby currentBaby)
-        {
-            string sql = "SELECT * FROM BabyDay WHERE BabyId = @Id";
-
-            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
-            {
-                var output = cnn.Query<BabyDay>(sql, currentBaby);
-                return output.ToList();
             }
         }
 
