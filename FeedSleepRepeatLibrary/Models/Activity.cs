@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace FeedSleepRepeatLibrary
 {
-    public class Sleep : Activity
+    public class Activity
     {
-        public string Location { get; set; }
+        public int BabyDayId { get; set; }
+        public DateTime Start { get; set; }
+        public DateTime End { get; set; }
     }
 }

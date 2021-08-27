@@ -41,9 +41,7 @@ namespace FeedSleepRepeatUI
             this.dirtyNappiesLabel = new System.Windows.Forms.Label();
             this.nappiesTotal = new System.Windows.Forms.TextBox();
             this.nappiesTotalLabel = new System.Windows.Forms.Label();
-            this.feedStartBox = new System.Windows.Forms.TextBox();
             this.feedStartLabel = new System.Windows.Forms.Label();
-            this.feedEndBox = new System.Windows.Forms.TextBox();
             this.feedEndLabel = new System.Windows.Forms.Label();
             this.feedAmountLabel = new System.Windows.Forms.Label();
             this.feedTypeLabel = new System.Windows.Forms.Label();
@@ -64,6 +62,8 @@ namespace FeedSleepRepeatUI
             this.weekGraphButton = new System.Windows.Forms.Button();
             this.monthGraphButton = new System.Windows.Forms.Button();
             this.activitiesGroupBox = new System.Windows.Forms.GroupBox();
+            this.feedStartPicker = new System.Windows.Forms.DateTimePicker();
+            this.feedEndPicker = new System.Windows.Forms.DateTimePicker();
             this.feedAmountBox = new System.Windows.Forms.TextBox();
             this.graphsGroupBox = new System.Windows.Forms.GroupBox();
             this.babyNameLabel = new System.Windows.Forms.Label();
@@ -80,7 +80,7 @@ namespace FeedSleepRepeatUI
             // 
             this.dateOfBirthLabel.AutoSize = true;
             this.dateOfBirthLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.dateOfBirthLabel.Location = new System.Drawing.Point(220, 58);
+            this.dateOfBirthLabel.Location = new System.Drawing.Point(217, 58);
             this.dateOfBirthLabel.Name = "dateOfBirthLabel";
             this.dateOfBirthLabel.Size = new System.Drawing.Size(90, 19);
             this.dateOfBirthLabel.TabIndex = 3;
@@ -109,7 +109,7 @@ namespace FeedSleepRepeatUI
             // 
             this.dateOfBirthPicker.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.dateOfBirthPicker.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateOfBirthPicker.Location = new System.Drawing.Point(312, 55);
+            this.dateOfBirthPicker.Location = new System.Drawing.Point(309, 55);
             this.dateOfBirthPicker.Name = "dateOfBirthPicker";
             this.dateOfBirthPicker.Size = new System.Drawing.Size(98, 25);
             this.dateOfBirthPicker.TabIndex = 7;
@@ -118,7 +118,7 @@ namespace FeedSleepRepeatUI
             // 
             this.dateLabel.AutoSize = true;
             this.dateLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.dateLabel.Location = new System.Drawing.Point(67, 104);
+            this.dateLabel.Location = new System.Drawing.Point(60, 104);
             this.dateLabel.Name = "dateLabel";
             this.dateLabel.Size = new System.Drawing.Size(41, 19);
             this.dateLabel.TabIndex = 8;
@@ -127,7 +127,7 @@ namespace FeedSleepRepeatUI
             // datePicker
             // 
             this.datePicker.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.datePicker.Location = new System.Drawing.Point(110, 101);
+            this.datePicker.Location = new System.Drawing.Point(105, 101);
             this.datePicker.Name = "datePicker";
             this.datePicker.Size = new System.Drawing.Size(98, 25);
             this.datePicker.TabIndex = 9;
@@ -137,7 +137,7 @@ namespace FeedSleepRepeatUI
             // 
             this.weightLabel.AutoSize = true;
             this.weightLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.weightLabel.Location = new System.Drawing.Point(235, 104);
+            this.weightLabel.Location = new System.Drawing.Point(232, 104);
             this.weightLabel.Name = "weightLabel";
             this.weightLabel.Size = new System.Drawing.Size(75, 19);
             this.weightLabel.TabIndex = 10;
@@ -146,7 +146,7 @@ namespace FeedSleepRepeatUI
             // weightBox
             // 
             this.weightBox.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.weightBox.Location = new System.Drawing.Point(312, 101);
+            this.weightBox.Location = new System.Drawing.Point(309, 101);
             this.weightBox.Name = "weightBox";
             this.weightBox.Size = new System.Drawing.Size(98, 25);
             this.weightBox.TabIndex = 11;
@@ -155,7 +155,7 @@ namespace FeedSleepRepeatUI
             // 
             this.wetNappiesLabel.AutoSize = true;
             this.wetNappiesLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.wetNappiesLabel.Location = new System.Drawing.Point(20, 149);
+            this.wetNappiesLabel.Location = new System.Drawing.Point(15, 149);
             this.wetNappiesLabel.Name = "wetNappiesLabel";
             this.wetNappiesLabel.Size = new System.Drawing.Size(87, 19);
             this.wetNappiesLabel.TabIndex = 12;
@@ -165,7 +165,7 @@ namespace FeedSleepRepeatUI
             // 
             this.dirtyNappiesLabel.AutoSize = true;
             this.dirtyNappiesLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.dirtyNappiesLabel.Location = new System.Drawing.Point(217, 149);
+            this.dirtyNappiesLabel.Location = new System.Drawing.Point(214, 149);
             this.dirtyNappiesLabel.Name = "dirtyNappiesLabel";
             this.dirtyNappiesLabel.Size = new System.Drawing.Size(93, 19);
             this.dirtyNappiesLabel.TabIndex = 14;
@@ -191,37 +191,21 @@ namespace FeedSleepRepeatUI
             this.nappiesTotalLabel.TabIndex = 15;
             this.nappiesTotalLabel.Text = "Total:";
             // 
-            // feedStartBox
-            // 
-            this.feedStartBox.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.feedStartBox.Location = new System.Drawing.Point(98, 46);
-            this.feedStartBox.Name = "feedStartBox";
-            this.feedStartBox.Size = new System.Drawing.Size(54, 25);
-            this.feedStartBox.TabIndex = 19;
-            // 
             // feedStartLabel
             // 
             this.feedStartLabel.AutoSize = true;
             this.feedStartLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.feedStartLabel.Location = new System.Drawing.Point(23, 49);
+            this.feedStartLabel.Location = new System.Drawing.Point(17, 49);
             this.feedStartLabel.Name = "feedStartLabel";
             this.feedStartLabel.Size = new System.Drawing.Size(73, 19);
             this.feedStartLabel.TabIndex = 18;
             this.feedStartLabel.Text = "Feed start:";
             // 
-            // feedEndBox
-            // 
-            this.feedEndBox.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.feedEndBox.Location = new System.Drawing.Point(239, 46);
-            this.feedEndBox.Name = "feedEndBox";
-            this.feedEndBox.Size = new System.Drawing.Size(57, 25);
-            this.feedEndBox.TabIndex = 21;
-            // 
             // feedEndLabel
             // 
             this.feedEndLabel.AutoSize = true;
             this.feedEndLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.feedEndLabel.Location = new System.Drawing.Point(169, 49);
+            this.feedEndLabel.Location = new System.Drawing.Point(164, 49);
             this.feedEndLabel.Name = "feedEndLabel";
             this.feedEndLabel.Size = new System.Drawing.Size(68, 19);
             this.feedEndLabel.TabIndex = 20;
@@ -231,11 +215,11 @@ namespace FeedSleepRepeatUI
             // 
             this.feedAmountLabel.AutoSize = true;
             this.feedAmountLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.feedAmountLabel.Location = new System.Drawing.Point(311, 49);
+            this.feedAmountLabel.Location = new System.Drawing.Point(296, 49);
             this.feedAmountLabel.Name = "feedAmountLabel";
-            this.feedAmountLabel.Size = new System.Drawing.Size(62, 19);
+            this.feedAmountLabel.Size = new System.Drawing.Size(78, 19);
             this.feedAmountLabel.TabIndex = 22;
-            this.feedAmountLabel.Text = "Amount:";
+            this.feedAmountLabel.Text = "Amt (ml/g):";
             // 
             // feedTypeLabel
             // 
@@ -249,6 +233,8 @@ namespace FeedSleepRepeatUI
             // 
             // feedTypeCombo
             // 
+            this.feedTypeCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.feedTypeCombo.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.feedTypeCombo.FormattingEnabled = true;
             this.feedTypeCombo.Location = new System.Drawing.Point(484, 46);
             this.feedTypeCombo.Name = "feedTypeCombo";
@@ -258,7 +244,7 @@ namespace FeedSleepRepeatUI
             // babyNameCombo
             // 
             this.babyNameCombo.FormattingEnabled = true;
-            this.babyNameCombo.Location = new System.Drawing.Point(110, 55);
+            this.babyNameCombo.Location = new System.Drawing.Point(105, 55);
             this.babyNameCombo.Name = "babyNameCombo";
             this.babyNameCombo.Size = new System.Drawing.Size(98, 25);
             this.babyNameCombo.TabIndex = 0;
@@ -267,7 +253,7 @@ namespace FeedSleepRepeatUI
             // sleepEndBox
             // 
             this.sleepEndBox.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.sleepEndBox.Location = new System.Drawing.Point(239, 83);
+            this.sleepEndBox.Location = new System.Drawing.Point(234, 83);
             this.sleepEndBox.Name = "sleepEndBox";
             this.sleepEndBox.Size = new System.Drawing.Size(57, 25);
             this.sleepEndBox.TabIndex = 30;
@@ -276,7 +262,7 @@ namespace FeedSleepRepeatUI
             // 
             this.sleepEndLabel.AutoSize = true;
             this.sleepEndLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.sleepEndLabel.Location = new System.Drawing.Point(166, 86);
+            this.sleepEndLabel.Location = new System.Drawing.Point(161, 86);
             this.sleepEndLabel.Name = "sleepEndLabel";
             this.sleepEndLabel.Size = new System.Drawing.Size(71, 19);
             this.sleepEndLabel.TabIndex = 29;
@@ -285,16 +271,16 @@ namespace FeedSleepRepeatUI
             // sleepStartBox
             // 
             this.sleepStartBox.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.sleepStartBox.Location = new System.Drawing.Point(98, 83);
+            this.sleepStartBox.Location = new System.Drawing.Point(93, 83);
             this.sleepStartBox.Name = "sleepStartBox";
-            this.sleepStartBox.Size = new System.Drawing.Size(54, 25);
+            this.sleepStartBox.Size = new System.Drawing.Size(57, 25);
             this.sleepStartBox.TabIndex = 28;
             // 
             // sleepStartLabel
             // 
             this.sleepStartLabel.AutoSize = true;
             this.sleepStartLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.sleepStartLabel.Location = new System.Drawing.Point(20, 86);
+            this.sleepStartLabel.Location = new System.Drawing.Point(13, 86);
             this.sleepStartLabel.Name = "sleepStartLabel";
             this.sleepStartLabel.Size = new System.Drawing.Size(76, 19);
             this.sleepStartLabel.TabIndex = 27;
@@ -320,7 +306,7 @@ namespace FeedSleepRepeatUI
             // 
             // wetNappiesNumericUpDown
             // 
-            this.wetNappiesNumericUpDown.Location = new System.Drawing.Point(109, 146);
+            this.wetNappiesNumericUpDown.Location = new System.Drawing.Point(104, 146);
             this.wetNappiesNumericUpDown.Name = "wetNappiesNumericUpDown";
             this.wetNappiesNumericUpDown.Size = new System.Drawing.Size(99, 25);
             this.wetNappiesNumericUpDown.TabIndex = 33;
@@ -329,7 +315,7 @@ namespace FeedSleepRepeatUI
             // 
             // dirtyNappiesNumericUpDown
             // 
-            this.dirtyNappiesNumericUpDown.Location = new System.Drawing.Point(312, 146);
+            this.dirtyNappiesNumericUpDown.Location = new System.Drawing.Point(309, 146);
             this.dirtyNappiesNumericUpDown.Name = "dirtyNappiesNumericUpDown";
             this.dirtyNappiesNumericUpDown.Size = new System.Drawing.Size(98, 25);
             this.dirtyNappiesNumericUpDown.TabIndex = 34;
@@ -345,6 +331,7 @@ namespace FeedSleepRepeatUI
             this.addFeedButton.TabIndex = 35;
             this.addFeedButton.Text = "Add Feed";
             this.addFeedButton.UseVisualStyleBackColor = true;
+            this.addFeedButton.Click += new System.EventHandler(this.addFeedButton_Click);
             // 
             // addSleepButton
             // 
@@ -398,6 +385,8 @@ namespace FeedSleepRepeatUI
             // 
             // activitiesGroupBox
             // 
+            this.activitiesGroupBox.Controls.Add(this.feedStartPicker);
+            this.activitiesGroupBox.Controls.Add(this.feedEndPicker);
             this.activitiesGroupBox.Controls.Add(this.feedAmountBox);
             this.activitiesGroupBox.Controls.Add(this.activitiesListBox);
             this.activitiesGroupBox.Controls.Add(this.addSleepButton);
@@ -411,9 +400,7 @@ namespace FeedSleepRepeatUI
             this.activitiesGroupBox.Controls.Add(this.feedTypeCombo);
             this.activitiesGroupBox.Controls.Add(this.feedTypeLabel);
             this.activitiesGroupBox.Controls.Add(this.feedAmountLabel);
-            this.activitiesGroupBox.Controls.Add(this.feedEndBox);
             this.activitiesGroupBox.Controls.Add(this.feedEndLabel);
-            this.activitiesGroupBox.Controls.Add(this.feedStartBox);
             this.activitiesGroupBox.Controls.Add(this.feedStartLabel);
             this.activitiesGroupBox.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.activitiesGroupBox.Location = new System.Drawing.Point(12, 210);
@@ -422,6 +409,30 @@ namespace FeedSleepRepeatUI
             this.activitiesGroupBox.TabIndex = 41;
             this.activitiesGroupBox.TabStop = false;
             this.activitiesGroupBox.Text = "Activities";
+            // 
+            // feedStartPicker
+            // 
+            this.feedStartPicker.CalendarFont = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.feedStartPicker.CustomFormat = "HH:mm";
+            this.feedStartPicker.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.feedStartPicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.feedStartPicker.Location = new System.Drawing.Point(93, 47);
+            this.feedStartPicker.Name = "feedStartPicker";
+            this.feedStartPicker.ShowUpDown = true;
+            this.feedStartPicker.Size = new System.Drawing.Size(57, 25);
+            this.feedStartPicker.TabIndex = 47;
+            // 
+            // feedEndPicker
+            // 
+            this.feedEndPicker.CalendarFont = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.feedEndPicker.CustomFormat = "HH:mm";
+            this.feedEndPicker.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.feedEndPicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.feedEndPicker.Location = new System.Drawing.Point(234, 46);
+            this.feedEndPicker.Name = "feedEndPicker";
+            this.feedEndPicker.ShowUpDown = true;
+            this.feedEndPicker.Size = new System.Drawing.Size(57, 25);
+            this.feedEndPicker.TabIndex = 46;
             // 
             // feedAmountBox
             // 
@@ -447,7 +458,7 @@ namespace FeedSleepRepeatUI
             // babyNameLabel
             // 
             this.babyNameLabel.AutoSize = true;
-            this.babyNameLabel.Location = new System.Drawing.Point(28, 58);
+            this.babyNameLabel.Location = new System.Drawing.Point(21, 58);
             this.babyNameLabel.Name = "babyNameLabel";
             this.babyNameLabel.Size = new System.Drawing.Size(80, 19);
             this.babyNameLabel.TabIndex = 43;
@@ -538,9 +549,7 @@ namespace FeedSleepRepeatUI
         private System.Windows.Forms.Label dirtyNappiesLabel;
         private System.Windows.Forms.TextBox nappiesTotal;
         private System.Windows.Forms.Label nappiesTotalLabel;
-        private System.Windows.Forms.TextBox feedStartBox;
         private System.Windows.Forms.Label feedStartLabel;
-        private System.Windows.Forms.TextBox feedEndBox;
         private System.Windows.Forms.Label feedEndLabel;
         private System.Windows.Forms.Label feedAmountLabel;
         private System.Windows.Forms.Label feedTypeLabel;
@@ -568,6 +577,8 @@ namespace FeedSleepRepeatUI
         private System.Windows.Forms.Button deleteButton;
         private System.Windows.Forms.Button updateButton;
         internal System.Windows.Forms.DateTimePicker dateOfBirthPicker;
+        private System.Windows.Forms.DateTimePicker feedEndPicker;
+        private System.Windows.Forms.DateTimePicker feedStartPicker;
     }
 }
 

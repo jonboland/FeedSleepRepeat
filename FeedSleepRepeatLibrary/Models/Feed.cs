@@ -6,11 +6,17 @@ using System.Threading.Tasks;
 
 namespace FeedSleepRepeatLibrary
 {
-    public class Feed
+    public class Feed : Activity
     {
-        public DateTime Start { get; set; }
-        public DateTime End { get; set; }
-        public int Amount { get; set; }
+        public string Amount { get; set; }
         public string Type { get; set; }
+
+        public string ActivitySummary
+        {
+            get
+            {
+                return $"Activity Type: Feed   Start: {Start:HH:mm}   End: {End:HH:mm}   Amount: {Amount}ml   Feed Type: {Type}";
+            }
+        }
     }
 }
