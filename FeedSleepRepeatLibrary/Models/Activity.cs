@@ -55,6 +55,5 @@ namespace FeedSleepRepeatLibrary
                     + $"Feed Type: {FeedType}\tAmount: {FeedAmount}{FeedUnit}";
             }
         }
-
     }
 }
