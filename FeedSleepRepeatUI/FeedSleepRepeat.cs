@@ -15,28 +15,29 @@ namespace FeedSleepRepeatUI
     {
         List<Baby> Babies = new();
         Baby CurrentBaby = new();
-        List<BabyDay> BabyDays = new();       
-        //BabyDay CurrentDay = new();
+        List<BabyDay> CurrentBabyDays = new();
+        List<Activity> CurrentBabyDayActivities = new();
 
         public FeedForm()
         {
             InitializeComponent();
             ApplyPropertySettings();
             LoadBabyList();
-            ConnectBabyList();
+            ConnectBabyNameCombo();
+            AddFeedTypeDropdownValues();
         }
 
         private void babyNameCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ResetValues();
+            ResetAllValues();
             CurrentBaby = Babies.FirstOrDefault(b => b.FullName == babyNameCombo.Text);
 
             if (CurrentBaby != null && CurrentBaby.FirstName != String.Empty)
             {
                 dateOfBirthPicker.Value = CurrentBaby.DateOfBirth;
                 ageBox.Text = CalculateAge(CurrentBaby.DateOfBirth);
-                BabyDays = SqliteDataAccess.LoadBabyDays(CurrentBaby);
-                BabyDay today = BabyDays.FirstOrDefault(bd => bd.Date == DateTime.Today);
+                CurrentBabyDays = SqliteDataAccess.LoadBabyDays(CurrentBaby);
+                BabyDay today = CurrentBabyDays.FirstOrDefault(bd => bd.Date == DateTime.Today);
 
                 if (today != null)
                 {
@@ -57,7 +58,7 @@ namespace FeedSleepRepeatUI
 
         private void datePicker_ValueChanged(object sender, EventArgs e)
         {          
-            BabyDay selectedDay = BabyDays.FirstOrDefault(bd => bd.Date == datePicker.Value.Date);
+            BabyDay selectedDay = CurrentBabyDays.FirstOrDefault(bd => bd.Date == datePicker.Value.Date);
 
             if (selectedDay != null)
             {
@@ -65,15 +66,51 @@ namespace FeedSleepRepeatUI
             }
             else
             {
-                weightBox.Text = string.Empty;
-                wetNappiesNumericUpDown.Value = 0;
-                dirtyNappiesNumericUpDown.Value = 0;
-                nappiesTotal.Text = "0";
+                ResetBabyDayValues();
+            }
+        }
+
+        private void addFeedButton_Click(object sender, EventArgs e)
+        {
+            if (CurrentBaby == null || CurrentBaby.FirstName == String.Empty)
+            {
+                MessageBox.Show("Feed could not be added because a baby hasn't been selected.");
+                return;
+            }
+
+            Activity feed = GenerateFeedActivityInstance();
+            AddActivity(feed);
+            RefreshActivitiesListbox();
+            ResetFeedValues();
+        }
+
+        private void addSleepButton_Click(object sender, EventArgs e)
+        {
+            if (CurrentBaby == null || CurrentBaby.FirstName == String.Empty)
+            {
+                MessageBox.Show("Sleep could not be added because a baby hasn't been selected.");
+                return;
+            }
+
+            Activity sleep = GenerateSleepActivityInstance();
+            AddActivity(sleep);
+            RefreshActivitiesListbox();
+            ResetSleepValues();
+        }
+
+        private void activitiesListBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode is Keys.Delete or Keys.Back)
+            {
+                CurrentBabyDayActivities.Remove((Activity)activitiesListBox.SelectedItem);
+                activitiesListBox.DataSource = null;
+                activitiesListBox.DataSource = CurrentBabyDayActivities;
+                activitiesListBox.DisplayMember = "ActivitySummary";
             }
         }
 
         private void createButton_Click(object sender, EventArgs e)
-        {
+        {   
             if (Babies.Any(b => b.FullName == babyNameCombo.Text))
             {
                 MessageBox.Show("Creation was unsuccessful because a baby with this name already exists.");
@@ -92,9 +129,9 @@ namespace FeedSleepRepeatUI
             Baby b = GenerateBabyInstance();
             BabyDay d = GenerateBabyDayInstance();
             SqliteDataAccess.CreateBaby(b, d);
-            ResetValues();
+            ResetAllValues();
             LoadBabyList();
-            ConnectBabyList();   
+            ConnectBabyNameCombo();   
         }
 
         private void updateButton_Click(object sender, EventArgs e)
@@ -105,13 +142,19 @@ namespace FeedSleepRepeatUI
                 return;
             }
 
+            if (CurrentBaby.FirstName == String.Empty)
+            {
+                MessageBox.Show("Updating was unsuccessful because a baby hasn't been selected.");
+                return;
+            }
+
             Baby b = GenerateBabyInstance();
             SqliteDataAccess.UpdateBaby(b);
 
             BabyDay d = GenerateBabyDayInstance();
             d.BabyId = CurrentBaby.Id;              
 
-            if (BabyDays.Any(d => d.Date == datePicker.Value.Date))
+            if (CurrentBabyDays.Any(d => d.Date == datePicker.Value.Date))
             {
                 SqliteDataAccess.UpdateBabyDay(d);
             }
@@ -120,9 +163,9 @@ namespace FeedSleepRepeatUI
                 SqliteDataAccess.CreateBabyDay(d);
             }
 
-            ResetValues();
+            ResetAllValues();
             LoadBabyList();
-            ConnectBabyList();
+            ConnectBabyNameCombo();
         }
 
         private void deleteButton_Click(object sender, EventArgs e)
@@ -136,9 +179,9 @@ namespace FeedSleepRepeatUI
             {
                 Baby b = GenerateBabyInstance();
                 SqliteDataAccess.DeleteBaby(b);
-                ResetValues();
+                ResetAllValues();
                 LoadBabyList();
-                ConnectBabyList();
+                ConnectBabyNameCombo();
             }
         }
     }
