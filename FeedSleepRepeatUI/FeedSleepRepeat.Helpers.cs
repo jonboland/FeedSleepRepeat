@@ -17,14 +17,24 @@ namespace FeedSleepRepeatUI
             feedAmountBox.Text = String.Empty;
             feedTypeCombo.SelectedItem = String.Empty;
         }
-        
+
+        private void ResetSleepValues()
+        {
+            sleepStartPicker.Value = DateTime.Now;
+            sleepEndPicker.Value = DateTime.Now;
+            sleepPlaceBox.Text = String.Empty;
+        }
+
         private void ResetBabyDayValues()
         {
             weightBox.Text = string.Empty;
             wetNappiesNumericUpDown.Value = 0;
             dirtyNappiesNumericUpDown.Value = 0;
             nappiesTotal.Text = "0";
+            activitiesListBox.DataSource = null;
+            //activitiesListBox.Items.Clear();
             ResetFeedValues();
+            ResetSleepValues();
         }
         
         private void ResetAllValues()
@@ -107,6 +117,46 @@ namespace FeedSleepRepeatUI
             };
 
             return day;
+        }
+
+        private Activity GenerateFeedActivityInstance()
+        {
+            Activity feed = new()
+            {
+                ActivityType = "Feed",
+                Start = feedStartPicker.Value,
+                End = feedEndPicker.Value,
+                FeedAmount = feedAmountBox.Text,
+                FeedType = feedTypeCombo.Text,
+            };
+
+            return feed;
+        }
+
+        private Activity GenerateSleepActivityInstance()
+        {
+            Activity sleep = new()
+            {
+                ActivityType = "Sleep",
+                Start = sleepStartPicker.Value,
+                End = sleepEndPicker.Value,
+                SleepPlace = sleepPlaceBox.Text,
+            };
+
+            return sleep;
+        }
+
+        private void AddActivity(Activity activity)
+        {
+            CurrentBabyDayActivities.Add(activity);
+            CurrentBabyDayActivities = CurrentBabyDayActivities.OrderBy(a => a.Start.TimeOfDay).ToList();
+        }
+
+        private void RefreshActivitiesListbox()
+        {
+            activitiesListBox.DataSource = null;
+            activitiesListBox.DataSource = CurrentBabyDayActivities;
+            activitiesListBox.DisplayMember = "ActivitySummary";
         }
     }
 }

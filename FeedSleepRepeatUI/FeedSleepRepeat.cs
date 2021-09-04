@@ -16,7 +16,7 @@ namespace FeedSleepRepeatUI
         List<Baby> Babies = new();
         Baby CurrentBaby = new();
         List<BabyDay> CurrentBabyDays = new();
-        List<Feed> CurrentBabyDayFeeds = new();
+        List<Activity> CurrentBabyDayActivities = new();
 
         public FeedForm()
         {
@@ -78,20 +78,35 @@ namespace FeedSleepRepeatUI
                 return;
             }
 
-            Feed feed = new()
-            { 
-                Start = feedStartPicker.Value, 
-                End = feedEndPicker.Value, 
-                Amount = feedAmountBox.Text, 
-                Type = feedTypeCombo.Text, 
-            };
-
-            CurrentBabyDayFeeds.Add(feed);
-            activitiesListBox.DataSource = null;
-            activitiesListBox.DataSource = CurrentBabyDayFeeds;
-            activitiesListBox.DisplayMember = "ActivitySummary";
+            Activity feed = GenerateFeedActivityInstance();
+            AddActivity(feed);
+            RefreshActivitiesListbox();
             ResetFeedValues();
-            // Add feed to activitiesListBox
+        }
+
+        private void addSleepButton_Click(object sender, EventArgs e)
+        {
+            if (CurrentBaby == null || CurrentBaby.FirstName == String.Empty)
+            {
+                MessageBox.Show("Sleep could not be added because a baby hasn't been selected.");
+                return;
+            }
+
+            Activity sleep = GenerateSleepActivityInstance();
+            AddActivity(sleep);
+            RefreshActivitiesListbox();
+            ResetSleepValues();
+        }
+
+        private void activitiesListBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode is Keys.Delete or Keys.Back)
+            {
+                CurrentBabyDayActivities.Remove((Activity)activitiesListBox.SelectedItem);
+                activitiesListBox.DataSource = null;
+                activitiesListBox.DataSource = CurrentBabyDayActivities;
+                activitiesListBox.DisplayMember = "ActivitySummary";
+            }
         }
 
         private void createButton_Click(object sender, EventArgs e)
