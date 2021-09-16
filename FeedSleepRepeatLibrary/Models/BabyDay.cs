@@ -14,7 +14,6 @@ namespace FeedSleepRepeatLibrary
         public string Weight { get; set; }
         public decimal WetNappies { get; set; } = 0;
         public decimal DirtyNappies { get; set; } = 0;
-        public List<Feed> Feeds { get; set; } = new List<Feed>();
-        public List<Sleep> Sleeps { get; set; } = new List<Sleep>();
+        public List<Activity> Activities { get; set; } = new();
     }
 }

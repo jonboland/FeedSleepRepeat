@@ -24,19 +24,29 @@ namespace FeedSleepRepeatLibrary
             }
         }
 
-        public static void CreateBaby(Baby baby, BabyDay babyDay)
+        public static void CreateBaby(Baby baby, BabyDay babyDay, List<Activity> activities)
         {
-            string babySql = @"INSERT INTO Baby (FirstName, LastName, DateOfBirth) VALUES (@FirstName, @LastName, @DateOfBirth); SELECT last_insert_rowid()";
+            string babySql = "INSERT INTO Baby (FirstName, LastName, DateOfBirth) VALUES (@FirstName, @LastName, @DateOfBirth); SELECT last_insert_rowid()";
 
-            string babyDaySql = @"INSERT INTO BabyDay (BabyId, Date, Weight, WetNappies, DirtyNappies) VALUES (@BabyId, @Date, @Weight, @WetNappies, @DirtyNappies)";
+            string babyDaySql = "INSERT INTO BabyDay (BabyId, Date, Weight, WetNappies, DirtyNappies) "
+                + "VALUES (@BabyId, @Date, @Weight, @WetNappies, @DirtyNappies); SELECT last_insert_rowid()";
+
+            string activitySql = "INSERT INTO Activity (BabyDayId, ActivityType, Start, End, FeedType, FeedAmount, SleepPlace) "
+                + "VALUES (@BabyDayId, @ActivityType, @Start, @End, @FeedType, @FeedAmount, @SleepPlace)";
 
             // TODO: Consider converting baby creation into a transaction
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
                 // Insert baby into Baby table and add Id to babyDay
                 babyDay.BabyId = cnn.QueryFirst<int>(babySql, baby);
-                // Insert babyDay into BabyDay table with BabyId as foreign key
-                cnn.Execute(babyDaySql, babyDay);
+                // Insert babyDay into BabyDay table with BabyId as foreign key and assign Id to variable
+                int babyDayId = cnn.QueryFirst<int>(babyDaySql, babyDay);
+                // Insert activities into Activity table with BabyDayId as foreign key
+                foreach (var activity in activities)
+                {
+                    activity.BabyDayId = babyDayId;
+                    cnn.Execute(activitySql, activity);
+                }
             }
         }
 
@@ -63,7 +73,7 @@ namespace FeedSleepRepeatLibrary
 
         public static void CreateBabyDay(BabyDay babyDay)
         {
-            string sql = @"INSERT INTO BabyDay (BabyId, Date, Weight, WetNappies, DirtyNappies) VALUES (@BabyId, @Date, @Weight, @WetNappies, @DirtyNappies)";
+            string sql = "INSERT INTO BabyDay (BabyId, Date, Weight, WetNappies, DirtyNappies) VALUES (@BabyId, @Date, @Weight, @WetNappies, @DirtyNappies)";
 
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
