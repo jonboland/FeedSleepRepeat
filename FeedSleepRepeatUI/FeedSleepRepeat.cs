@@ -30,6 +30,9 @@ namespace FeedSleepRepeatUI
         private void babyNameCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
             ResetAllValues();
+            CurrentBabyDays.Clear();
+            CurrentBabyDayActivities.Clear();
+
             CurrentBaby = Babies.FirstOrDefault(b => b.FullName == babyNameCombo.Text);
 
             if (CurrentBaby != null && CurrentBaby.FirstName != String.Empty)
@@ -72,7 +75,7 @@ namespace FeedSleepRepeatUI
 
         private void addFeedButton_Click(object sender, EventArgs e)
         {
-            if (CurrentBaby == null || CurrentBaby.FirstName == String.Empty)
+            if (babyNameCombo.Text.All(char.IsWhiteSpace))
             {
                 MessageBox.Show("Feed could not be added because a baby hasn't been selected.");
                 return;
@@ -86,8 +89,9 @@ namespace FeedSleepRepeatUI
 
         private void addSleepButton_Click(object sender, EventArgs e)
         {
-            if (CurrentBaby == null || CurrentBaby.FirstName == String.Empty)
-            {
+            //if (CurrentBaby == null || CurrentBaby.FirstName == String.Empty)
+            if (babyNameCombo.Text.All(char.IsWhiteSpace))
+                {
                 MessageBox.Show("Sleep could not be added because a baby hasn't been selected.");
                 return;
             }
@@ -126,9 +130,12 @@ namespace FeedSleepRepeatUI
                 return;
             }
 
-            Baby b = GenerateBabyInstance();
-            BabyDay d = GenerateBabyDayInstance();
-            SqliteDataAccess.CreateBaby(b, d);
+            Baby baby = GenerateBabyInstance();
+            BabyDay day = GenerateBabyDayInstance();
+            SqliteDataAccess.CreateBaby(baby, day, CurrentBabyDayActivities);
+            //SqliteDataAccess.CreateBaby(baby, day);
+            CurrentBabyDays.Clear();
+            CurrentBabyDayActivities.Clear();
             ResetAllValues();
             LoadBabyList();
             ConnectBabyNameCombo();   
@@ -163,6 +170,10 @@ namespace FeedSleepRepeatUI
                 SqliteDataAccess.CreateBabyDay(d);
             }
 
+            // TODO: Update and/or create activities
+
+            CurrentBabyDays.Clear();
+            CurrentBabyDayActivities.Clear();
             ResetAllValues();
             LoadBabyList();
             ConnectBabyNameCombo();
@@ -179,6 +190,8 @@ namespace FeedSleepRepeatUI
             {
                 Baby b = GenerateBabyInstance();
                 SqliteDataAccess.DeleteBaby(b);
+                CurrentBabyDays.Clear();
+                CurrentBabyDayActivities.Clear();
                 ResetAllValues();
                 LoadBabyList();
                 ConnectBabyNameCombo();

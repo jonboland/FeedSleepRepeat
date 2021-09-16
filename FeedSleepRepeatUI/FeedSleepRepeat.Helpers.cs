@@ -47,24 +47,10 @@ namespace FeedSleepRepeatUI
 
         }
 
-        private void RefreshBabyDayValues(BabyDay babyDay)
-        {
-            weightBox.Text = babyDay.Weight;
-            wetNappiesNumericUpDown.Value = babyDay.WetNappies;
-            dirtyNappiesNumericUpDown.Value = babyDay.DirtyNappies;
-            nappiesTotal.Text = RefreshTotalNappies();
-        }
-
-        private string RefreshTotalNappies()
-        {
-            decimal totalNappies = wetNappiesNumericUpDown.Value + dirtyNappiesNumericUpDown.Value;
-            return totalNappies.ToString();
-        }
-
         public void LoadBabyList()
         {
             Babies = SqliteDataAccess.LoadBabies();
-            // Insert default baby that can be used to reset all values
+            // Inserts default baby that can be used to reset all values
             Babies.Insert(0, new Baby()
             {
                 FirstName = String.Empty,
@@ -78,6 +64,20 @@ namespace FeedSleepRepeatUI
             babyNameCombo.DataSource = null;
             babyNameCombo.DataSource = Babies;
             babyNameCombo.DisplayMember = "FullName";
+        }
+
+        private void RefreshBabyDayValues(BabyDay babyDay)
+        {
+            weightBox.Text = babyDay.Weight;
+            wetNappiesNumericUpDown.Value = babyDay.WetNappies;
+            dirtyNappiesNumericUpDown.Value = babyDay.DirtyNappies;
+            nappiesTotal.Text = RefreshTotalNappies();
+        }
+
+        private string RefreshTotalNappies()
+        {
+            decimal totalNappies = wetNappiesNumericUpDown.Value + dirtyNappiesNumericUpDown.Value;
+            return totalNappies.ToString();
         }
 
         private void AddFeedTypeDropdownValues()
@@ -124,8 +124,9 @@ namespace FeedSleepRepeatUI
             Activity feed = new()
             {
                 ActivityType = "Feed",
-                Start = feedStartPicker.Value,
-                End = feedEndPicker.Value,
+                // TODO: Create time truncation extension method
+                Start = feedStartPicker.Value.AddTicks(-(feedStartPicker.Value.Ticks % TimeSpan.TicksPerMinute)),
+                End = feedEndPicker.Value.AddTicks(-(feedEndPicker.Value.Ticks % TimeSpan.TicksPerMinute)),
                 FeedAmount = feedAmountBox.Text,
                 FeedType = feedTypeCombo.Text,
             };
@@ -138,8 +139,8 @@ namespace FeedSleepRepeatUI
             Activity sleep = new()
             {
                 ActivityType = "Sleep",
-                Start = sleepStartPicker.Value,
-                End = sleepEndPicker.Value,
+                Start = sleepStartPicker.Value.AddTicks(-(sleepStartPicker.Value.Ticks % TimeSpan.TicksPerMinute)),
+                End = sleepEndPicker.Value.AddTicks(-(sleepEndPicker.Value.Ticks % TimeSpan.TicksPerMinute)),
                 SleepPlace = sleepPlaceBox.Text,
             };
 
