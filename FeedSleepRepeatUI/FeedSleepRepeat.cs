@@ -16,26 +16,30 @@ namespace FeedSleepRepeatUI
         List<Baby> Babies = new();
         Baby CurrentBaby = new();
         List<BabyDay> CurrentBabyDays = new();
+        BabyDay CurrentBabyDay = new();
         List<Activity> CurrentBabyDayActivities = new();
 
         public FeedForm()
         {
             InitializeComponent();
-            ApplyPropertySettings();
+            SetDatePickerMaxValues();
+            AddFeedTypeDropdownValues();
+            AddActivitiesKeyDownEventHandler();
             LoadBabyList();
             ConnectBabyNameCombo();
-            AddFeedTypeDropdownValues();
         }
 
+        // This method is triggered at runtime
         private void babyNameCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
             ResetAllValues();
             CurrentBabyDays.Clear();
+            CurrentBabyDay = null;
             CurrentBabyDayActivities.Clear();
 
-            CurrentBaby = Babies.FirstOrDefault(b => b.FullName == babyNameCombo.Text);
+            CurrentBaby = Babies.First(b => b.FullName == babyNameCombo.Text);
 
-            if (CurrentBaby != null && CurrentBaby.FirstName != String.Empty)
+            if (!string.IsNullOrEmpty(CurrentBaby.FullName))
             {
                 dateOfBirthPicker.Value = CurrentBaby.DateOfBirth;
                 ageBox.Text = CalculateAge(CurrentBaby.DateOfBirth);
@@ -44,7 +48,10 @@ namespace FeedSleepRepeatUI
 
                 if (today != null)
                 {
+                    CurrentBabyDay = today;
                     RefreshBabyDayValues(today);
+                    CurrentBabyDayActivities = SqliteDataAccess.LoadActivities(today);
+                    RefreshActivitiesListbox();
                 }
             }
         }
@@ -59,13 +66,18 @@ namespace FeedSleepRepeatUI
             nappiesTotal.Text = RefreshTotalNappies();
         }
 
+        // This method is triggered at runtime
         private void datePicker_ValueChanged(object sender, EventArgs e)
-        {          
-            BabyDay selectedDay = CurrentBabyDays.FirstOrDefault(bd => bd.Date == datePicker.Value.Date);
+        {
+            CurrentBabyDayActivities.Clear();
 
-            if (selectedDay != null)
+            CurrentBabyDay = CurrentBabyDays.FirstOrDefault(bd => bd.Date == datePicker.Value.Date);
+
+            if (CurrentBabyDay != null)
             {
-                RefreshBabyDayValues(selectedDay);
+                RefreshBabyDayValues(CurrentBabyDay);
+                CurrentBabyDayActivities = SqliteDataAccess.LoadActivities(CurrentBabyDay);
+                RefreshActivitiesListbox();
             }
             else
             {
@@ -143,34 +155,32 @@ namespace FeedSleepRepeatUI
 
         private void updateButton_Click(object sender, EventArgs e)
         {
-            if (!Babies.Any(b => b.FullName == babyNameCombo.Text))
+            if (!Babies.Any(baby => baby.FullName == babyNameCombo.Text))
             {
                 MessageBox.Show("This baby couldn't be updated because it hasn't been created yet.");
                 return;
             }
 
-            if (CurrentBaby.FirstName == String.Empty)
+            if (CurrentBaby.FullName == String.Empty)
             {
                 MessageBox.Show("Updating was unsuccessful because a baby hasn't been selected.");
                 return;
             }
+            // TODO: Consider updating the existing baby instance instead of generating a new one
+            Baby baby = GenerateBabyInstance();
+            SqliteDataAccess.UpdateBaby(baby);
 
-            Baby b = GenerateBabyInstance();
-            SqliteDataAccess.UpdateBaby(b);
-
-            BabyDay d = GenerateBabyDayInstance();
-            d.BabyId = CurrentBaby.Id;              
-
-            if (CurrentBabyDays.Any(d => d.Date == datePicker.Value.Date))
+            if (CurrentBabyDay != null)
             {
-                SqliteDataAccess.UpdateBabyDay(d);
+                UpdateSelectedBabyDay(CurrentBabyDay);
+                SqliteDataAccess.UpdateBabyDay(CurrentBabyDay, CurrentBabyDayActivities);
             }
             else
             {
-                SqliteDataAccess.CreateBabyDay(d);
+                BabyDay babyDay = GenerateBabyDayInstance();
+                babyDay.BabyId = CurrentBaby.Id;
+                SqliteDataAccess.CreateBabyDay(babyDay, CurrentBabyDayActivities);
             }
-
-            // TODO: Update and/or create activities
 
             CurrentBabyDays.Clear();
             CurrentBabyDayActivities.Clear();

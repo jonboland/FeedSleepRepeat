@@ -60,6 +60,17 @@ namespace FeedSleepRepeatLibrary
             }
         }
 
+        public static void DeleteBaby(Baby baby)
+        {
+            // ON DELETE CASCADE is applied to FOREIGN KEY in BabyDay TABLE
+            string sql = "PRAGMA foreign_keys = ON; DELETE FROM Baby WHERE FirstName = @FirstName AND LastName = @LastName";
+
+            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+            {
+                cnn.Execute(sql, baby);
+            }
+        }
+
         public static List<BabyDay> LoadBabyDays(Baby currentBaby)
         {
             string sql = "SELECT * FROM BabyDay WHERE BabyId = @Id";
@@ -71,34 +82,59 @@ namespace FeedSleepRepeatLibrary
             }
         }
 
-        public static void CreateBabyDay(BabyDay babyDay)
+        public static void CreateBabyDay(BabyDay babyDay, List<Activity> activities)
         {
-            string sql = "INSERT INTO BabyDay (BabyId, Date, Weight, WetNappies, DirtyNappies) VALUES (@BabyId, @Date, @Weight, @WetNappies, @DirtyNappies)";
+            string babyDaySql = "INSERT INTO BabyDay (BabyId, Date, Weight, WetNappies, DirtyNappies) "
+                + "VALUES (@BabyId, @Date, @Weight, @WetNappies, @DirtyNappies); SELECT last_insert_rowid()";
+
+            string activitySql = "INSERT INTO Activity (BabyDayId, ActivityType, Start, End, FeedType, FeedAmount, SleepPlace) "
+                + "VALUES (@BabyDayId, @ActivityType, @Start, @End, @FeedType, @FeedAmount, @SleepPlace)";
 
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
-                cnn.Execute(sql, babyDay);
+                // Insert babyDay into BabyDay table with BabyId as foreign key and assign Id to variable
+                int babyDayId = cnn.QueryFirst<int>(babyDaySql, babyDay);
+                // Insert activities into Activity table with BabyDayId as foreign key
+                foreach (var activity in activities)
+                {
+                    activity.BabyDayId = babyDayId;
+                    cnn.Execute(activitySql, activity);
+                }
             }
         }
 
-        public static void UpdateBabyDay(BabyDay babyDay)
+        public static void UpdateBabyDay(BabyDay babyDay, List<Activity> activities)
         {
-            string sql = "UPDATE BabyDay SET Weight = @Weight, WetNappies = @WetNappies, DirtyNappies = @DirtyNappies WHERE BabyId = @BabyId AND Date = @Date";
+            string babyDaySql = "UPDATE BabyDay SET Weight = @Weight, WetNappies = @WetNappies, DirtyNappies = @DirtyNappies WHERE BabyId = @BabyId AND Date = @Date";
+
+            string deleteActivitySql = "DELETE FROM Activity WHERE BabyDayId = @Id";
+
+            string insertActivitySql = "INSERT INTO Activity (BabyDayId, ActivityType, Start, End, FeedType, FeedAmount, SleepPlace) "
+                + "VALUES (@BabyDayId, @ActivityType, @Start, @End, @FeedType, @FeedAmount, @SleepPlace)";
 
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
-                cnn.Execute(sql, babyDay);
+                cnn.Execute(babyDaySql, babyDay);
+
+                cnn.Execute(deleteActivitySql, babyDay);
+
+                foreach (var activity in activities)
+                {
+                    activity.BabyDayId = babyDay.Id;
+                    cnn.Execute(insertActivitySql, activity);
+                }
             }
         }
 
-        public static void DeleteBaby(Baby baby)
+        // TODO: Consider combining with LoadBabyDays
+        public static List<Activity> LoadActivities(BabyDay currentBabyDay)
         {
-            // ON DELETE CASCADE is applied to FOREIGN KEY in BabyDay TABLE
-            string sql = "PRAGMA foreign_keys = ON; DELETE FROM Baby WHERE FirstName = @FirstName AND LastName = @LastName";
+            string sql = "SELECT * FROM Activity WHERE BabyDayId = @Id";
 
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
-                cnn.Execute(sql, baby);
+                var output = cnn.Query<Activity>(sql, currentBabyDay);
+                return output.ToList();
             }
         }
 

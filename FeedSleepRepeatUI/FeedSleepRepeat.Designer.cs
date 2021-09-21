@@ -59,6 +59,8 @@ namespace FeedSleepRepeatUI
             this.weekGraphButton = new System.Windows.Forms.Button();
             this.monthGraphButton = new System.Windows.Forms.Button();
             this.activitiesGroupBox = new System.Windows.Forms.GroupBox();
+            this.sleepEndPicker = new System.Windows.Forms.DateTimePicker();
+            this.sleepStartPicker = new System.Windows.Forms.DateTimePicker();
             this.feedStartPicker = new System.Windows.Forms.DateTimePicker();
             this.feedEndPicker = new System.Windows.Forms.DateTimePicker();
             this.feedAmountBox = new System.Windows.Forms.TextBox();
@@ -68,8 +70,6 @@ namespace FeedSleepRepeatUI
             this.createButton = new System.Windows.Forms.Button();
             this.deleteButton = new System.Windows.Forms.Button();
             this.updateButton = new System.Windows.Forms.Button();
-            this.sleepStartPicker = new System.Windows.Forms.DateTimePicker();
-            this.sleepEndPicker = new System.Windows.Forms.DateTimePicker();
             ((System.ComponentModel.ISupportInitialize)(this.wetNappiesNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dirtyNappiesNumericUpDown)).BeginInit();
             this.activitiesGroupBox.SuspendLayout();
@@ -385,6 +385,30 @@ namespace FeedSleepRepeatUI
             this.activitiesGroupBox.TabStop = false;
             this.activitiesGroupBox.Text = "Activities";
             // 
+            // sleepEndPicker
+            // 
+            this.sleepEndPicker.CalendarFont = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.sleepEndPicker.CustomFormat = "HH:mm";
+            this.sleepEndPicker.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.sleepEndPicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.sleepEndPicker.Location = new System.Drawing.Point(231, 83);
+            this.sleepEndPicker.Name = "sleepEndPicker";
+            this.sleepEndPicker.ShowUpDown = true;
+            this.sleepEndPicker.Size = new System.Drawing.Size(57, 25);
+            this.sleepEndPicker.TabIndex = 49;
+            // 
+            // sleepStartPicker
+            // 
+            this.sleepStartPicker.CalendarFont = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.sleepStartPicker.CustomFormat = "HH:mm";
+            this.sleepStartPicker.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.sleepStartPicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.sleepStartPicker.Location = new System.Drawing.Point(92, 83);
+            this.sleepStartPicker.Name = "sleepStartPicker";
+            this.sleepStartPicker.ShowUpDown = true;
+            this.sleepStartPicker.Size = new System.Drawing.Size(57, 25);
+            this.sleepStartPicker.TabIndex = 48;
+            // 
             // feedStartPicker
             // 
             this.feedStartPicker.CalendarFont = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
@@ -481,30 +505,6 @@ namespace FeedSleepRepeatUI
             this.updateButton.Text = "Update";
             this.updateButton.UseVisualStyleBackColor = true;
             this.updateButton.Click += new System.EventHandler(this.updateButton_Click);
-            // 
-            // sleepStartPicker
-            // 
-            this.sleepStartPicker.CalendarFont = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.sleepStartPicker.CustomFormat = "HH:mm";
-            this.sleepStartPicker.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.sleepStartPicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.sleepStartPicker.Location = new System.Drawing.Point(92, 83);
-            this.sleepStartPicker.Name = "sleepStartPicker";
-            this.sleepStartPicker.ShowUpDown = true;
-            this.sleepStartPicker.Size = new System.Drawing.Size(57, 25);
-            this.sleepStartPicker.TabIndex = 48;
-            // 
-            // sleepEndPicker
-            // 
-            this.sleepEndPicker.CalendarFont = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.sleepEndPicker.CustomFormat = "HH:mm";
-            this.sleepEndPicker.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.sleepEndPicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.sleepEndPicker.Location = new System.Drawing.Point(231, 83);
-            this.sleepEndPicker.Name = "sleepEndPicker";
-            this.sleepEndPicker.ShowUpDown = true;
-            this.sleepEndPicker.Size = new System.Drawing.Size(57, 25);
-            this.sleepEndPicker.TabIndex = 49;
             // 
             // FeedForm
             // 
