@@ -8,6 +8,7 @@ namespace FeedSleepRepeatLibrary
 {
     public class Activity
     {
+        public int Id { get; }
         public int BabyDayId { get; set; }
         public string ActivityType { get; set; }
         public DateTime Start { get; set; }

@@ -9,7 +9,18 @@ using FeedSleepRepeatLibrary;
 namespace FeedSleepRepeatUI
 {
     partial class FeedForm
-    {       
+    {
+        private void SetDatePickerMaxValues()
+        {
+            dateOfBirthPicker.MaxDate = DateTime.Today;
+            datePicker.MaxDate = DateTime.Today;
+        }
+
+        private void AddActivitiesKeyDownEventHandler()
+        {
+            activitiesListBox.KeyDown += new KeyEventHandler(activitiesListBox_KeyDown);
+        }
+
         private void ResetFeedValues()
         {
             feedStartPicker.Value = DateTime.Now;
@@ -32,7 +43,6 @@ namespace FeedSleepRepeatUI
             dirtyNappiesNumericUpDown.Value = 0;
             nappiesTotal.Text = "0";
             activitiesListBox.DataSource = null;
-            //activitiesListBox.Items.Clear();
             ResetFeedValues();
             ResetSleepValues();
         }
@@ -40,11 +50,11 @@ namespace FeedSleepRepeatUI
         private void ResetAllValues()
         {
             CurrentBaby = null;
+            SetDatePickerMaxValues();
             dateOfBirthPicker.Value = DateTime.Today.Date;
             ageBox.Text = "0y 0m 0d";
             datePicker.Value = DateTime.Today.Date;
             ResetBabyDayValues();
-
         }
 
         public void LoadBabyList()
@@ -62,8 +72,8 @@ namespace FeedSleepRepeatUI
         private void ConnectBabyNameCombo()
         {
             babyNameCombo.DataSource = null;
-            babyNameCombo.DataSource = Babies;
             babyNameCombo.DisplayMember = "FullName";
+            babyNameCombo.DataSource = Babies;
         }
 
         private void RefreshBabyDayValues(BabyDay babyDay)
@@ -106,6 +116,14 @@ namespace FeedSleepRepeatUI
             return $"{age.Year - 1}y {age.Month - 1}m {age.Day - 1}d";
         }
 
+        private void UpdateSelectedBabyDay(BabyDay currentBabyDay)
+        {
+            currentBabyDay.Date = datePicker.Value;
+            currentBabyDay.Weight = weightBox.Text;
+            currentBabyDay.WetNappies = wetNappiesNumericUpDown.Value;
+            currentBabyDay.DirtyNappies = dirtyNappiesNumericUpDown.Value;
+        }
+        
         private BabyDay GenerateBabyDayInstance()
         {
             BabyDay day = new()
@@ -159,5 +177,8 @@ namespace FeedSleepRepeatUI
             activitiesListBox.DataSource = CurrentBabyDayActivities;
             activitiesListBox.DisplayMember = "ActivitySummary";
         }
+
+        // TODO: Configure activity pickers so activities are always added to the correct date
+        // (EndDate.Date - StartDate.Date).Days
     }
 }
