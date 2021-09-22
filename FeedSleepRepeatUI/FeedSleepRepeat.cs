@@ -69,6 +69,7 @@ namespace FeedSleepRepeatUI
         // This method is triggered at runtime
         private void datePicker_ValueChanged(object sender, EventArgs e)
         {
+            ResetBabyDayValues();
             CurrentBabyDayActivities.Clear();
 
             CurrentBabyDay = CurrentBabyDays.FirstOrDefault(bd => bd.Date == datePicker.Value.Date);
@@ -78,10 +79,6 @@ namespace FeedSleepRepeatUI
                 RefreshBabyDayValues(CurrentBabyDay);
                 CurrentBabyDayActivities = SqliteDataAccess.LoadActivities(CurrentBabyDay);
                 RefreshActivitiesListbox();
-            }
-            else
-            {
-                ResetBabyDayValues();
             }
         }
 
@@ -166,9 +163,12 @@ namespace FeedSleepRepeatUI
                 MessageBox.Show("Updating was unsuccessful because a baby hasn't been selected.");
                 return;
             }
-            // TODO: Consider updating the existing baby instance instead of generating a new one
-            Baby baby = GenerateBabyInstance();
-            SqliteDataAccess.UpdateBaby(baby);
+
+            if (CurrentBaby.DateOfBirth != dateOfBirthPicker.Value.Date)
+            {
+                CurrentBaby.DateOfBirth = dateOfBirthPicker.Value.Date;
+                SqliteDataAccess.UpdateBaby(CurrentBaby);
+            }
 
             if (CurrentBabyDay != null)
             {
