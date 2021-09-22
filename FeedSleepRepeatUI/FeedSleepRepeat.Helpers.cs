@@ -149,6 +149,11 @@ namespace FeedSleepRepeatUI
                 FeedType = feedTypeCombo.Text,
             };
 
+            if (CurrentBabyDay != null)
+            {
+                feed.BabyDayId = CurrentBabyDay.Id;
+            }
+
             return feed;
         }
 
@@ -161,6 +166,11 @@ namespace FeedSleepRepeatUI
                 End = sleepEndPicker.Value.AddTicks(-(sleepEndPicker.Value.Ticks % TimeSpan.TicksPerMinute)),
                 SleepPlace = sleepPlaceBox.Text,
             };
+
+            if (CurrentBabyDay != null)
+            {
+                sleep.BabyDayId = CurrentBabyDay.Id;
+            }
 
             return sleep;
         }

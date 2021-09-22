@@ -50,6 +50,7 @@ namespace FeedSleepRepeatLibrary
             }
         }
 
+        // TODO: Consider combining with UpdateBabyDay
         public static void UpdateBaby(Baby baby)
         {
             string sql = "UPDATE Baby SET DateOfBirth = @DateOfBirth WHERE FirstName = @FirstName AND LastName = @LastName";
@@ -63,7 +64,9 @@ namespace FeedSleepRepeatLibrary
         public static void DeleteBaby(Baby baby)
         {
             // ON DELETE CASCADE is applied to FOREIGN KEY in BabyDay TABLE
-            string sql = "PRAGMA foreign_keys = ON; DELETE FROM Baby WHERE FirstName = @FirstName AND LastName = @LastName";
+            string sql = @"PRAGMA foreign_keys = ON; 
+                           DELETE FROM Baby 
+                           WHERE FirstName = @FirstName AND LastName = @LastName";
 
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
@@ -105,24 +108,21 @@ namespace FeedSleepRepeatLibrary
 
         public static void UpdateBabyDay(BabyDay babyDay, List<Activity> activities)
         {
-            string babyDaySql = "UPDATE BabyDay SET Weight = @Weight, WetNappies = @WetNappies, DirtyNappies = @DirtyNappies WHERE BabyId = @BabyId AND Date = @Date";
+            string updatebabyDaySql = @"UPDATE BabyDay 
+                                        SET Weight = @Weight, WetNappies = @WetNappies, DirtyNappies = @DirtyNappies 
+                                        WHERE BabyId = @BabyId 
+                                        AND Date = @Date";
 
             string deleteActivitySql = "DELETE FROM Activity WHERE BabyDayId = @Id";
 
-            string insertActivitySql = "INSERT INTO Activity (BabyDayId, ActivityType, Start, End, FeedType, FeedAmount, SleepPlace) "
-                + "VALUES (@BabyDayId, @ActivityType, @Start, @End, @FeedType, @FeedAmount, @SleepPlace)";
+            string insertActivitySql = @"INSERT INTO Activity (BabyDayId, ActivityType, Start, End, FeedType, FeedAmount, SleepPlace)
+                                         VALUES (@BabyDayId, @ActivityType, @Start, @End, @FeedType, @FeedAmount, @SleepPlace)";
 
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
-                cnn.Execute(babyDaySql, babyDay);
-
+                cnn.Execute(updatebabyDaySql, babyDay);
                 cnn.Execute(deleteActivitySql, babyDay);
-
-                foreach (var activity in activities)
-                {
-                    activity.BabyDayId = babyDay.Id;
-                    cnn.Execute(insertActivitySql, activity);
-                }
+                cnn.Execute(insertActivitySql, activities);
             }
         }
 
