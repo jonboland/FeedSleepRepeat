@@ -37,21 +37,25 @@ namespace FeedSleepRepeatLibrary
             // TODO: Consider converting baby creation into a transaction
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
-                // Insert baby into Baby table and add Id to babyDay
-                babyDay.BabyId = cnn.QueryFirst<int>(babySql, baby);
-                // Insert babyDay into BabyDay table with BabyId as foreign key and assign Id to variable
-                int babyDayId = cnn.QueryFirst<int>(babyDaySql, babyDay);
-                // Insert activities into Activity table with BabyDayId as foreign key
-                foreach (var activity in activities)
+                cnn.Open();
+                using (var trans = cnn.BeginTransaction())
                 {
-                    activity.BabyDayId = babyDayId;
-                    cnn.Execute(activitySql, activity);
+                    // Insert baby into Baby table and add Id to babyDay
+                    babyDay.BabyId = cnn.QueryFirst<int>(babySql, baby, trans);
+                    // Insert babyDay into BabyDay table with BabyId as foreign key and assign Id to variable
+                    int babyDayId = cnn.QueryFirst<int>(babyDaySql, babyDay, trans);
+                    // Insert activities into Activity table with BabyDayId as foreign key
+                    foreach (var activity in activities)
+                    {
+                        activity.BabyDayId = babyDayId;
+                        cnn.Execute(activitySql, activity, trans);
+                    }
+                    trans.Commit();
                 }
             }
         }
 
-        // TODO: Consider combining with UpdateBabyDay
-        public static void UpdateBaby(Baby baby)
+        public static void UpdateDateOfBirth(Baby baby)
         {
             string sql = "UPDATE Baby SET DateOfBirth = @DateOfBirth WHERE FirstName = @FirstName AND LastName = @LastName";
 
@@ -63,7 +67,7 @@ namespace FeedSleepRepeatLibrary
 
         public static void DeleteBaby(Baby baby)
         {
-            // ON DELETE CASCADE is applied to FOREIGN KEY in BabyDay TABLE
+            // ON DELETE CASCADE is applied to FOREIGN KEY in BabyDay and Activity
             string sql = @"PRAGMA foreign_keys = ON; 
                            DELETE FROM Baby 
                            WHERE FirstName = @FirstName AND LastName = @LastName";
@@ -95,20 +99,26 @@ namespace FeedSleepRepeatLibrary
 
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
-                // Insert babyDay into BabyDay table with BabyId as foreign key and assign Id to variable
-                int babyDayId = cnn.QueryFirst<int>(babyDaySql, babyDay);
-                // Insert activities into Activity table with BabyDayId as foreign key
-                foreach (var activity in activities)
+                cnn.Open();
+                using (var trans = cnn.BeginTransaction())
                 {
-                    activity.BabyDayId = babyDayId;
-                    cnn.Execute(activitySql, activity);
+                    // Insert babyDay into BabyDay table with BabyId as foreign key and assign Id to variable
+                    int babyDayId = cnn.QueryFirst<int>(babyDaySql, babyDay, trans);
+                    // Insert activities into Activity table with BabyDayId as foreign key
+                    foreach (var activity in activities)
+                    {
+                        activity.BabyDayId = babyDayId;
+                        cnn.Execute(activitySql, activity, trans);
+                    }
+                    trans.Commit();
                 }
+
             }
         }
 
         public static void UpdateBabyDay(BabyDay babyDay, List<Activity> activities)
         {
-            string updatebabyDaySql = @"UPDATE BabyDay 
+            string updateBabyDaySql = @"UPDATE BabyDay 
                                         SET Weight = @Weight, WetNappies = @WetNappies, DirtyNappies = @DirtyNappies 
                                         WHERE BabyId = @BabyId 
                                         AND Date = @Date";
@@ -120,13 +130,17 @@ namespace FeedSleepRepeatLibrary
 
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
-                cnn.Execute(updatebabyDaySql, babyDay);
-                cnn.Execute(deleteActivitySql, babyDay);
-                cnn.Execute(insertActivitySql, activities);
+                cnn.Open();
+                using (var trans = cnn.BeginTransaction())
+                {
+                    cnn.Execute(updateBabyDaySql, babyDay, trans);
+                    cnn.Execute(deleteActivitySql, babyDay, trans);
+                    cnn.Execute(insertActivitySql, activities, trans);
+                    trans.Commit();
+                }
             }
         }
 
-        // TODO: Consider combining with LoadBabyDays
         public static List<Activity> LoadActivities(BabyDay currentBabyDay)
         {
             string sql = "SELECT * FROM Activity WHERE BabyDayId = @Id";

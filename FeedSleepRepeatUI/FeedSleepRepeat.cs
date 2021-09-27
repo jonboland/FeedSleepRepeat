@@ -167,7 +167,7 @@ namespace FeedSleepRepeatUI
             if (CurrentBaby.DateOfBirth != dateOfBirthPicker.Value.Date)
             {
                 CurrentBaby.DateOfBirth = dateOfBirthPicker.Value.Date;
-                SqliteDataAccess.UpdateBaby(CurrentBaby);
+                SqliteDataAccess.UpdateDateOfBirth(CurrentBaby);
             }
 
             if (CurrentBabyDay != null)
