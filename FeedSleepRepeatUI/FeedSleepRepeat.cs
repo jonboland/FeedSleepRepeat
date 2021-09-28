@@ -17,7 +17,6 @@ namespace FeedSleepRepeatUI
         Baby CurrentBaby = new();
         List<BabyDay> CurrentBabyDays = new();
         BabyDay CurrentBabyDay = new();
-        List<Activity> CurrentBabyDayActivities = new();
 
         public FeedForm()
         {
@@ -34,23 +33,22 @@ namespace FeedSleepRepeatUI
         {
             ResetAllValues();
             CurrentBabyDays.Clear();
-            CurrentBabyDay = null;
-            CurrentBabyDayActivities.Clear();
+            CurrentBabyDay = new();
 
             CurrentBaby = Babies.First(b => b.FullName == babyNameCombo.Text);
 
             if (!string.IsNullOrEmpty(CurrentBaby.FullName))
             {
                 dateOfBirthPicker.Value = CurrentBaby.DateOfBirth;
-                ageBox.Text = CalculateAge(CurrentBaby.DateOfBirth);
+                ageBox.Text = CalculateAge();
                 CurrentBabyDays = SqliteDataAccess.LoadBabyDays(CurrentBaby);
                 BabyDay today = CurrentBabyDays.FirstOrDefault(bd => bd.Date == DateTime.Today);
 
                 if (today != null)
                 {
                     CurrentBabyDay = today;
-                    RefreshBabyDayValues(today);
-                    CurrentBabyDayActivities = SqliteDataAccess.LoadActivities(today);
+                    RefreshBabyDayValues();
+                    CurrentBabyDay.Activities = SqliteDataAccess.LoadActivities(CurrentBabyDay);
                     RefreshActivitiesListbox();
                 }
             }
@@ -70,15 +68,18 @@ namespace FeedSleepRepeatUI
         private void datePicker_ValueChanged(object sender, EventArgs e)
         {
             ResetBabyDayValues();
-            CurrentBabyDayActivities.Clear();
 
             CurrentBabyDay = CurrentBabyDays.FirstOrDefault(bd => bd.Date == datePicker.Value.Date);
 
             if (CurrentBabyDay != null)
             {
-                RefreshBabyDayValues(CurrentBabyDay);
-                CurrentBabyDayActivities = SqliteDataAccess.LoadActivities(CurrentBabyDay);
+                RefreshBabyDayValues();
+                CurrentBabyDay.Activities = SqliteDataAccess.LoadActivities(CurrentBabyDay);
                 RefreshActivitiesListbox();
+            }
+            else
+            {
+                CurrentBabyDay = new();
             }
         }
 
@@ -98,7 +99,6 @@ namespace FeedSleepRepeatUI
 
         private void addSleepButton_Click(object sender, EventArgs e)
         {
-            //if (CurrentBaby == null || CurrentBaby.FirstName == String.Empty)
             if (babyNameCombo.Text.All(char.IsWhiteSpace))
                 {
                 MessageBox.Show("Sleep could not be added because a baby hasn't been selected.");
@@ -115,9 +115,9 @@ namespace FeedSleepRepeatUI
         {
             if (e.KeyCode is Keys.Delete or Keys.Back)
             {
-                CurrentBabyDayActivities.Remove((Activity)activitiesListBox.SelectedItem);
+                CurrentBabyDay.Activities.Remove((Activity)activitiesListBox.SelectedItem);
                 activitiesListBox.DataSource = null;
-                activitiesListBox.DataSource = CurrentBabyDayActivities;
+                activitiesListBox.DataSource = CurrentBabyDay.Activities;
                 activitiesListBox.DisplayMember = "ActivitySummary";
             }
         }
@@ -139,15 +139,13 @@ namespace FeedSleepRepeatUI
                 return;
             }
 
-            Baby baby = GenerateBabyInstance();
-            BabyDay day = GenerateBabyDayInstance();
-            SqliteDataAccess.CreateBaby(baby, day, CurrentBabyDayActivities);
-            //SqliteDataAccess.CreateBaby(baby, day);
+            SetBabyValues();
+            SetBabyDayValues();
+            SqliteDataAccess.CreateBaby(CurrentBaby, CurrentBabyDay);
             CurrentBabyDays.Clear();
-            CurrentBabyDayActivities.Clear();
             ResetAllValues();
             LoadBabyList();
-            ConnectBabyNameCombo();   
+            ConnectBabyNameCombo();
         }
 
         private void updateButton_Click(object sender, EventArgs e)
@@ -170,20 +168,19 @@ namespace FeedSleepRepeatUI
                 SqliteDataAccess.UpdateDateOfBirth(CurrentBaby);
             }
 
-            if (CurrentBabyDay != null)
-            {
-                UpdateSelectedBabyDay(CurrentBabyDay);
-                SqliteDataAccess.UpdateBabyDay(CurrentBabyDay, CurrentBabyDayActivities);
+            SetBabyDayValues();
+
+            if (CurrentBabyDay.BabyId != 0)
+            {               
+                SqliteDataAccess.UpdateBabyDay(CurrentBabyDay);
             }
             else
             {
-                BabyDay babyDay = GenerateBabyDayInstance();
-                babyDay.BabyId = CurrentBaby.Id;
-                SqliteDataAccess.CreateBabyDay(babyDay, CurrentBabyDayActivities);
+                CurrentBabyDay.BabyId = CurrentBaby.Id;
+                SqliteDataAccess.CreateBabyDay(CurrentBabyDay);
             }
 
             CurrentBabyDays.Clear();
-            CurrentBabyDayActivities.Clear();
             ResetAllValues();
             LoadBabyList();
             ConnectBabyNameCombo();
@@ -198,10 +195,8 @@ namespace FeedSleepRepeatUI
 
             if (choice == DialogResult.Yes)
             {
-                Baby b = GenerateBabyInstance();
-                SqliteDataAccess.DeleteBaby(b);
+                SqliteDataAccess.DeleteBaby(CurrentBaby);
                 CurrentBabyDays.Clear();
-                CurrentBabyDayActivities.Clear();
                 ResetAllValues();
                 LoadBabyList();
                 ConnectBabyNameCombo();
