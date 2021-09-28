@@ -76,11 +76,11 @@ namespace FeedSleepRepeatUI
             babyNameCombo.DataSource = Babies;
         }
 
-        private void RefreshBabyDayValues(BabyDay babyDay)
+        private void RefreshBabyDayValues()
         {
-            weightBox.Text = babyDay.Weight;
-            wetNappiesNumericUpDown.Value = babyDay.WetNappies;
-            dirtyNappiesNumericUpDown.Value = babyDay.DirtyNappies;
+            weightBox.Text = CurrentBabyDay.Weight;
+            wetNappiesNumericUpDown.Value = CurrentBabyDay.WetNappies;
+            dirtyNappiesNumericUpDown.Value = CurrentBabyDay.DirtyNappies;
             nappiesTotal.Text = RefreshTotalNappies();
         }
 
@@ -95,46 +95,27 @@ namespace FeedSleepRepeatUI
             feedTypeCombo.DataSource = new List<string> { String.Empty, "Bottle", "Breast", "Solid" };
         }
 
-        private Baby GenerateBabyInstance()
+        private void SetBabyValues()
         {
             string[] name = babyNameCombo.Text.Split();
-
-            Baby baby = new()
-            {
-                FirstName = name[0],
-                LastName = name[1],
-                DateOfBirth = dateOfBirthPicker.Value.Date,
-            };
-
-            return baby;
+            CurrentBaby.FirstName = name[0];
+            CurrentBaby.LastName = name[1];
+            CurrentBaby.DateOfBirth = dateOfBirthPicker.Value.Date;
         }
 
-        private string CalculateAge(DateTime dateOfBirth)
+        private string CalculateAge()
         {
-            TimeSpan timeSpan = DateTime.Now.Subtract(dateOfBirth);
+            TimeSpan timeSpan = DateTime.Now.Subtract(CurrentBaby.DateOfBirth);
             DateTime age = DateTime.MinValue + timeSpan;
             return $"{age.Year - 1}y {age.Month - 1}m {age.Day - 1}d";
         }
 
-        private void UpdateSelectedBabyDay(BabyDay currentBabyDay)
+        private void SetBabyDayValues()
         {
-            currentBabyDay.Date = datePicker.Value;
-            currentBabyDay.Weight = weightBox.Text;
-            currentBabyDay.WetNappies = wetNappiesNumericUpDown.Value;
-            currentBabyDay.DirtyNappies = dirtyNappiesNumericUpDown.Value;
-        }
-        
-        private BabyDay GenerateBabyDayInstance()
-        {
-            BabyDay day = new()
-            {
-                Date = datePicker.Value,
-                Weight = weightBox.Text,
-                WetNappies = wetNappiesNumericUpDown.Value,
-                DirtyNappies = dirtyNappiesNumericUpDown.Value,
-            };
-
-            return day;
+            CurrentBabyDay.Date = datePicker.Value;
+            CurrentBabyDay.Weight = weightBox.Text;
+            CurrentBabyDay.WetNappies = wetNappiesNumericUpDown.Value;
+            CurrentBabyDay.DirtyNappies = dirtyNappiesNumericUpDown.Value;
         }
 
         private Activity GenerateFeedActivityInstance()
@@ -149,7 +130,7 @@ namespace FeedSleepRepeatUI
                 FeedType = feedTypeCombo.Text,
             };
 
-            if (CurrentBabyDay != null)
+            if (CurrentBabyDay.BabyId != 0)
             {
                 feed.BabyDayId = CurrentBabyDay.Id;
             }
@@ -167,7 +148,7 @@ namespace FeedSleepRepeatUI
                 SleepPlace = sleepPlaceBox.Text,
             };
 
-            if (CurrentBabyDay != null)
+            if (CurrentBabyDay.BabyId != 0)
             {
                 sleep.BabyDayId = CurrentBabyDay.Id;
             }
@@ -177,14 +158,14 @@ namespace FeedSleepRepeatUI
 
         private void AddActivity(Activity activity)
         {
-            CurrentBabyDayActivities.Add(activity);
-            CurrentBabyDayActivities = CurrentBabyDayActivities.OrderBy(a => a.Start.TimeOfDay).ToList();
+            CurrentBabyDay.Activities.Add(activity);
+            CurrentBabyDay.Activities = CurrentBabyDay.Activities.OrderBy(a => a.Start.TimeOfDay).ToList();
         }
 
         private void RefreshActivitiesListbox()
         {
             activitiesListBox.DataSource = null;
-            activitiesListBox.DataSource = CurrentBabyDayActivities;
+            activitiesListBox.DataSource = CurrentBabyDay.Activities;
             activitiesListBox.DisplayMember = "ActivitySummary";
         }
 

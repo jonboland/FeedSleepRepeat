@@ -24,7 +24,7 @@ namespace FeedSleepRepeatLibrary
             }
         }
 
-        public static void CreateBaby(Baby baby, BabyDay babyDay, List<Activity> activities)
+        public static void CreateBaby(Baby baby, BabyDay babyDay)
         {
             string babySql = "INSERT INTO Baby (FirstName, LastName, DateOfBirth) VALUES (@FirstName, @LastName, @DateOfBirth); SELECT last_insert_rowid()";
 
@@ -45,7 +45,7 @@ namespace FeedSleepRepeatLibrary
                     // Insert babyDay into BabyDay table with BabyId as foreign key and assign Id to variable
                     int babyDayId = cnn.QueryFirst<int>(babyDaySql, babyDay, trans);
                     // Insert activities into Activity table with BabyDayId as foreign key
-                    foreach (var activity in activities)
+                    foreach (var activity in babyDay.Activities)
                     {
                         activity.BabyDayId = babyDayId;
                         cnn.Execute(activitySql, activity, trans);
@@ -89,7 +89,7 @@ namespace FeedSleepRepeatLibrary
             }
         }
 
-        public static void CreateBabyDay(BabyDay babyDay, List<Activity> activities)
+        public static void CreateBabyDay(BabyDay babyDay)
         {
             string babyDaySql = "INSERT INTO BabyDay (BabyId, Date, Weight, WetNappies, DirtyNappies) "
                 + "VALUES (@BabyId, @Date, @Weight, @WetNappies, @DirtyNappies); SELECT last_insert_rowid()";
@@ -105,7 +105,7 @@ namespace FeedSleepRepeatLibrary
                     // Insert babyDay into BabyDay table with BabyId as foreign key and assign Id to variable
                     int babyDayId = cnn.QueryFirst<int>(babyDaySql, babyDay, trans);
                     // Insert activities into Activity table with BabyDayId as foreign key
-                    foreach (var activity in activities)
+                    foreach (var activity in babyDay.Activities)
                     {
                         activity.BabyDayId = babyDayId;
                         cnn.Execute(activitySql, activity, trans);
@@ -116,7 +116,7 @@ namespace FeedSleepRepeatLibrary
             }
         }
 
-        public static void UpdateBabyDay(BabyDay babyDay, List<Activity> activities)
+        public static void UpdateBabyDay(BabyDay babyDay)
         {
             string updateBabyDaySql = @"UPDATE BabyDay 
                                         SET Weight = @Weight, WetNappies = @WetNappies, DirtyNappies = @DirtyNappies 
@@ -135,7 +135,7 @@ namespace FeedSleepRepeatLibrary
                 {
                     cnn.Execute(updateBabyDaySql, babyDay, trans);
                     cnn.Execute(deleteActivitySql, babyDay, trans);
-                    cnn.Execute(insertActivitySql, activities, trans);
+                    cnn.Execute(insertActivitySql, babyDay.Activities, trans);
                     trans.Commit();
                 }
             }

@@ -12,6 +12,7 @@ namespace FeedSleepRepeatLibrary
         public int BabyId { get; set; }
         public DateTime Date { get; set; } = DateTime.Today;
         public string Weight { get; set; }
+        // TODO: Check whether setting decimal values to 0 is necessary
         public decimal WetNappies { get; set; } = 0;
         public decimal DirtyNappies { get; set; } = 0;
         public List<Activity> Activities { get; set; } = new();
