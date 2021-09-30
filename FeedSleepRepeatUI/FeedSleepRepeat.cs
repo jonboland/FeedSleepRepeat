@@ -15,7 +15,6 @@ namespace FeedSleepRepeatUI
     {
         List<Baby> Babies = new();
         Baby CurrentBaby = new();
-        List<BabyDay> CurrentBabyDays = new();
         BabyDay CurrentBabyDay = new();
 
         public FeedForm()
@@ -32,8 +31,6 @@ namespace FeedSleepRepeatUI
         private void babyNameCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
             ResetAllValues();
-            CurrentBabyDays.Clear();
-            CurrentBabyDay = new();
 
             CurrentBaby = Babies.First(b => b.FullName == babyNameCombo.Text);
 
@@ -41,8 +38,8 @@ namespace FeedSleepRepeatUI
             {
                 dateOfBirthPicker.Value = CurrentBaby.DateOfBirth;
                 ageBox.Text = CalculateAge();
-                CurrentBabyDays = SqliteDataAccess.LoadBabyDays(CurrentBaby);
-                BabyDay today = CurrentBabyDays.FirstOrDefault(bd => bd.Date == DateTime.Today);
+                CurrentBaby.BabyDays = SqliteDataAccess.LoadBabyDays(CurrentBaby);
+                BabyDay today = CurrentBaby.BabyDays.FirstOrDefault(bd => bd.Date == DateTime.Today);
 
                 if (today != null)
                 {
@@ -69,7 +66,7 @@ namespace FeedSleepRepeatUI
         {
             ResetBabyDayValues();
 
-            CurrentBabyDay = CurrentBabyDays.FirstOrDefault(bd => bd.Date == datePicker.Value.Date);
+            CurrentBabyDay = CurrentBaby.BabyDays.FirstOrDefault(bd => bd.Date == datePicker.Value.Date);
 
             if (CurrentBabyDay != null)
             {
@@ -124,6 +121,7 @@ namespace FeedSleepRepeatUI
 
         private void createButton_Click(object sender, EventArgs e)
         {   
+            //TODO: handle attempt to create a baby with blank name (currently gives the below message)
             if (Babies.Any(b => b.FullName == babyNameCombo.Text))
             {
                 MessageBox.Show("Creation was unsuccessful because a baby with this name already exists.");
@@ -142,7 +140,6 @@ namespace FeedSleepRepeatUI
             SetBabyValues();
             SetBabyDayValues();
             SqliteDataAccess.CreateBaby(CurrentBaby, CurrentBabyDay);
-            CurrentBabyDays.Clear();
             ResetAllValues();
             LoadBabyList();
             ConnectBabyNameCombo();
@@ -180,7 +177,6 @@ namespace FeedSleepRepeatUI
                 SqliteDataAccess.CreateBabyDay(CurrentBabyDay);
             }
 
-            CurrentBabyDays.Clear();
             ResetAllValues();
             LoadBabyList();
             ConnectBabyNameCombo();
@@ -196,7 +192,6 @@ namespace FeedSleepRepeatUI
             if (choice == DialogResult.Yes)
             {
                 SqliteDataAccess.DeleteBaby(CurrentBaby);
-                CurrentBabyDays.Clear();
                 ResetAllValues();
                 LoadBabyList();
                 ConnectBabyNameCombo();

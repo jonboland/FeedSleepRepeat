@@ -38,6 +38,7 @@ namespace FeedSleepRepeatUI
 
         private void ResetBabyDayValues()
         {
+            CurrentBabyDay = new();
             weightBox.Text = string.Empty;
             wetNappiesNumericUpDown.Value = 0;
             dirtyNappiesNumericUpDown.Value = 0;
@@ -49,7 +50,7 @@ namespace FeedSleepRepeatUI
         
         private void ResetAllValues()
         {
-            CurrentBaby = null;
+            CurrentBaby = new();
             SetDatePickerMaxValues();
             dateOfBirthPicker.Value = DateTime.Today.Date;
             ageBox.Text = "0y 0m 0d";
