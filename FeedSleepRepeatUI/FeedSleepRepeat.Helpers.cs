@@ -82,13 +82,8 @@ namespace FeedSleepRepeatUI
             weightBox.Text = CurrentBabyDay.Weight;
             wetNappiesNumericUpDown.Value = CurrentBabyDay.WetNappies;
             dirtyNappiesNumericUpDown.Value = CurrentBabyDay.DirtyNappies;
-            nappiesTotal.Text = RefreshTotalNappies();
-        }
-
-        private string RefreshTotalNappies()
-        {
-            decimal totalNappies = wetNappiesNumericUpDown.Value + dirtyNappiesNumericUpDown.Value;
-            return totalNappies.ToString();
+            nappiesTotal.Text = FeedSleepRepeatLogic.RefreshTotalNappies(
+                wetNappiesNumericUpDown.Value, dirtyNappiesNumericUpDown.Value);
         }
 
         private void AddFeedTypeDropdownValues()
@@ -96,7 +91,7 @@ namespace FeedSleepRepeatUI
             feedTypeCombo.DataSource = new List<string> { String.Empty, "Bottle", "Breast", "Solid" };
         }
 
-        private void SetBabyValues()
+        private void SetCurrentBabyValues()
         {
             string[] name = babyNameCombo.Text.Split();
             CurrentBaby.FirstName = name[0];
@@ -104,14 +99,7 @@ namespace FeedSleepRepeatUI
             CurrentBaby.DateOfBirth = dateOfBirthPicker.Value.Date;
         }
 
-        private string CalculateAge()
-        {
-            TimeSpan timeSpan = DateTime.Now.Subtract(CurrentBaby.DateOfBirth);
-            DateTime age = DateTime.MinValue + timeSpan;
-            return $"{age.Year - 1}y {age.Month - 1}m {age.Day - 1}d";
-        }
-
-        private void SetBabyDayValues()
+        private void SetCurrentBabyDayValues()
         {
             CurrentBabyDay.Date = datePicker.Value;
             CurrentBabyDay.Weight = weightBox.Text;
@@ -123,14 +111,14 @@ namespace FeedSleepRepeatUI
         {
             Activity feed = new()
             {
-                ActivityType = "Feed",
-                // TODO: Create time truncation extension method
-                Start = feedStartPicker.Value.AddTicks(-(feedStartPicker.Value.Ticks % TimeSpan.TicksPerMinute)),
-                End = feedEndPicker.Value.AddTicks(-(feedEndPicker.Value.Ticks % TimeSpan.TicksPerMinute)),
+                ActivityType = ActivityType.Feed,
+                Start = FeedSleepRepeatLogic.TruncateTime(feedStartPicker.Value),
+                End = FeedSleepRepeatLogic.TruncateTime(feedEndPicker.Value),
                 FeedAmount = feedAmountBox.Text,
                 FeedType = feedTypeCombo.Text,
             };
 
+            // TODO: Check whether baby id can be set as part of feed instance creation
             if (CurrentBabyDay.BabyId != 0)
             {
                 feed.BabyDayId = CurrentBabyDay.Id;
@@ -143,9 +131,9 @@ namespace FeedSleepRepeatUI
         {
             Activity sleep = new()
             {
-                ActivityType = "Sleep",
-                Start = sleepStartPicker.Value.AddTicks(-(sleepStartPicker.Value.Ticks % TimeSpan.TicksPerMinute)),
-                End = sleepEndPicker.Value.AddTicks(-(sleepEndPicker.Value.Ticks % TimeSpan.TicksPerMinute)),
+                ActivityType = ActivityType.Sleep,
+                Start = FeedSleepRepeatLogic.TruncateTime(sleepStartPicker.Value),
+                End = FeedSleepRepeatLogic.TruncateTime(sleepEndPicker.Value),
                 SleepPlace = sleepPlaceBox.Text,
             };
 
@@ -160,7 +148,7 @@ namespace FeedSleepRepeatUI
         private void AddActivity(Activity activity)
         {
             CurrentBabyDay.Activities.Add(activity);
-            CurrentBabyDay.Activities = CurrentBabyDay.Activities.OrderBy(a => a.Start.TimeOfDay).ToList();
+            CurrentBabyDay.Activities = FeedSleepRepeatLogic.SortActivities(CurrentBabyDay.Activities);
         }
 
         private void RefreshActivitiesListbox()
