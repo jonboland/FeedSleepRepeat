@@ -86,9 +86,9 @@ namespace FeedSleepRepeatUI
                 wetNappiesNumericUpDown.Value, dirtyNappiesNumericUpDown.Value);
         }
 
-        private void AddFeedTypeDropdownValues()
+        private void SetFeedTypeDropdownValues()
         {
-            feedTypeCombo.DataSource = new List<string> { String.Empty, "Bottle", "Breast", "Solid" };
+            feedTypeCombo.DataSource = FeedSleepRepeatLogic.AssembleFeedTypes();
         }
 
         private void SetCurrentBabyValues()

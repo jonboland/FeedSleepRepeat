@@ -11,4 +11,11 @@ namespace FeedSleepRepeatLibrary
         Feed,
         Sleep
     }
+
+    public enum FeedType
+    {
+        Bottle,
+        Breast,
+        Solid
+    }
 }
