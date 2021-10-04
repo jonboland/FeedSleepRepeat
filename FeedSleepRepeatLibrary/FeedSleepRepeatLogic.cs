@@ -8,6 +8,18 @@ namespace FeedSleepRepeatLibrary
 {
     public static class FeedSleepRepeatLogic
     {
+        public static List<string> AssembleFeedTypes()
+        {
+            var feedTypes = new List<string> { string.Empty };
+
+            foreach (string feedType in Enum.GetNames(typeof(FeedType)))
+            {
+                feedTypes.Add(feedType);
+            }
+
+            return feedTypes;
+        }
+
         public static string CalculateAge(DateTime CurrentBabyDateOfBirth)
         {
             TimeSpan timeSpan = DateTime.Now.Subtract(CurrentBabyDateOfBirth);
