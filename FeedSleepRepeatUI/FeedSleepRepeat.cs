@@ -86,7 +86,7 @@ namespace FeedSleepRepeatUI
         {
             if (babyNameCombo.Text.All(char.IsWhiteSpace))
             {
-                MessageBox.Show("Feed could not be added because a baby hasn't been selected.");
+                MessageBox.Show(Constants.FeedNotAddedNoBabySelected);
                 return;
             }
 
@@ -120,20 +120,19 @@ namespace FeedSleepRepeatUI
         }
 
         private void createButton_Click(object sender, EventArgs e)
-        {   
-            //TODO: handle attempt to create a baby with blank name (currently gives the below message)
-            if (Babies.Any(b => b.FullName == babyNameCombo.Text))
-            {
-                MessageBox.Show("Creation was unsuccessful because a baby with this name already exists.");
-                return;
-            }
-
+        {
             //TODO: strip whitespace from either end of babyNameCombo.Text before splitting
             string[] name = babyNameCombo.Text.Split();
 
             if (name.Length != 2)
             {
-                MessageBox.Show("Creation was unsuccessful because babies must have exactly one first name and one last name.");
+                MessageBox.Show(Constants.CreationFailedInvalidNameFormat);
+                return;
+            }
+
+            if (Babies.Any(b => b.FullName == babyNameCombo.Text))
+            {
+                MessageBox.Show(Constants.CreationFailedBabyAlreadyExists);
                 return;
             }
 
@@ -149,13 +148,13 @@ namespace FeedSleepRepeatUI
         {
             if (!Babies.Any(baby => baby.FullName == babyNameCombo.Text))
             {
-                MessageBox.Show("This baby couldn't be updated because it hasn't been created yet.");
+                MessageBox.Show(Constants.UpdateFailedBabyNotCreated);
                 return;
             }
 
             if (CurrentBaby.FullName == String.Empty)
             {
-                MessageBox.Show("Updating was unsuccessful because a baby hasn't been selected.");
+                MessageBox.Show(Constants.UpdateFailedBabyNotSelected);
                 return;
             }
 
@@ -184,9 +183,21 @@ namespace FeedSleepRepeatUI
 
         private void deleteButton_Click(object sender, EventArgs e)
         {
+            if (!Babies.Any(baby => baby.FullName == babyNameCombo.Text))
+            {
+                MessageBox.Show(Constants.DeleteFailedBabyNotCreated);
+                return;
+            }
+
+            if (CurrentBaby.FullName == String.Empty)
+            {
+                MessageBox.Show(Constants.DeleteFailedBabyNotSelected);
+                return;
+            }
+
             DialogResult choice = MessageBox.Show(
-                "Are you sure you want to permanently delete this baby's record?", 
-                "Delete Confirmation",
+                Constants.DeleteBabyYesNo, 
+                Constants.DeleteBabyCaption,
                 MessageBoxButtons.YesNo);
 
             if (choice == DialogResult.Yes)

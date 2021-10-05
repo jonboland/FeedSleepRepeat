@@ -53,7 +53,7 @@ namespace FeedSleepRepeatUI
             CurrentBaby = new();
             SetDatePickerMaxValues();
             dateOfBirthPicker.Value = DateTime.Today.Date;
-            ageBox.Text = "0y 0m 0d";
+            ageBox.Text = Constants.DefaultAge;
             datePicker.Value = DateTime.Today.Date;
             ResetBabyDayValues();
         }
