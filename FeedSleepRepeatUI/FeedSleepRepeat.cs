@@ -27,7 +27,13 @@ namespace FeedSleepRepeatUI
             ConnectBabyNameCombo();
         }
 
-        // This method is triggered at runtime
+        /// <summary>
+        /// Populates fields with the selected baby's details, unless the default (blank) baby is selected.
+        /// This includes the baby day fields and activity list if data for today's date is present.
+        /// NB: Method is triggered at runtime.
+        /// </summary>
+        /// <param name="sender">Reference to the object that raised the event</param>
+        /// <param name="e">Object specific to the event that is being handled</param>
         private void babyNameCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
             ResetAllValues();
@@ -51,19 +57,28 @@ namespace FeedSleepRepeatUI
             }
         }
 
+        /// <summary>
+        /// Updates the total nappies textbox when the number of wet nappies is changed
+        /// </summary>
         private void wetNappiesNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
             nappiesTotal.Text = FeedSleepRepeatLogic.RefreshTotalNappies(
                 wetNappiesNumericUpDown.Value, dirtyNappiesNumericUpDown.Value);
         }
 
+        /// <summary>
+        /// Updates the total nappies textbox when the number of dirty nappies is changed
+        /// </summary>
         private void dirtyNappiesNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
             nappiesTotal.Text = FeedSleepRepeatLogic.RefreshTotalNappies(
                 wetNappiesNumericUpDown.Value, dirtyNappiesNumericUpDown.Value);
         }
 
-        // This method is triggered at runtime
+        /// <summary>
+        /// If the selected baby day exists, populates baby day fields and activity list with its values.
+        /// NB: Method is triggered at runtime.
+        /// </summary>
         private void datePicker_ValueChanged(object sender, EventArgs e)
         {
             ResetBabyDayValues();
@@ -82,6 +97,10 @@ namespace FeedSleepRepeatUI
             }
         }
 
+        /// <summary>
+        /// Generates feed activity instance, adds it to current baby day activities, 
+        /// refreshes activity list box, and resets feed values.
+        /// </summary>
         private void addFeedButton_Click(object sender, EventArgs e)
         {
             if (babyNameCombo.Text.All(char.IsWhiteSpace))
@@ -96,6 +115,10 @@ namespace FeedSleepRepeatUI
             ResetFeedValues();
         }
 
+        /// <summary>
+        /// Generates sleep activity instance, adds it to current baby day activities, 
+        /// refreshes activity list box, and resets sleep values.
+        /// </summary>
         private void addSleepButton_Click(object sender, EventArgs e)
         {
             if (babyNameCombo.Text.All(char.IsWhiteSpace))
@@ -110,6 +133,9 @@ namespace FeedSleepRepeatUI
             ResetSleepValues();
         }
 
+        /// <summary>
+        /// Deletes currently selected activity from activity list box when delete or back key pressed.
+        /// </summary>
         private void activitiesListBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode is Keys.Delete or Keys.Back)
@@ -119,6 +145,11 @@ namespace FeedSleepRepeatUI
             }
         }
 
+        /// <summary>
+        /// Creates a new baby record in the database.
+        /// Also creates a baby day record for the currently selected day,
+        /// and records for any activities added to it.
+        /// </summary>
         private void createButton_Click(object sender, EventArgs e)
         {
             //TODO: strip whitespace from either end of babyNameCombo.Text before splitting
@@ -144,6 +175,10 @@ namespace FeedSleepRepeatUI
             ConnectBabyNameCombo();
         }
 
+        /// <summary>
+        /// Updates selected baby/baby day record and associated activity records in database.
+        /// Or, if baby day doesn't exist, creates records in database.
+        /// </summary>
         private void updateButton_Click(object sender, EventArgs e)
         {
             if (!Babies.Any(baby => baby.FullName == babyNameCombo.Text))
@@ -181,6 +216,9 @@ namespace FeedSleepRepeatUI
             ConnectBabyNameCombo();
         }
 
+        /// <summary>
+        /// Confirms decision then deletes baby and all associated records from database.
+        /// </summary>
         private void deleteButton_Click(object sender, EventArgs e)
         {
             if (!Babies.Any(baby => baby.FullName == babyNameCombo.Text))

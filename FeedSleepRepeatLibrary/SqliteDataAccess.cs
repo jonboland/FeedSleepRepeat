@@ -116,6 +116,7 @@ namespace FeedSleepRepeatLibrary
             }
         }
 
+        // TODO: Consider updating activities instead of deleting and recreating them
         public static void UpdateBabyDay(BabyDay babyDay)
         {
             string updateBabyDaySql = @"UPDATE BabyDay 
