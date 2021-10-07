@@ -34,7 +34,6 @@ namespace FeedSleepRepeatLibrary
             string activitySql = "INSERT INTO Activity (BabyDayId, ActivityType, Start, End, FeedType, FeedAmount, SleepPlace) "
                 + "VALUES (@BabyDayId, @ActivityType, @Start, @End, @FeedType, @FeedAmount, @SleepPlace)";
 
-            // TODO: Consider converting baby creation into a transaction
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
                 cnn.Open();
