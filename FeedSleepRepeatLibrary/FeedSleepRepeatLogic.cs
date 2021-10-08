@@ -20,9 +20,17 @@ namespace FeedSleepRepeatLibrary
             return feedTypes;
         }
 
-        public static string CalculateAge(DateTime CurrentBabyDateOfBirth)
+        public static string CalculateAge(DateTime currentBabyDateOfBirth, string today = null)
         {
-            TimeSpan timeSpan = DateTime.Now.Subtract(CurrentBabyDateOfBirth);
+            DateTime currentDate = DateTime.Now;
+
+            // today may be set for testing purposes
+            if (today != null)
+            {
+                currentDate = DateTime.Parse(today);
+            }
+
+            TimeSpan timeSpan = currentDate.Subtract(currentBabyDateOfBirth);
             DateTime age = DateTime.MinValue + timeSpan;
 
             return $"{age.Year - 1}y {age.Month - 1}m {age.Day - 1}d";
@@ -37,7 +45,9 @@ namespace FeedSleepRepeatLibrary
 
         public static DateTime TruncateTime(DateTime pickerValue)
         {
-            return pickerValue.AddTicks(-(pickerValue.Ticks % TimeSpan.TicksPerMinute));
+            DateTime truncated = pickerValue.AddTicks(-(pickerValue.Ticks % TimeSpan.TicksPerMinute));
+
+            return truncated;
         }
 
         public static List<Activity> SortActivities(List<Activity> CurrentBabyDayActivities)
