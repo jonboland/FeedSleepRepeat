@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.31112.23
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FeedSleepRepeatUI", "FeedSleepRepeatUI\FeedSleepRepeatUI.csproj", "{603E408F-91B7-47E0-9FB4-2A2DD79D2D7E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeedSleepRepeatLibrary", "FeedSleepRepeatLibrary\FeedSleepRepeatLibrary.csproj", "{F3BD2673-95AE-48A2-AD5F-8957FAF323DC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FeedSleepRepeatLibrary", "FeedSleepRepeatLibrary\FeedSleepRepeatLibrary.csproj", "{F3BD2673-95AE-48A2-AD5F-8957FAF323DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeedSleepRepeatLibrary.Tests", "FeedSleepRepeatLibrary.Tests\FeedSleepRepeatLibrary.Tests.csproj", "{A9EF1016-CAC7-4B10-804C-E64E6B9A71AF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{F3BD2673-95AE-48A2-AD5F-8957FAF323DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F3BD2673-95AE-48A2-AD5F-8957FAF323DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F3BD2673-95AE-48A2-AD5F-8957FAF323DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9EF1016-CAC7-4B10-804C-E64E6B9A71AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9EF1016-CAC7-4B10-804C-E64E6B9A71AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9EF1016-CAC7-4B10-804C-E64E6B9A71AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9EF1016-CAC7-4B10-804C-E64E6B9A71AF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
