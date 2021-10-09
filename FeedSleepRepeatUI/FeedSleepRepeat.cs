@@ -20,7 +20,7 @@ namespace FeedSleepRepeatUI
         public FeedForm()
         {
             InitializeComponent();
-            SetDatePickerMaxValues();
+            SetMaxDateOfDatePickers();
             SetFeedTypeDropdownValues();
             AddActivitiesKeyDownEventHandler();
             LoadBabyList();
