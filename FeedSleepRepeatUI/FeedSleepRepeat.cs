@@ -152,8 +152,7 @@ namespace FeedSleepRepeatUI
         /// </summary>
         private void createButton_Click(object sender, EventArgs e)
         {
-            //TODO: strip whitespace from either end of babyNameCombo.Text before splitting
-            string[] name = babyNameCombo.Text.Split();
+            string[] name = babyNameCombo.Text.Trim().Split();
 
             if (name.Length != 2)
             {
@@ -167,7 +166,7 @@ namespace FeedSleepRepeatUI
                 return;
             }
 
-            SetCurrentBabyValues();
+            SetCurrentBabyValues(name);
             SetCurrentBabyDayValues();
             SqliteDataAccess.CreateBaby(CurrentBaby, CurrentBabyDay);
             ResetAllValues();

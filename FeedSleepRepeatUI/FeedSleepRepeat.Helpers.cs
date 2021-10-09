@@ -91,9 +91,8 @@ namespace FeedSleepRepeatUI
             feedTypeCombo.DataSource = FeedSleepRepeatLogic.AssembleFeedTypes();
         }
 
-        private void SetCurrentBabyValues()
+        private void SetCurrentBabyValues(string[] name)
         {
-            string[] name = babyNameCombo.Text.Split();
             CurrentBaby.FirstName = name[0];
             CurrentBaby.LastName = name[1];
             CurrentBaby.DateOfBirth = dateOfBirthPicker.Value.Date;
