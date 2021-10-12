@@ -154,7 +154,7 @@ namespace FeedSleepRepeatUI
         /// <returns>An activity instance of type feed, populated with feed activity data.</returns>
         private Activity GenerateFeedActivityInstance()
         {
-            Activity feed = new()
+            var feed = new Activity
             {
                 ActivityType = ActivityType.Feed,
                 Start = FeedSleepRepeatLogic.TruncateTime(feedStartPicker.Value),
@@ -179,7 +179,7 @@ namespace FeedSleepRepeatUI
         /// <returns>An activity instance of type sleep, populated with sleep activity data.</returns>
         private Activity GenerateSleepActivityInstance()
         {
-            Activity sleep = new()
+            var sleep = new Activity
             {
                 ActivityType = ActivityType.Sleep,
                 Start = FeedSleepRepeatLogic.TruncateTime(sleepStartPicker.Value),

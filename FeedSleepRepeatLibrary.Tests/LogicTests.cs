@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Xunit;
 using FluentAssertions;
+using System.Globalization;
 
 namespace FeedSleepRepeatLibrary.Tests
 {
@@ -31,7 +32,7 @@ namespace FeedSleepRepeatLibrary.Tests
         [InlineData("10/12/2021", "15/01/2023", "1y 1m 5d")]
         public void CalculateAge_DateOfBirthShouldConvertToAge(string dob, string today, string expected)
         {
-            var dateOfBirth = DateTime.Parse(dob);
+            var dateOfBirth = DateTime.Parse(dob, new CultureInfo("en-GB"));
 
             string actual = FeedSleepRepeatLogic.CalculateAge(dateOfBirth, today);
 
