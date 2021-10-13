@@ -32,8 +32,8 @@ namespace FeedSleepRepeatUI
         /// </summary>
         private void ResetFeedValues()
         {
-            feedStartPicker.Value = DateTime.Now;
-            feedEndPicker.Value = DateTime.Now;
+            feedStartPicker.Value = datePicker.Value;
+            feedEndPicker.Value = datePicker.Value;
             feedAmountBox.Text = String.Empty;
             feedTypeCombo.SelectedItem = String.Empty;
         }
@@ -43,8 +43,8 @@ namespace FeedSleepRepeatUI
         /// </summary>
         private void ResetSleepValues()
         {
-            sleepStartPicker.Value = DateTime.Now;
-            sleepEndPicker.Value = DateTime.Now;
+            sleepStartPicker.Value = datePicker.Value;
+            sleepEndPicker.Value = datePicker.Value;
             sleepPlaceBox.Text = String.Empty;
         }
 
