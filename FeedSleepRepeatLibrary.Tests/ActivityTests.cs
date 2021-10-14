@@ -14,7 +14,7 @@ namespace FeedSleepRepeatLibrary.Tests
         [InlineData("01/02/2022 11:20:00", "01/02/2022 12:40:00", 1, 20)]
         [InlineData("28/05/2023 02:30:00", "28/05/2023 19:12:00", 16, 42)]
         [InlineData("24/12/2024 00:00:00", "24/12/2024 23:59:00", 23, 59)]
-        public void ActivityLength_TimeDiffShouldBeReturn(string start, string end, int hours, int mins)
+        public void ActivityLength_TimeDiffShouldBeReturned(string start, string end, int hours, int mins)
         {
             Activity feed = new()
             {
@@ -34,7 +34,7 @@ namespace FeedSleepRepeatLibrary.Tests
         [InlineData("28/05/2021 19:12:00", "29/05/2021 02:30:00", 7, 18)]
         [InlineData("01/02/2022 11:20:00", "02/02/2022 01:00:00", 13, 40)]
         [InlineData("24/12/2023 23:59:00", "25/12/2023 23:58:00", 23, 59)]
-        public void ActivityLength_TimeDiffShouldBeReturnedWhenEndNextDay(string start, string end, int hours, int mins)
+        public void ActivityLength_TimeDiffShouldBeReturnedWhenEndInNextDay(string start, string end, int hours, int mins)
         {
             Activity feed = new()
             {
