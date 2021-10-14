@@ -63,6 +63,6 @@ namespace FeedSleepRepeatLibrary
         public static List<Activity> SortActivities(List<Activity> CurrentBabyDayActivities)
         {         
             return CurrentBabyDayActivities.OrderBy(a => a.Start.TimeOfDay).ToList();
-        }      
+        }
     }
 }
