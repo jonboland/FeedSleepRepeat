@@ -163,6 +163,8 @@ namespace FeedSleepRepeatUI
                 FeedType = feedTypeCombo.Text,
             };
 
+            feed.End = FeedSleepRepeatLogic.AddDayIfEndBeforeStart(feed.Start, feed.End);
+
             // TODO: Check whether baby id can be set as part of feed instance creation
             if (CurrentBabyDay.BabyId != 0)
             {
@@ -186,6 +188,8 @@ namespace FeedSleepRepeatUI
                 End = FeedSleepRepeatLogic.TruncateTime(sleepEndPicker.Value),
                 SleepPlace = sleepPlaceBox.Text,
             };
+
+            sleep.End = FeedSleepRepeatLogic.AddDayIfEndBeforeStart(sleep.Start, sleep.End);
 
             if (CurrentBabyDay.BabyId != 0)
             {
