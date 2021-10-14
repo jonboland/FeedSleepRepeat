@@ -50,6 +50,16 @@ namespace FeedSleepRepeatLibrary
             return truncated;
         }
 
+        public static DateTime AddDayIfEndBeforeStart(DateTime Start, DateTime End)
+        {
+            if (End < Start)
+            {
+                End = End.AddDays(1);
+            }
+
+            return End;
+        }
+
         public static List<Activity> SortActivities(List<Activity> CurrentBabyDayActivities)
         {         
             return CurrentBabyDayActivities.OrderBy(a => a.Start.TimeOfDay).ToList();

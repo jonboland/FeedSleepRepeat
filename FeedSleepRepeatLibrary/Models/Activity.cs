@@ -23,11 +23,6 @@ namespace FeedSleepRepeatLibrary
             {
                 TimeSpan diff = End - Start;
 
-                if (diff.Hours < 0 || diff.Hours == 0 && diff.Minutes < 0)
-                {
-                    diff += TimeSpan.FromDays(1);
-                }
-
                 return (diff.Hours, diff.Minutes);
             }
         }
