@@ -20,11 +20,45 @@ namespace FeedSleepRepeatUI
         }
 
         /// <summary>
+        /// Calls assemble feed type method and sets the feed type combo values based on the result.
+        /// </summary>
+        private void SetFeedTypeDropdownValues()
+        {
+            feedTypeCombo.DataSource = FeedSleepRepeatLogic.AssembleFeedTypes();
+        }
+
+        /// <summary>
         /// Adds a key down event handler for the activities list box.
         /// </summary>
         private void AddActivitiesKeyDownEventHandler()
         {
             activitiesListBox.KeyDown += new KeyEventHandler(activitiesListBox_KeyDown);
+        }
+
+        /// <summary>
+        /// Calls load babies method to load all baby details from the database.
+        /// Inserts default baby that can be used to reset all values.
+        /// </summary>
+        public void LoadBabyList()
+        {
+            Babies = SqliteDataAccess.LoadBabies();
+
+            Babies.Insert(0, new Baby()
+            {
+                FirstName = String.Empty,
+                LastName = String.Empty,
+                DateOfBirth = DateTime.Today.Date,
+            });
+        }
+
+        /// <summary>
+        /// Connects the baby name combo to the babies list data source.
+        /// </summary>
+        private void ConnectBabyNameCombo()
+        {
+            babyNameCombo.DataSource = null;
+            babyNameCombo.DisplayMember = "FullName";
+            babyNameCombo.DataSource = Babies;
         }
 
         /// <summary>
@@ -79,32 +113,6 @@ namespace FeedSleepRepeatUI
         }
 
         /// <summary>
-        /// Calls load babies method to load all baby details from the database.
-        /// Inserts default baby that can be used to reset all values.
-        /// </summary>
-        public void LoadBabyList()
-        {
-            Babies = SqliteDataAccess.LoadBabies();
-            
-            Babies.Insert(0, new Baby()
-            {
-                FirstName = String.Empty,
-                LastName = String.Empty,
-                DateOfBirth = DateTime.Today.Date,
-            });
-        }
-
-        /// <summary>
-        /// Connects the baby name combo to the babies list data source.
-        /// </summary>
-        private void ConnectBabyNameCombo()
-        {
-            babyNameCombo.DataSource = null;
-            babyNameCombo.DisplayMember = "FullName";
-            babyNameCombo.DataSource = Babies;
-        }
-
-        /// <summary>
         /// Refreshes baby day values when a different baby or day is selected.
         /// </summary>
         private void RefreshBabyDayValues()
@@ -114,14 +122,6 @@ namespace FeedSleepRepeatUI
             dirtyNappiesNumericUpDown.Value = CurrentBabyDay.DirtyNappies;
             nappiesTotal.Text = FeedSleepRepeatLogic.RefreshTotalNappies(
                 wetNappiesNumericUpDown.Value, dirtyNappiesNumericUpDown.Value);
-        }
-
-        /// <summary>
-        /// Calls assemble feed type method and sets the feed type combo values based on the result.
-        /// </summary>
-        private void SetFeedTypeDropdownValues()
-        {
-            feedTypeCombo.DataSource = FeedSleepRepeatLogic.AssembleFeedTypes();
         }
 
         /// <summary>
@@ -148,55 +148,35 @@ namespace FeedSleepRepeatUI
         }
 
         /// <summary>
-        /// Generates a feed activity instance wnen the add feed button is clicked.
-        /// Sets the instance's baby day id to the current baby day's id if the baby day already exists.
+        /// Generates a feed or sleep activity instance and sets the instance's BabyDayId 
+        /// to the current baby day's Id.
+        /// 
+        /// The Id will be 0 if the current baby day hasn't yet been created.
+        /// (The correct Id will then be inserted into the activity when it's added to the database - 
+        /// at the point that the update button is clicked to update the baby's records).
         /// </summary>
-        /// <returns>An activity instance of type feed, populated with feed activity data.</returns>
-        private Activity GenerateFeedActivityInstance()
+        /// <returns>An activity instance of type feed or sleep, populated with activity data.</returns>
+        private Activity GenerateActivityInstance(ActivityType activityType)
         {
-            var feed = new Activity
-            {
-                ActivityType = ActivityType.Feed,
-                Start = FeedSleepRepeatLogic.TruncateTime(feedStartPicker.Value),
-                End = FeedSleepRepeatLogic.TruncateTime(feedEndPicker.Value),
-                FeedAmount = feedAmountBox.Text,
-                FeedType = feedTypeCombo.Text,
-            };
+            var activity = new Activity { BabyDayId = CurrentBabyDay.Id, ActivityType = activityType };
 
-            feed.End = FeedSleepRepeatLogic.AddDayIfEndBeforeStart(feed.Start, feed.End);
-
-            // TODO: Check whether baby id can be set as part of feed instance creation
-            if (CurrentBabyDay.BabyId != 0)
+            if (activityType == ActivityType.Sleep)
             {
-                feed.BabyDayId = CurrentBabyDay.Id;
+                activity.Start = FeedSleepRepeatLogic.TruncateTime(sleepStartPicker.Value);
+                activity.End = FeedSleepRepeatLogic.TruncateTime(sleepEndPicker.Value);
+                activity.SleepPlace = sleepPlaceBox.Text;
+            }           
+            else
+            {
+                activity.Start = FeedSleepRepeatLogic.TruncateTime(feedStartPicker.Value);
+                activity.End = FeedSleepRepeatLogic.TruncateTime(feedEndPicker.Value);
+                activity.FeedAmount = feedAmountBox.Text;
+                activity.FeedType = feedTypeCombo.Text;
             }
 
-            return feed;
-        }
+            activity.End = FeedSleepRepeatLogic.AddDayIfEndBeforeStart(activity.Start, activity.End);
 
-        /// <summary>
-        /// Generates a sleep activity instance wnen the add sleep button is clicked.
-        /// Sets the instance's baby day id to the current baby day's id if the baby day already exists.
-        /// </summary>
-        /// <returns>An activity instance of type sleep, populated with sleep activity data.</returns>
-        private Activity GenerateSleepActivityInstance()
-        {
-            var sleep = new Activity
-            {
-                ActivityType = ActivityType.Sleep,
-                Start = FeedSleepRepeatLogic.TruncateTime(sleepStartPicker.Value),
-                End = FeedSleepRepeatLogic.TruncateTime(sleepEndPicker.Value),
-                SleepPlace = sleepPlaceBox.Text,
-            };
-
-            sleep.End = FeedSleepRepeatLogic.AddDayIfEndBeforeStart(sleep.Start, sleep.End);
-
-            if (CurrentBabyDay.BabyId != 0)
-            {
-                sleep.BabyDayId = CurrentBabyDay.Id;
-            }
-
-            return sleep;
+            return activity;
         }
 
         /// <summary>
@@ -220,8 +200,5 @@ namespace FeedSleepRepeatUI
             activitiesListBox.DataSource = CurrentBabyDay.Activities;
             activitiesListBox.DisplayMember = "ActivitySummary";
         }
-
-        // TODO: Configure activity pickers so activities are always added to the correct date
-        // (EndDate.Date - StartDate.Date).Days
     }
 }
