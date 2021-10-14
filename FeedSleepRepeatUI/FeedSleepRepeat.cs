@@ -109,7 +109,7 @@ namespace FeedSleepRepeatUI
                 return;
             }
 
-            Activity feed = GenerateFeedActivityInstance();
+            Activity feed = GenerateActivityInstance(ActivityType.Feed);
             AddActivity(feed);
             RefreshActivitiesListbox();
             ResetFeedValues();
@@ -123,11 +123,11 @@ namespace FeedSleepRepeatUI
         {
             if (babyNameCombo.Text.All(char.IsWhiteSpace))
             {
-                MessageBox.Show("Sleep could not be added because a baby hasn't been selected.");
+                MessageBox.Show(Constants.SleepNotAddedNoBabySelected);
                 return;
             }
 
-            Activity sleep = GenerateSleepActivityInstance();
+            Activity sleep = GenerateActivityInstance(ActivityType.Sleep);
             AddActivity(sleep);
             RefreshActivitiesListbox();
             ResetSleepValues();
