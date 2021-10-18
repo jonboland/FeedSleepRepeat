@@ -24,10 +24,12 @@ namespace FeedSleepRepeatLibrary
             }
         }
 
+        // TODO: Check whether baby and babyDay need to be passed into this method
         public static void CreateBaby(Baby baby, BabyDay babyDay)
         {
             string babySql = "INSERT INTO Baby (FirstName, LastName, DateOfBirth) VALUES (@FirstName, @LastName, @DateOfBirth); SELECT last_insert_rowid()";
 
+            // TODO: Tidy up long string breaks
             string babyDaySql = "INSERT INTO BabyDay (BabyId, Date, Weight, WetNappies, DirtyNappies) "
                 + "VALUES (@BabyId, @Date, @Weight, @WetNappies, @DirtyNappies); SELECT last_insert_rowid()";
 
@@ -115,7 +117,6 @@ namespace FeedSleepRepeatLibrary
             }
         }
 
-        // TODO: Consider updating activities instead of deleting and recreating them
         public static void UpdateBabyDay(BabyDay babyDay)
         {
             string updateBabyDaySql = @"UPDATE BabyDay 
@@ -123,19 +124,27 @@ namespace FeedSleepRepeatLibrary
                                         WHERE BabyId = @BabyId 
                                         AND Date = @Date";
 
-            string deleteActivitySql = "DELETE FROM Activity WHERE BabyDayId = @Id";
+            string deleteActivitySql = "DELETE FROM Activity WHERE BabyDayId = @BabyDayId AND Id NOT IN @ActivityIds";
 
             string insertActivitySql = @"INSERT INTO Activity (BabyDayId, ActivityType, Start, End, FeedType, FeedAmount, SleepPlace)
                                          VALUES (@BabyDayId, @ActivityType, @Start, @End, @FeedType, @FeedAmount, @SleepPlace)";
 
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
+                List<int> activityIds = babyDay.Activities.Select(a => a.Id).ToList();
+                DynamicParameters deleteParams = new();
+                deleteParams.Add("BabyDayId", babyDay.Id);
+                deleteParams.Add("ActivityIds", activityIds);
+
+                // ROWIDs assigned via Sqlite AUTOINCREMENT begin at 1
+                List<Activity> newActivities = babyDay.Activities.Where(a => a.Id == 0).ToList();
+
                 cnn.Open();
                 using (var trans = cnn.BeginTransaction())
                 {
                     cnn.Execute(updateBabyDaySql, babyDay, trans);
-                    cnn.Execute(deleteActivitySql, babyDay, trans);
-                    cnn.Execute(insertActivitySql, babyDay.Activities, trans);
+                    cnn.Execute(deleteActivitySql, deleteParams, trans);
+                    cnn.Execute(insertActivitySql, newActivities, trans);
                     trans.Commit();
                 }
             }

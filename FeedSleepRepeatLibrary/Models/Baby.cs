@@ -12,6 +12,7 @@ namespace FeedSleepRepeatLibrary
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime DateOfBirth { get; set; }
+        // Initialization prevents null exception when datePicker value change sets CurrentBabyDay
         public List<BabyDay> BabyDays { get; set; } = new();
 
         public string FullName
