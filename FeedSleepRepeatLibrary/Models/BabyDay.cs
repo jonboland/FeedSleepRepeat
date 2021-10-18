@@ -10,11 +10,11 @@ namespace FeedSleepRepeatLibrary
     {
         public int Id { get; }
         public int BabyId { get; set; }
-        public DateTime Date { get; set; } = DateTime.Today;
+        public DateTime Date { get; set; }
         public string Weight { get; set; }
-        // TODO: Check whether setting decimal values to 0 is necessary
-        public decimal WetNappies { get; set; } = 0;
-        public decimal DirtyNappies { get; set; } = 0;
+        public decimal WetNappies { get; set; }
+        public decimal DirtyNappies { get; set; }
+        // Initialization prevents null exception when AddActivity() is called
         public List<Activity> Activities { get; set; } = new();
     }
 }

@@ -200,6 +200,7 @@ namespace FeedSleepRepeatUI
 
             SetCurrentBabyDayValues();
 
+            // ROWIDs assigned via Sqlite AUTOINCREMENT begin at 1
             if (CurrentBabyDay.BabyId != 0)
             {               
                 SqliteDataAccess.UpdateBabyDay(CurrentBabyDay);
@@ -245,5 +246,8 @@ namespace FeedSleepRepeatUI
                 ConnectBabyNameCombo();
             }
         }
+
+        // TODO: Consider disabling/enabling Create and Update buttons instead of resetting fields
+        // TODO: Consider adding YesNo dialogs when user navigates away without creating/updating
     }
 }
