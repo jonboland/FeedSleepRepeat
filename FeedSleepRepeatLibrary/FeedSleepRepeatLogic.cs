@@ -88,7 +88,7 @@ namespace FeedSleepRepeatLibrary
         /// 
         /// The Id will be 0 if the current baby day hasn't yet been created.
         /// (The correct Id will then be inserted into the activity when it's added to the database - 
-        /// at the point that the update button is clicked to update the baby's records).
+        /// at the point that the update button is clicked to update the baby's records.)
         /// </summary>
         /// <returns>An activity instance of type feed or sleep, populated with activity data.</returns>
         public static Activity GenerateActivityInstance(
