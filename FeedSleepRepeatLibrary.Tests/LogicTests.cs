@@ -52,37 +52,50 @@ namespace FeedSleepRepeatLibrary.Tests
         }
 
         [Fact]
-        public void TruncateTime_SecondsShouldBeRemoved()
+        public void GenerateActivityInstance_SecondsShouldBeTruncated()
         {
             var original = new DateTime(2021, 10, 8, 7, 14, 50);
             var expected = new DateTime(2021, 10, 8, 7, 14, 0);
 
-            DateTime actual = FeedSleepRepeatLogic.TruncateTime(original);
+            Activity feed = FeedSleepRepeatLogic.GenerateActivityInstance(
+                ActivityType.Feed, 0, feedStart: original, 
+                feedEnd: default, feedAmount: default, feedType: default);
+
+            var actual = feed.Start;
 
             Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public void TruncateTime_SecondsAndMillisecondsShouldBeRemoved()
+        public void GenerateActivityInstance_SecondsAndMillisecondsShouldBeTruncated()
         {
             var original = new DateTime(2023, 2, 14, 17, 3, 50, 125);
             var expected = new DateTime(2023, 2, 14, 17, 3, 0, 0);
 
-            DateTime actual = FeedSleepRepeatLogic.TruncateTime(original);
+            Activity sleep = FeedSleepRepeatLogic.GenerateActivityInstance(
+                ActivityType.Sleep, 1, sleepStart: default,
+                sleepEnd: original, sleepPlace: default);
+
+            var actual = sleep.End;
 
             Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public void TruncateTime_SecondsMillisecondsAndTicksShouldBeRemoved()
+        public void GenerateActivityInstance_SecondsMillisecondsAndTicksShouldBeTruncated()
         {
             var original = new DateTime(2019, 4, 28, 11, 9, 6, 139).AddTicks(5050);
             var expected = new DateTime(2019, 4, 28, 11, 9, 0, 0);
 
-            DateTime actual = FeedSleepRepeatLogic.TruncateTime(original);
+            Activity feed = FeedSleepRepeatLogic.GenerateActivityInstance(
+                ActivityType.Feed, 101, feedStart: default,
+                feedEnd: original, feedAmount: default, feedType: default);
+
+            var actual = feed.End;
 
             Assert.Equal(expected, actual);
         }
+
 
         [Fact]
         public void SortActivities_ActivityListShouldBeInStartTimeOrder()
