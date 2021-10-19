@@ -42,13 +42,7 @@ namespace FeedSleepRepeatUI
         public void LoadBabyList()
         {
             Babies = SqliteDataAccess.LoadBabies();
-
-            Babies.Insert(0, new Baby()
-            {
-                FirstName = String.Empty,
-                LastName = String.Empty,
-                DateOfBirth = DateTime.Today.Date,
-            });
+            Babies = FeedSleepRepeatLogic.InsertDefaultBaby(Babies);
         }
 
         /// <summary>
@@ -145,38 +139,6 @@ namespace FeedSleepRepeatUI
             CurrentBabyDay.Weight = weightBox.Text;
             CurrentBabyDay.WetNappies = wetNappiesNumericUpDown.Value;
             CurrentBabyDay.DirtyNappies = dirtyNappiesNumericUpDown.Value;
-        }
-
-        /// <summary>
-        /// Generates a feed or sleep activity instance and sets the instance's BabyDayId 
-        /// to the current baby day's Id.
-        /// 
-        /// The Id will be 0 if the current baby day hasn't yet been created.
-        /// (The correct Id will then be inserted into the activity when it's added to the database - 
-        /// at the point that the update button is clicked to update the baby's records).
-        /// </summary>
-        /// <returns>An activity instance of type feed or sleep, populated with activity data.</returns>
-        private Activity GenerateActivityInstance(ActivityType activityType)
-        {
-            var activity = new Activity { BabyDayId = CurrentBabyDay.Id, ActivityType = activityType };
-
-            if (activityType == ActivityType.Sleep)
-            {
-                activity.Start = FeedSleepRepeatLogic.TruncateTime(sleepStartPicker.Value);
-                activity.End = FeedSleepRepeatLogic.TruncateTime(sleepEndPicker.Value);
-                activity.SleepPlace = sleepPlaceBox.Text;
-            }           
-            else
-            {
-                activity.Start = FeedSleepRepeatLogic.TruncateTime(feedStartPicker.Value);
-                activity.End = FeedSleepRepeatLogic.TruncateTime(feedEndPicker.Value);
-                activity.FeedAmount = feedAmountBox.Text;
-                activity.FeedType = feedTypeCombo.Text;
-            }
-
-            activity.End = FeedSleepRepeatLogic.AddDayIfEndBeforeStart(activity.Start, activity.End);
-
-            return activity;
         }
 
         /// <summary>
