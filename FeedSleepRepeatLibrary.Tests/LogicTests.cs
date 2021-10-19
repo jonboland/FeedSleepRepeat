@@ -58,8 +58,7 @@ namespace FeedSleepRepeatLibrary.Tests
             var expected = new DateTime(2021, 10, 8, 7, 14, 0);
 
             Activity feed = FeedSleepRepeatLogic.GenerateActivityInstance(
-                ActivityType.Feed, 0, feedStart: original, 
-                feedEnd: default, feedAmount: default, feedType: default);
+                ActivityType.Feed, 0, feedStart: original, feedEnd: default, feedAmount: null, feedType: null);
 
             var actual = feed.Start;
 
@@ -73,8 +72,7 @@ namespace FeedSleepRepeatLibrary.Tests
             var expected = new DateTime(2023, 2, 14, 17, 3, 0, 0);
 
             Activity sleep = FeedSleepRepeatLogic.GenerateActivityInstance(
-                ActivityType.Sleep, 1, sleepStart: default,
-                sleepEnd: original, sleepPlace: default);
+                ActivityType.Sleep, 1, sleepStart: default, sleepEnd: original, sleepPlace: null);
 
             var actual = sleep.End;
 
@@ -88,14 +86,27 @@ namespace FeedSleepRepeatLibrary.Tests
             var expected = new DateTime(2019, 4, 28, 11, 9, 0, 0);
 
             Activity feed = FeedSleepRepeatLogic.GenerateActivityInstance(
-                ActivityType.Feed, 101, feedStart: default,
-                feedEnd: original, feedAmount: default, feedType: default);
+                ActivityType.Feed, 101, feedStart: default, feedEnd: original, feedAmount: null, feedType: null);
 
             var actual = feed.End;
 
             Assert.Equal(expected, actual);
         }
 
+        [Fact]
+        public void GenerateActivityInstance_DayShouldBeAdded()
+        {
+            var start = new DateTime(2022, 5, 7, 23, 45, 0, 0);
+            var finish = new DateTime(2022, 5, 7, 4, 5, 0, 0);
+            var expected = new DateTime(2022, 5, 8, 4, 5, 0, 0);
+
+            Activity sleep = FeedSleepRepeatLogic.GenerateActivityInstance(
+                ActivityType.Sleep, 32, sleepStart: start, sleepEnd: finish, sleepPlace: null);
+
+            var actual = sleep.End;
+
+            Assert.Equal(expected, actual);
+        }
 
         [Fact]
         public void SortActivities_ActivityListShouldBeInStartTimeOrder()
