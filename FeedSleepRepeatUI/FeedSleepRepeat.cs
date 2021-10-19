@@ -52,6 +52,7 @@ namespace FeedSleepRepeatUI
                     CurrentBabyDay = today;
                     RefreshBabyDayValues();
                     CurrentBabyDay.Activities = SqliteDataAccess.LoadActivities(CurrentBabyDay);
+                    CurrentBabyDay.Activities = FeedSleepRepeatLogic.SortActivities(CurrentBabyDay.Activities);
                     RefreshActivitiesListbox();
                 }
             }
@@ -89,6 +90,7 @@ namespace FeedSleepRepeatUI
             {
                 RefreshBabyDayValues();
                 CurrentBabyDay.Activities = SqliteDataAccess.LoadActivities(CurrentBabyDay);
+                CurrentBabyDay.Activities = FeedSleepRepeatLogic.SortActivities(CurrentBabyDay.Activities);
                 RefreshActivitiesListbox();
             }
             else

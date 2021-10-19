@@ -24,17 +24,15 @@ namespace FeedSleepRepeatLibrary
             }
         }
 
-        // TODO: Check whether baby and babyDay need to be passed into this method
         public static void CreateBaby(Baby baby, BabyDay babyDay)
         {
             string babySql = "INSERT INTO Baby (FirstName, LastName, DateOfBirth) VALUES (@FirstName, @LastName, @DateOfBirth); SELECT last_insert_rowid()";
 
-            // TODO: Tidy up long string breaks
-            string babyDaySql = "INSERT INTO BabyDay (BabyId, Date, Weight, WetNappies, DirtyNappies) "
-                + "VALUES (@BabyId, @Date, @Weight, @WetNappies, @DirtyNappies); SELECT last_insert_rowid()";
+            string babyDaySql = @"INSERT INTO BabyDay (BabyId, Date, Weight, WetNappies, DirtyNappies) 
+                                  VALUES (@BabyId, @Date, @Weight, @WetNappies, @DirtyNappies); SELECT last_insert_rowid()";
 
-            string activitySql = "INSERT INTO Activity (BabyDayId, ActivityType, Start, End, FeedType, FeedAmount, SleepPlace) "
-                + "VALUES (@BabyDayId, @ActivityType, @Start, @End, @FeedType, @FeedAmount, @SleepPlace)";
+            string activitySql = @"INSERT INTO Activity (BabyDayId, ActivityType, Start, End, FeedType, FeedAmount, SleepPlace) 
+                                   VALUES (@BabyDayId, @ActivityType, @Start, @End, @FeedType, @FeedAmount, @SleepPlace)";
 
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
@@ -92,11 +90,11 @@ namespace FeedSleepRepeatLibrary
 
         public static void CreateBabyDay(BabyDay babyDay)
         {
-            string babyDaySql = "INSERT INTO BabyDay (BabyId, Date, Weight, WetNappies, DirtyNappies) "
-                + "VALUES (@BabyId, @Date, @Weight, @WetNappies, @DirtyNappies); SELECT last_insert_rowid()";
+            string babyDaySql = @"INSERT INTO BabyDay (BabyId, Date, Weight, WetNappies, DirtyNappies) 
+                                  VALUES (@BabyId, @Date, @Weight, @WetNappies, @DirtyNappies); SELECT last_insert_rowid()";
 
-            string activitySql = "INSERT INTO Activity (BabyDayId, ActivityType, Start, End, FeedType, FeedAmount, SleepPlace) "
-                + "VALUES (@BabyDayId, @ActivityType, @Start, @End, @FeedType, @FeedAmount, @SleepPlace)";
+            string activitySql = @"INSERT INTO Activity (BabyDayId, ActivityType, Start, End, FeedType, FeedAmount, SleepPlace) 
+                                   VALUES (@BabyDayId, @ActivityType, @Start, @End, @FeedType, @FeedAmount, @SleepPlace)";
 
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
@@ -119,10 +117,7 @@ namespace FeedSleepRepeatLibrary
 
         public static void UpdateBabyDay(BabyDay babyDay)
         {
-            string updateBabyDaySql = @"UPDATE BabyDay 
-                                        SET Weight = @Weight, WetNappies = @WetNappies, DirtyNappies = @DirtyNappies 
-                                        WHERE BabyId = @BabyId 
-                                        AND Date = @Date";
+            string updateBabyDaySql = "UPDATE BabyDay SET Weight = @Weight, WetNappies = @WetNappies, DirtyNappies = @DirtyNappies WHERE Id = @Id";
 
             string deleteActivitySql = "DELETE FROM Activity WHERE BabyDayId = @BabyDayId AND Id NOT IN @ActivityIds";
 
