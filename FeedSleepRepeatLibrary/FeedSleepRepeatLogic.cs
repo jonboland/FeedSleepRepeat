@@ -64,5 +64,57 @@ namespace FeedSleepRepeatLibrary
         {         
             return CurrentBabyDayActivities.OrderBy(a => a.Start.TimeOfDay).ToList();
         }
+
+        public static string[] FormatName(string name)
+        {
+            return name.Trim().Split();
+        }
+
+        public static List<Baby> InsertDefaultBaby(List<Baby> babies)
+        {
+            babies.Insert(0, new Baby()
+            {
+                FirstName = String.Empty,
+                LastName = String.Empty,
+                DateOfBirth = DateTime.Today.Date,
+            });
+
+            return babies;
+        }
+
+        /// <summary>
+        /// Generates a feed or sleep activity instance and sets the instance's BabyDayId 
+        /// to the current baby day's Id.
+        /// 
+        /// The Id will be 0 if the current baby day hasn't yet been created.
+        /// (The correct Id will then be inserted into the activity when it's added to the database - 
+        /// at the point that the update button is clicked to update the baby's records.)
+        /// </summary>
+        /// <returns>An activity instance of type feed or sleep, populated with activity data.</returns>
+        public static Activity GenerateActivityInstance(
+            ActivityType activityType, int dayId, 
+            DateTime sleepStart = default, DateTime sleepEnd = default, string sleepPlace = null,
+            DateTime feedStart = default, DateTime feedEnd = default, string feedAmount = null, string feedType = null)
+        {
+            var activity = new Activity { BabyDayId = dayId, ActivityType = activityType };
+
+            if (activityType == ActivityType.Sleep)
+            {
+                activity.Start = TruncateTime(sleepStart);
+                activity.End = TruncateTime(sleepEnd);
+                activity.SleepPlace = sleepPlace;
+            }
+            else
+            {
+                activity.Start = TruncateTime(feedStart);
+                activity.End = TruncateTime(feedEnd);
+                activity.FeedAmount = feedAmount;
+                activity.FeedType = feedType;
+            }
+
+            activity.End = AddDayIfEndBeforeStart(activity.Start, activity.End);
+
+            return activity;
+        }
     }
 }

@@ -111,7 +111,10 @@ namespace FeedSleepRepeatUI
                 return;
             }
 
-            Activity feed = GenerateActivityInstance(ActivityType.Feed);
+            Activity feed = FeedSleepRepeatLogic.GenerateActivityInstance(
+                ActivityType.Feed, CurrentBabyDay.Id, 
+                feedStart: feedStartPicker.Value, feedEnd: feedEndPicker.Value, 
+                feedAmount: feedAmountBox.Text, feedType: feedTypeCombo.Text);
             AddActivity(feed);
             RefreshActivitiesListbox();
             ResetFeedValues();
@@ -129,7 +132,11 @@ namespace FeedSleepRepeatUI
                 return;
             }
 
-            Activity sleep = GenerateActivityInstance(ActivityType.Sleep);
+            Activity sleep = FeedSleepRepeatLogic.GenerateActivityInstance(
+                ActivityType.Sleep, CurrentBabyDay.Id,
+                sleepStart: sleepStartPicker.Value, sleepEnd: sleepEndPicker.Value,
+                sleepPlace: sleepPlaceBox.Text);
+
             AddActivity(sleep);
             RefreshActivitiesListbox();
             ResetSleepValues();
@@ -154,7 +161,7 @@ namespace FeedSleepRepeatUI
         /// </summary>
         private void createButton_Click(object sender, EventArgs e)
         {
-            string[] name = babyNameCombo.Text.Trim().Split();
+            string[] name = FeedSleepRepeatLogic.FormatName(babyNameCombo.Text);
 
             if (name.Length != 2)
             {
@@ -162,7 +169,7 @@ namespace FeedSleepRepeatUI
                 return;
             }
 
-            if (Babies.Any(b => b.FullName == babyNameCombo.Text))
+            if (Babies.Any(b => b.FullName == babyNameCombo.Text.Trim()))
             {
                 MessageBox.Show(Constants.CreationFailedBabyAlreadyExists);
                 return;
@@ -251,5 +258,6 @@ namespace FeedSleepRepeatUI
 
         // TODO: Consider disabling/enabling Create and Update buttons instead of resetting fields
         // TODO: Consider adding YesNo dialogs when user navigates away without creating/updating
+        // TODO: Handle and log exceptions
     }
 }
