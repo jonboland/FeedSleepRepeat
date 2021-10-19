@@ -8,16 +8,21 @@ namespace FeedSleepRepeatLibrary
 {
     public static class FeedSleepRepeatLogic
     {
-        public static List<string> AssembleFeedTypes()
+        public static List<Baby> InsertDefaultBaby(List<Baby> babies)
         {
-            var feedTypes = new List<string> { string.Empty };
-
-            foreach (string feedType in Enum.GetNames(typeof(FeedType)))
+            babies.Insert(0, new Baby()
             {
-                feedTypes.Add(feedType);
-            }
+                FirstName = String.Empty,
+                LastName = String.Empty,
+                DateOfBirth = DateTime.Today.Date,
+            });
 
-            return feedTypes;
+            return babies;
+        }
+
+        public static string[] FormatName(string name)
+        {
+            return name.Split(' ', StringSplitOptions.RemoveEmptyEntries);
         }
 
         public static string CalculateAge(DateTime currentBabyDateOfBirth, string today = null)
@@ -43,43 +48,16 @@ namespace FeedSleepRepeatLibrary
             return totalNappies.ToString();
         }
 
-        public static DateTime TruncateTime(DateTime pickerValue)
+        public static List<string> AssembleFeedTypes()
         {
-            DateTime truncated = pickerValue.AddTicks(-(pickerValue.Ticks % TimeSpan.TicksPerMinute));
+            var feedTypes = new List<string> { string.Empty };
 
-            return truncated;
-        }
-
-        public static DateTime AddDayIfEndBeforeStart(DateTime Start, DateTime End)
-        {
-            if (End < Start)
+            foreach (string feedType in Enum.GetNames(typeof(FeedType)))
             {
-                End = End.AddDays(1);
+                feedTypes.Add(feedType);
             }
 
-            return End;
-        }
-
-        public static List<Activity> SortActivities(List<Activity> CurrentBabyDayActivities)
-        {         
-            return CurrentBabyDayActivities.OrderBy(a => a.Start.TimeOfDay).ToList();
-        }
-
-        public static string[] FormatName(string name)
-        {
-            return name.Trim().Split();
-        }
-
-        public static List<Baby> InsertDefaultBaby(List<Baby> babies)
-        {
-            babies.Insert(0, new Baby()
-            {
-                FirstName = String.Empty,
-                LastName = String.Empty,
-                DateOfBirth = DateTime.Today.Date,
-            });
-
-            return babies;
+            return feedTypes;
         }
 
         /// <summary>
@@ -115,6 +93,28 @@ namespace FeedSleepRepeatLibrary
             activity.End = AddDayIfEndBeforeStart(activity.Start, activity.End);
 
             return activity;
+        }
+
+        private static DateTime TruncateTime(DateTime pickerValue)
+        {
+            DateTime truncated = pickerValue.AddTicks(-(pickerValue.Ticks % TimeSpan.TicksPerMinute));
+
+            return truncated;
+        }
+
+        private static DateTime AddDayIfEndBeforeStart(DateTime Start, DateTime End)
+        {
+            if (End < Start)
+            {
+                End = End.AddDays(1);
+            }
+
+            return End;
+        }
+
+        public static List<Activity> SortActivities(List<Activity> CurrentBabyDayActivities)
+        {
+            return CurrentBabyDayActivities.OrderBy(a => a.Start.TimeOfDay).ToList();
         }
     }
 }

@@ -9,21 +9,37 @@ namespace FeedSleepRepeatLibrary.Tests
     public class LogicTests
     {
         [Fact]
-        public void AssembleFeedTypes_ListShouldContainEmptyStringAndEnumNames()
+        public void InsertDefaultBaby_BabyShouldBeAddedAtIndexZero()
         {
-            var expected = new List<string> 
-            { 
-                string.Empty, 
-                nameof(FeedType.Bottle), 
-                nameof(FeedType.Breast), 
-                nameof(FeedType.Solid),
+            var original = new List<Baby>
+            {
+                new Baby() { FirstName = "Alfie" },
+                new Baby() { FirstName = "Benny" },
+                new Baby() { FirstName = "Craig" },
             };
 
-            var actual = FeedSleepRepeatLogic.AssembleFeedTypes();
+            var expected = String.Empty;
+
+            List<Baby> added = FeedSleepRepeatLogic.InsertDefaultBaby(original);
+
+            var actual = added[0].FirstName;
 
             Assert.Equal(expected, actual);
         }
-        
+
+        [Theory]
+        [InlineData("First Baby", new string[] { "First", "Baby" })]
+        [InlineData("  Second Baby", new string[] { "Second", "Baby" })]
+        [InlineData("Third Baby ", new string[] { "Third", "Baby" })]
+        [InlineData("Fourth  Baby", new string[] { "Fourth", "Baby" })]
+        [InlineData("   Fifth    Baby  ", new string[] { "Fifth", "Baby" })]
+        public void FormatName_WhiteSpaceShouldBeIgnored(string original, string[] expected)
+        {
+            string[] actual = FeedSleepRepeatLogic.FormatName(original);
+
+            Assert.Equal(expected, actual);
+        }
+
         [Theory]
         [InlineData("15/10/2021", "15/10/2021", "0y 0m 0d")]
         [InlineData("09/09/2021", "22/09/2021", "0y 0m 13d")]
@@ -32,7 +48,7 @@ namespace FeedSleepRepeatLibrary.Tests
         [InlineData("10/12/2021", "15/01/2023", "1y 1m 5d")]
         public void CalculateAge_DateOfBirthShouldConvertToAge(string dob, string today, string expected)
         {
-            var dateOfBirth = DateTime.Parse(dob, new CultureInfo("en-GB"));
+            DateTime dateOfBirth = DateTime.Parse(dob, new CultureInfo("en-GB"));
 
             string actual = FeedSleepRepeatLogic.CalculateAge(dateOfBirth, today);
 
@@ -52,34 +68,74 @@ namespace FeedSleepRepeatLibrary.Tests
         }
 
         [Fact]
-        public void TruncateTime_SecondsShouldBeRemoved()
+        public void AssembleFeedTypes_ListShouldContainEmptyStringAndEnumNames()
+        {
+            var expected = new List<string>
+            {
+                string.Empty,
+                nameof(FeedType.Bottle),
+                nameof(FeedType.Breast),
+                nameof(FeedType.Solid),
+            };
+
+            List<string> actual = FeedSleepRepeatLogic.AssembleFeedTypes();
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void GenerateActivityInstance_SecondsShouldBeTruncated()
         {
             var original = new DateTime(2021, 10, 8, 7, 14, 50);
             var expected = new DateTime(2021, 10, 8, 7, 14, 0);
 
-            DateTime actual = FeedSleepRepeatLogic.TruncateTime(original);
+            Activity feed = FeedSleepRepeatLogic.GenerateActivityInstance(
+                ActivityType.Feed, 0, feedStart: original, feedEnd: default, feedAmount: null, feedType: null);
+
+            DateTime actual = feed.Start;
 
             Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public void TruncateTime_SecondsAndMillisecondsShouldBeRemoved()
+        public void GenerateActivityInstance_SecondsAndMillisecondsShouldBeTruncated()
         {
             var original = new DateTime(2023, 2, 14, 17, 3, 50, 125);
             var expected = new DateTime(2023, 2, 14, 17, 3, 0, 0);
 
-            DateTime actual = FeedSleepRepeatLogic.TruncateTime(original);
+            Activity sleep = FeedSleepRepeatLogic.GenerateActivityInstance(
+                ActivityType.Sleep, 1, sleepStart: default, sleepEnd: original, sleepPlace: null);
+
+            DateTime actual = sleep.End;
 
             Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public void TruncateTime_SecondsMillisecondsAndTicksShouldBeRemoved()
+        public void GenerateActivityInstance_SecondsMillisecondsAndTicksShouldBeTruncated()
         {
             var original = new DateTime(2019, 4, 28, 11, 9, 6, 139).AddTicks(5050);
             var expected = new DateTime(2019, 4, 28, 11, 9, 0, 0);
 
-            DateTime actual = FeedSleepRepeatLogic.TruncateTime(original);
+            Activity feed = FeedSleepRepeatLogic.GenerateActivityInstance(
+                ActivityType.Feed, 101, feedStart: default, feedEnd: original, feedAmount: null, feedType: null);
+
+            DateTime actual = feed.End;
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void GenerateActivityInstance_DayShouldBeAdded()
+        {
+            var start = new DateTime(2022, 5, 7, 23, 45, 0, 0);
+            var finish = new DateTime(2022, 5, 7, 4, 5, 0, 0);
+            var expected = new DateTime(2022, 5, 8, 4, 5, 0, 0);
+
+            Activity sleep = FeedSleepRepeatLogic.GenerateActivityInstance(
+                ActivityType.Sleep, 32, sleepStart: start, sleepEnd: finish, sleepPlace: null);
+
+            DateTime actual = sleep.End;
 
             Assert.Equal(expected, actual);
         }
