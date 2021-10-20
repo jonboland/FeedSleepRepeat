@@ -89,8 +89,7 @@ namespace FeedSleepRepeatLibrary.Tests
             var original = new DateTime(2021, 10, 8, 7, 14, 50);
             var expected = new DateTime(2021, 10, 8, 7, 14, 0);
 
-            Activity feed = FeedSleepRepeatLogic.GenerateActivityInstance(
-                ActivityType.Feed, 0, feedStart: original, feedEnd: default, feedAmount: null, feedType: null);
+            Activity feed = FeedSleepRepeatLogic.GenerateActivityInstance(0, ActivityType.Feed, original, default);
 
             DateTime actual = feed.Start;
 
@@ -103,8 +102,7 @@ namespace FeedSleepRepeatLibrary.Tests
             var original = new DateTime(2023, 2, 14, 17, 3, 50, 125);
             var expected = new DateTime(2023, 2, 14, 17, 3, 0, 0);
 
-            Activity sleep = FeedSleepRepeatLogic.GenerateActivityInstance(
-                ActivityType.Sleep, 1, sleepStart: default, sleepEnd: original, sleepPlace: null);
+            Activity sleep = FeedSleepRepeatLogic.GenerateActivityInstance(1, ActivityType.Sleep, default, original);
 
             DateTime actual = sleep.End;
 
@@ -117,8 +115,7 @@ namespace FeedSleepRepeatLibrary.Tests
             var original = new DateTime(2019, 4, 28, 11, 9, 6, 139).AddTicks(5050);
             var expected = new DateTime(2019, 4, 28, 11, 9, 0, 0);
 
-            Activity feed = FeedSleepRepeatLogic.GenerateActivityInstance(
-                ActivityType.Feed, 101, feedStart: default, feedEnd: original, feedAmount: null, feedType: null);
+            Activity feed = FeedSleepRepeatLogic.GenerateActivityInstance(101, ActivityType.Feed, default, original);
 
             DateTime actual = feed.End;
 
@@ -129,11 +126,10 @@ namespace FeedSleepRepeatLibrary.Tests
         public void GenerateActivityInstance_DayShouldBeAdded()
         {
             var start = new DateTime(2022, 5, 7, 23, 45, 0, 0);
-            var finish = new DateTime(2022, 5, 7, 4, 5, 0, 0);
+            var end = new DateTime(2022, 5, 7, 4, 5, 0, 0);
             var expected = new DateTime(2022, 5, 8, 4, 5, 0, 0);
 
-            Activity sleep = FeedSleepRepeatLogic.GenerateActivityInstance(
-                ActivityType.Sleep, 32, sleepStart: start, sleepEnd: finish, sleepPlace: null);
+            Activity sleep = FeedSleepRepeatLogic.GenerateActivityInstance(32, ActivityType.Sleep, start, end);
 
             DateTime actual = sleep.End;
 
@@ -143,7 +139,7 @@ namespace FeedSleepRepeatLibrary.Tests
         [Fact]
         public void SortActivities_ActivityListShouldBeInStartTimeOrder()
         {
-            Activity activity = new Activity
+            var activity = new Activity
             {
                 ActivityType = ActivityType.Feed,
                 Start = new DateTime(2021, 10, 8, 7, 14, 0),
@@ -152,7 +148,7 @@ namespace FeedSleepRepeatLibrary.Tests
                 FeedAmount = "105",
             };
 
-            Activity activity2 = new Activity
+            var activity2 = new Activity
             {
                 ActivityType = ActivityType.Feed,
                 Start = new DateTime(2021, 10, 8, 5, 0, 0),
@@ -161,7 +157,7 @@ namespace FeedSleepRepeatLibrary.Tests
                 FeedAmount = "60",
             };
 
-            Activity activity3 = new Activity
+            var activity3 = new Activity
             {
                 ActivityType = ActivityType.Feed,
                 Start = new DateTime(2021, 10, 8, 6, 0, 0),
@@ -170,7 +166,7 @@ namespace FeedSleepRepeatLibrary.Tests
                 FeedAmount = "120",
             };
 
-            Activity activity4 = new Activity
+            var activity4 = new Activity
             {
                 ActivityType = ActivityType.Sleep,
                 Start = new DateTime(2021, 10, 8, 5, 30, 0),
