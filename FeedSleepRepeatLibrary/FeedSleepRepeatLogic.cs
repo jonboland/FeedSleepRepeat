@@ -70,25 +70,19 @@ namespace FeedSleepRepeatLibrary
         /// </summary>
         /// <returns>An activity instance of type feed or sleep, populated with activity data.</returns>
         public static Activity GenerateActivityInstance(
-            ActivityType activityType, int dayId, 
-            DateTime sleepStart = default, DateTime sleepEnd = default, string sleepPlace = null,
-            DateTime feedStart = default, DateTime feedEnd = default, string feedAmount = null, string feedType = null)
+            int babyDayId, ActivityType activityType, DateTime start, DateTime end,
+            string sleepPlace = null, string feedAmount = null, string feedType = null)
         {
-            var activity = new Activity { BabyDayId = dayId, ActivityType = activityType };
-
-            if (activityType == ActivityType.Sleep)
-            {
-                activity.Start = TruncateTime(sleepStart);
-                activity.End = TruncateTime(sleepEnd);
-                activity.SleepPlace = sleepPlace;
-            }
-            else
-            {
-                activity.Start = TruncateTime(feedStart);
-                activity.End = TruncateTime(feedEnd);
-                activity.FeedAmount = feedAmount;
-                activity.FeedType = feedType;
-            }
+            var activity = new Activity 
+            { 
+                BabyDayId = babyDayId, 
+                ActivityType = activityType,
+                Start = TruncateTime(start),
+                End = TruncateTime(end),
+                FeedType = feedType,
+                FeedAmount = feedAmount,
+                SleepPlace = sleepPlace,
+            };
 
             activity.End = AddDayIfEndBeforeStart(activity.Start, activity.End);
 
