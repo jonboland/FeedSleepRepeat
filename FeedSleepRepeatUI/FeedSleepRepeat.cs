@@ -111,10 +111,10 @@ namespace FeedSleepRepeatUI
                 return;
             }
 
-            Activity feed = FeedSleepRepeatLogic.GenerateActivityInstance(
-                ActivityType.Feed, CurrentBabyDay.Id, 
-                feedStart: feedStartPicker.Value, feedEnd: feedEndPicker.Value, 
+            Activity feed = FeedSleepRepeatLogic.GenerateActivityInstance( 
+                CurrentBabyDay.Id, ActivityType.Feed, feedStartPicker.Value, feedEndPicker.Value, 
                 feedAmount: feedAmountBox.Text, feedType: feedTypeCombo.Text);
+
             AddActivity(feed);
             RefreshActivitiesListbox();
             ResetFeedValues();
@@ -133,8 +133,7 @@ namespace FeedSleepRepeatUI
             }
 
             Activity sleep = FeedSleepRepeatLogic.GenerateActivityInstance(
-                ActivityType.Sleep, CurrentBabyDay.Id,
-                sleepStart: sleepStartPicker.Value, sleepEnd: sleepEndPicker.Value,
+                CurrentBabyDay.Id, ActivityType.Sleep, sleepStartPicker.Value, sleepEndPicker.Value,
                 sleepPlace: sleepPlaceBox.Text);
 
             AddActivity(sleep);
