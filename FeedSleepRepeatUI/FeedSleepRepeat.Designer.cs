@@ -539,6 +539,7 @@ namespace FeedSleepRepeatUI
             this.Name = "FeedForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Feed Sleep Repeat";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FeedForm_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.wetNappiesNumericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dirtyNappiesNumericUpDown)).EndInit();
             this.activitiesGroupBox.ResumeLayout(false);

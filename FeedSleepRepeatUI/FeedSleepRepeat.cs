@@ -13,9 +13,10 @@ namespace FeedSleepRepeatUI
 {
     public partial class FeedForm : Form
     {
-        List<Baby> Babies = new();
-        Baby CurrentBaby = new();
-        BabyDay CurrentBabyDay = new();
+        private List<Baby> babies = new();
+        private Baby currentBaby = new();
+        private BabyDay currentBabyDay = new();
+        private bool changed = false;
 
         public FeedForm()
         {
@@ -39,22 +40,22 @@ namespace FeedSleepRepeatUI
         {
             ResetAllValues();
 
-            CurrentBaby = Babies.First(b => b.FullName == babyNameCombo.Text);
+            currentBaby = babies.First(b => b.FullName == babyNameCombo.Text);
 
-            if (!string.IsNullOrEmpty(CurrentBaby.FullName))
+            if (!string.IsNullOrEmpty(currentBaby.FullName))
             {
                 EnableButtonsExistingBaby();
-                dateOfBirthPicker.Value = CurrentBaby.DateOfBirth;
-                ageBox.Text = FeedSleepRepeatLogic.CalculateAge(CurrentBaby.DateOfBirth);
-                CurrentBaby.BabyDays = SqliteDataAccess.LoadBabyDays(CurrentBaby);
-                BabyDay today = CurrentBaby.BabyDays.FirstOrDefault(bd => bd.Date == DateTime.Today);
+                dateOfBirthPicker.Value = currentBaby.DateOfBirth;
+                ageBox.Text = FeedSleepRepeatLogic.CalculateAge(currentBaby.DateOfBirth);
+                currentBaby.BabyDays = SqliteDataAccess.LoadBabyDays(currentBaby);
+                BabyDay today = currentBaby.BabyDays.FirstOrDefault(bd => bd.Date == DateTime.Today);
 
                 if (today != null)
                 {
-                    CurrentBabyDay = today;
+                    currentBabyDay = today;
                     RefreshBabyDayValues();
-                    CurrentBabyDay.Activities = SqliteDataAccess.LoadActivities(CurrentBabyDay);
-                    CurrentBabyDay.Activities = FeedSleepRepeatLogic.SortActivities(CurrentBabyDay.Activities);
+                    currentBabyDay.Activities = SqliteDataAccess.LoadActivities(currentBabyDay);
+                    currentBabyDay.Activities = FeedSleepRepeatLogic.SortActivities(currentBabyDay.Activities);
                     RefreshActivitiesListbox();
                 }
             }
@@ -62,6 +63,8 @@ namespace FeedSleepRepeatUI
 
         private void babyNameCombo_TextChanged(object sender, EventArgs e)
         {
+            changed = false;
+
             if (string.IsNullOrEmpty(babyNameCombo.Text))
             {
                 DisableButtons();
@@ -97,19 +100,20 @@ namespace FeedSleepRepeatUI
         private void datePicker_ValueChanged(object sender, EventArgs e)
         {
             ResetBabyDayValues();
+            changed = false;
 
-            CurrentBabyDay = CurrentBaby.BabyDays.FirstOrDefault(bd => bd.Date == datePicker.Value.Date);
+            currentBabyDay = currentBaby.BabyDays.FirstOrDefault(bd => bd.Date == datePicker.Value.Date);
 
-            if (CurrentBabyDay != null)
+            if (currentBabyDay != null)
             {
                 RefreshBabyDayValues();
-                CurrentBabyDay.Activities = SqliteDataAccess.LoadActivities(CurrentBabyDay);
-                CurrentBabyDay.Activities = FeedSleepRepeatLogic.SortActivities(CurrentBabyDay.Activities);
+                currentBabyDay.Activities = SqliteDataAccess.LoadActivities(currentBabyDay);
+                currentBabyDay.Activities = FeedSleepRepeatLogic.SortActivities(currentBabyDay.Activities);
                 RefreshActivitiesListbox();
             }
             else
             {
-                CurrentBabyDay = new();
+                currentBabyDay = new();
             }
         }
 
@@ -126,12 +130,13 @@ namespace FeedSleepRepeatUI
             }
 
             Activity feed = FeedSleepRepeatLogic.GenerateActivityInstance( 
-                CurrentBabyDay.Id, ActivityType.Feed, feedStartPicker.Value, feedEndPicker.Value, 
+                currentBabyDay.Id, ActivityType.Feed, feedStartPicker.Value, feedEndPicker.Value, 
                 feedAmount: feedAmountBox.Text, feedType: feedTypeCombo.Text);
 
             AddActivity(feed);
             RefreshActivitiesListbox();
             ResetFeedValues();
+            changed = true;
         }
 
         /// <summary>
@@ -147,12 +152,13 @@ namespace FeedSleepRepeatUI
             }
 
             Activity sleep = FeedSleepRepeatLogic.GenerateActivityInstance(
-                CurrentBabyDay.Id, ActivityType.Sleep, sleepStartPicker.Value, sleepEndPicker.Value,
+                currentBabyDay.Id, ActivityType.Sleep, sleepStartPicker.Value, sleepEndPicker.Value,
                 sleepPlace: sleepPlaceBox.Text);
 
             AddActivity(sleep);
             RefreshActivitiesListbox();
             ResetSleepValues();
+            changed = true;
         }
 
         /// <summary>
@@ -162,8 +168,9 @@ namespace FeedSleepRepeatUI
         {
             if (e.KeyCode is Keys.Delete or Keys.Back)
             {
-                CurrentBabyDay.Activities.Remove((Activity)activitiesListBox.SelectedItem);
+                currentBabyDay.Activities.Remove((Activity)activitiesListBox.SelectedItem);
                 RefreshActivitiesListbox();
+                changed = true;
             }
         }
 
@@ -182,7 +189,7 @@ namespace FeedSleepRepeatUI
                 return;
             }
 
-            if (Babies.Any(b => b.FullName == babyNameCombo.Text.Trim()))
+            if (babies.Any(b => b.FullName == babyNameCombo.Text.Trim()))
             {
                 MessageBox.Show(Constants.CreationFailedBabyAlreadyExists);
                 return;
@@ -190,10 +197,11 @@ namespace FeedSleepRepeatUI
 
             SetCurrentBabyValues(name);
             SetCurrentBabyDayValues();
-            SqliteDataAccess.CreateBaby(CurrentBaby, CurrentBabyDay);
+            SqliteDataAccess.CreateBaby(currentBaby, currentBabyDay);
             ResetAllValues();
             LoadBabyList();
             ConnectBabyNameCombo();
+            changed = false;
         }
 
         /// <summary>
@@ -202,40 +210,41 @@ namespace FeedSleepRepeatUI
         /// </summary>
         private void updateButton_Click(object sender, EventArgs e)
         {
-            if (!Babies.Any(baby => baby.FullName == babyNameCombo.Text))
+            if (!babies.Any(baby => baby.FullName == babyNameCombo.Text))
             {
                 MessageBox.Show(Constants.UpdateFailedBabyNotCreated);
                 return;
             }
 
-            if (CurrentBaby.FullName == String.Empty)
+            if (currentBaby.FullName == String.Empty)
             {
                 MessageBox.Show(Constants.UpdateFailedBabyNotSelected);
                 return;
             }
 
-            if (CurrentBaby.DateOfBirth != dateOfBirthPicker.Value.Date)
+            if (currentBaby.DateOfBirth != dateOfBirthPicker.Value.Date)
             {
-                CurrentBaby.DateOfBirth = dateOfBirthPicker.Value.Date;
-                SqliteDataAccess.UpdateDateOfBirth(CurrentBaby);
+                currentBaby.DateOfBirth = dateOfBirthPicker.Value.Date;
+                SqliteDataAccess.UpdateDateOfBirth(currentBaby);
             }
 
             SetCurrentBabyDayValues();
 
             // ROWIDs assigned via Sqlite AUTOINCREMENT begin at 1
-            if (CurrentBabyDay.BabyId != 0)
+            if (currentBabyDay.BabyId != 0)
             {               
-                SqliteDataAccess.UpdateBabyDay(CurrentBabyDay);
+                SqliteDataAccess.UpdateBabyDay(currentBabyDay);
             }
             else
             {
-                CurrentBabyDay.BabyId = CurrentBaby.Id;
-                SqliteDataAccess.CreateBabyDay(CurrentBabyDay);
+                currentBabyDay.BabyId = currentBaby.Id;
+                SqliteDataAccess.CreateBabyDay(currentBabyDay);
             }
 
             ResetAllValues();
             LoadBabyList();
             ConnectBabyNameCombo();
+            changed = false;
         }
 
         /// <summary>
@@ -243,33 +252,60 @@ namespace FeedSleepRepeatUI
         /// </summary>
         private void deleteButton_Click(object sender, EventArgs e)
         {
-            if (!Babies.Any(baby => baby.FullName == babyNameCombo.Text))
+            if (!babies.Any(baby => baby.FullName == babyNameCombo.Text))
             {
                 MessageBox.Show(Constants.DeleteFailedBabyNotCreated);
                 return;
             }
 
-            if (CurrentBaby.FullName == String.Empty)
+            if (currentBaby.FullName == String.Empty)
             {
                 MessageBox.Show(Constants.DeleteFailedBabyNotSelected);
                 return;
             }
 
-            DialogResult choice = MessageBox.Show(
-                Constants.DeleteBabyYesNo, 
-                Constants.DeleteBabyCaption,
-                MessageBoxButtons.YesNo);
-
-            if (choice == DialogResult.Yes)
+            if (MessageBox.Show(
+                Constants.DeleteBabyYesNo,
+                Constants.DeleteBabyCaption, 
+                MessageBoxButtons.YesNo)
+                == DialogResult.Yes)
             {
-                SqliteDataAccess.DeleteBaby(CurrentBaby);
+                SqliteDataAccess.DeleteBaby(currentBaby);
                 ResetAllValues();
                 LoadBabyList();
                 ConnectBabyNameCombo();
+                changed = false;
             }
         }
 
-        // TODO: Consider adding YesNo dialogs when user navigates away without creating/updating
+        private void FeedForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (changed == true && updateButton.Enabled)
+            {
+                if (MessageBox.Show(
+                    Constants.FormCloseYesNoUpdate, 
+                    Constants.FormCloseCaption, 
+                    MessageBoxButtons.YesNo) 
+                    == DialogResult.No)
+                {
+                    e.Cancel = true;
+                }
+            }
+
+            else if (changed == true && createButton.Enabled)
+            {
+                if (MessageBox.Show(
+                    Constants.FormCloseYesNoCreate,
+                    Constants.FormCloseCaption,
+                    MessageBoxButtons.YesNo)
+                    == DialogResult.No)
+                {
+                    e.Cancel = true;
+                }
+            }
+        }
+
+        // TODO: Retain current field values after Update and Create
         // TODO: Handle and log exceptions
         // TODO: Tab order
         // TODO: Add missing documentation comments

@@ -22,6 +22,10 @@ namespace FeedSleepRepeatLibrary
         public const string DeleteBabyYesNo = "Are you sure you want to permanently delete this baby's record?";
         public const string DeleteBabyCaption = "Delete Confirmation";
 
+        public const string FormCloseYesNoUpdate = "Are you sure want to exit without updating this baby?\nRecent changes will be lost.";
+        public const string FormCloseYesNoCreate = "Are you sure want to exit without creating this baby?";
+        public const string FormCloseCaption = "Exit";
+
         public const string DefaultAge = "0y 0m 0d";
     }
 }
