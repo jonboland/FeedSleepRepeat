@@ -16,6 +16,7 @@ namespace FeedSleepRepeatUI
         private List<Baby> babies = new();
         private Baby currentBaby = new();
         private BabyDay currentBabyDay = new();
+        private bool changed = false;
 
         public FeedForm()
         {
@@ -62,6 +63,8 @@ namespace FeedSleepRepeatUI
 
         private void babyNameCombo_TextChanged(object sender, EventArgs e)
         {
+            changed = false;
+
             if (string.IsNullOrEmpty(babyNameCombo.Text))
             {
                 DisableButtons();
@@ -97,6 +100,7 @@ namespace FeedSleepRepeatUI
         private void datePicker_ValueChanged(object sender, EventArgs e)
         {
             ResetBabyDayValues();
+            changed = false;
 
             currentBabyDay = currentBaby.BabyDays.FirstOrDefault(bd => bd.Date == datePicker.Value.Date);
 
@@ -132,6 +136,7 @@ namespace FeedSleepRepeatUI
             AddActivity(feed);
             RefreshActivitiesListbox();
             ResetFeedValues();
+            changed = true;
         }
 
         /// <summary>
@@ -153,6 +158,7 @@ namespace FeedSleepRepeatUI
             AddActivity(sleep);
             RefreshActivitiesListbox();
             ResetSleepValues();
+            changed = true;
         }
 
         /// <summary>
@@ -164,6 +170,7 @@ namespace FeedSleepRepeatUI
             {
                 currentBabyDay.Activities.Remove((Activity)activitiesListBox.SelectedItem);
                 RefreshActivitiesListbox();
+                changed = true;
             }
         }
 
@@ -194,6 +201,7 @@ namespace FeedSleepRepeatUI
             ResetAllValues();
             LoadBabyList();
             ConnectBabyNameCombo();
+            changed = false;
         }
 
         /// <summary>
@@ -236,6 +244,7 @@ namespace FeedSleepRepeatUI
             ResetAllValues();
             LoadBabyList();
             ConnectBabyNameCombo();
+            changed = false;
         }
 
         /// <summary>
@@ -255,21 +264,47 @@ namespace FeedSleepRepeatUI
                 return;
             }
 
-            DialogResult choice = MessageBox.Show(
-                Constants.DeleteBabyYesNo, 
-                Constants.DeleteBabyCaption,
-                MessageBoxButtons.YesNo);
-
-            if (choice == DialogResult.Yes)
+            if (MessageBox.Show(
+                Constants.DeleteBabyYesNo,
+                Constants.DeleteBabyCaption, 
+                MessageBoxButtons.YesNo)
+                == DialogResult.Yes)
             {
                 SqliteDataAccess.DeleteBaby(currentBaby);
                 ResetAllValues();
                 LoadBabyList();
                 ConnectBabyNameCombo();
+                changed = false;
             }
         }
 
-        // TODO: Consider adding YesNo dialogs when user navigates away without creating/updating
+        private void FeedForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (changed == true && updateButton.Enabled)
+            {
+                if (MessageBox.Show(
+                    Constants.FormCloseYesNoUpdate, 
+                    Constants.FormCloseCaption, 
+                    MessageBoxButtons.YesNo) 
+                    == DialogResult.No)
+                {
+                    e.Cancel = true;
+                }
+            }
+
+            else if (changed == true && createButton.Enabled)
+            {
+                if (MessageBox.Show(
+                    Constants.FormCloseYesNoCreate,
+                    Constants.FormCloseCaption,
+                    MessageBoxButtons.YesNo)
+                    == DialogResult.No)
+                {
+                    e.Cancel = true;
+                }
+            }
+        }
+
         // TODO: Retain current field values after Update and Create
         // TODO: Handle and log exceptions
         // TODO: Tab order
