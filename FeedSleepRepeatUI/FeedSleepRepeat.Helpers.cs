@@ -72,8 +72,8 @@ namespace FeedSleepRepeatUI
         /// </summary>
         public void LoadBabyList()
         {
-            Babies = SqliteDataAccess.LoadBabies();
-            Babies = FeedSleepRepeatLogic.InsertDefaultBaby(Babies);
+            babies = SqliteDataAccess.LoadBabies();
+            babies = FeedSleepRepeatLogic.InsertDefaultBaby(babies);
         }
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace FeedSleepRepeatUI
         {
             babyNameCombo.DataSource = null;
             babyNameCombo.DisplayMember = "FullName";
-            babyNameCombo.DataSource = Babies;
+            babyNameCombo.DataSource = babies;
         }
 
         /// <summary>
@@ -113,7 +113,7 @@ namespace FeedSleepRepeatUI
         /// </summary>
         private void ResetBabyDayValues()
         {
-            CurrentBabyDay = new();
+            currentBabyDay = new();
             weightBox.Text = string.Empty;
             wetNappiesNumericUpDown.Value = 0;
             dirtyNappiesNumericUpDown.Value = 0;
@@ -129,7 +129,7 @@ namespace FeedSleepRepeatUI
         /// </summary>
         private void ResetAllValues()
         {
-            CurrentBaby = new();
+            currentBaby = new();
             DisableButtons();
             SetMaxDateOfDatePickers();
             dateOfBirthPicker.Value = DateTime.Today.Date;
@@ -143,9 +143,9 @@ namespace FeedSleepRepeatUI
         /// </summary>
         private void RefreshBabyDayValues()
         {
-            weightBox.Text = CurrentBabyDay.Weight;
-            wetNappiesNumericUpDown.Value = CurrentBabyDay.WetNappies;
-            dirtyNappiesNumericUpDown.Value = CurrentBabyDay.DirtyNappies;
+            weightBox.Text = currentBabyDay.Weight;
+            wetNappiesNumericUpDown.Value = currentBabyDay.WetNappies;
+            dirtyNappiesNumericUpDown.Value = currentBabyDay.DirtyNappies;
             nappiesTotal.Text = FeedSleepRepeatLogic.RefreshTotalNappies(
                 wetNappiesNumericUpDown.Value, dirtyNappiesNumericUpDown.Value);
         }
@@ -157,9 +157,9 @@ namespace FeedSleepRepeatUI
         /// <param name="name">Array of two strings containing a baby's first and last names.</param>
         private void SetCurrentBabyValues(string[] name)
         {
-            CurrentBaby.FirstName = name[0];
-            CurrentBaby.LastName = name[1];
-            CurrentBaby.DateOfBirth = dateOfBirthPicker.Value.Date;
+            currentBaby.FirstName = name[0];
+            currentBaby.LastName = name[1];
+            currentBaby.DateOfBirth = dateOfBirthPicker.Value.Date;
         }
 
         /// <summary>
@@ -167,10 +167,10 @@ namespace FeedSleepRepeatUI
         /// </summary>
         private void SetCurrentBabyDayValues()
         {
-            CurrentBabyDay.Date = datePicker.Value;
-            CurrentBabyDay.Weight = weightBox.Text;
-            CurrentBabyDay.WetNappies = wetNappiesNumericUpDown.Value;
-            CurrentBabyDay.DirtyNappies = dirtyNappiesNumericUpDown.Value;
+            currentBabyDay.Date = datePicker.Value;
+            currentBabyDay.Weight = weightBox.Text;
+            currentBabyDay.WetNappies = wetNappiesNumericUpDown.Value;
+            currentBabyDay.DirtyNappies = dirtyNappiesNumericUpDown.Value;
         }
 
         /// <summary>
@@ -180,8 +180,8 @@ namespace FeedSleepRepeatUI
         /// <param name="activity">The activiy instance to be added to the current baby day.</param>
         private void AddActivity(Activity activity)
         {
-            CurrentBabyDay.Activities.Add(activity);
-            CurrentBabyDay.Activities = FeedSleepRepeatLogic.SortActivities(CurrentBabyDay.Activities);
+            currentBabyDay.Activities.Add(activity);
+            currentBabyDay.Activities = FeedSleepRepeatLogic.SortActivities(currentBabyDay.Activities);
         }
 
         /// <summary>
@@ -191,7 +191,7 @@ namespace FeedSleepRepeatUI
         private void RefreshActivitiesListbox()
         {
             activitiesListBox.DataSource = null;
-            activitiesListBox.DataSource = CurrentBabyDay.Activities;
+            activitiesListBox.DataSource = currentBabyDay.Activities;
             activitiesListBox.DisplayMember = "ActivitySummary";
         }
     }
