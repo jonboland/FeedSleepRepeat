@@ -243,12 +243,15 @@ namespace FeedSleepRepeatUI
             // 
             // babyNameCombo
             // 
+            this.babyNameCombo.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.babyNameCombo.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.babyNameCombo.FormattingEnabled = true;
             this.babyNameCombo.Location = new System.Drawing.Point(105, 55);
             this.babyNameCombo.Name = "babyNameCombo";
             this.babyNameCombo.Size = new System.Drawing.Size(98, 25);
             this.babyNameCombo.TabIndex = 0;
             this.babyNameCombo.SelectedIndexChanged += new System.EventHandler(this.babyNameCombo_SelectedIndexChanged);
+            this.babyNameCombo.TextChanged += new System.EventHandler(this.babyNameCombo_TextChanged);
             // 
             // sleepEndLabel
             // 
