@@ -20,6 +20,7 @@ namespace FeedSleepRepeatUI
         public FeedForm()
         {
             InitializeComponent();
+            DisableGraphButtons();
             SetMaxDateOfDatePickers();
             SetFeedTypeDropdownValues();
             AddActivitiesKeyDownEventHandler();
@@ -42,6 +43,7 @@ namespace FeedSleepRepeatUI
 
             if (!string.IsNullOrEmpty(CurrentBaby.FullName))
             {
+                EnableButtonsExistingBaby();
                 dateOfBirthPicker.Value = CurrentBaby.DateOfBirth;
                 ageBox.Text = FeedSleepRepeatLogic.CalculateAge(CurrentBaby.DateOfBirth);
                 CurrentBaby.BabyDays = SqliteDataAccess.LoadBabyDays(CurrentBaby);
@@ -56,6 +58,18 @@ namespace FeedSleepRepeatUI
                     RefreshActivitiesListbox();
                 }
             }
+        }
+
+        private void babyNameCombo_TextChanged(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(babyNameCombo.Text))
+            {
+                DisableButtons();
+                return;
+            }
+
+            DisableButtons();
+            EnableButtonsNewBaby();
         }
 
         /// <summary>
@@ -255,8 +269,9 @@ namespace FeedSleepRepeatUI
             }
         }
 
-        // TODO: Consider disabling/enabling Create and Update buttons instead of resetting fields
         // TODO: Consider adding YesNo dialogs when user navigates away without creating/updating
         // TODO: Handle and log exceptions
+        // TODO: Tab order
+        // TODO: Add missing documentation comments
     }
 }

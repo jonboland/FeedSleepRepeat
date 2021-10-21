@@ -10,6 +10,37 @@ namespace FeedSleepRepeatUI
 {
     partial class FeedForm
     {
+        private void DisableGraphButtons()
+        {
+            dayGraphButton.Enabled = false;
+            weekGraphButton.Enabled = false;
+            monthGraphButton.Enabled = false;
+        }
+
+        private void DisableButtons()
+        {
+            deleteButton.Enabled = false;
+            createButton.Enabled = false;
+            updateButton.Enabled = false;
+            addFeedButton.Enabled = false;
+            addSleepButton.Enabled = false;
+        }
+
+        private void EnableButtonsExistingBaby()
+        {
+            deleteButton.Enabled = true;
+            updateButton.Enabled = true;
+            addFeedButton.Enabled = true;
+            addSleepButton.Enabled = true;
+        }
+
+        private void EnableButtonsNewBaby()
+        {
+            createButton.Enabled = true;
+            addFeedButton.Enabled = true;
+            addSleepButton.Enabled = true;
+        }
+
         /// <summary>
         /// Sets the maximum date for the date and date of birth pickers to today.
         /// </summary>
@@ -99,6 +130,7 @@ namespace FeedSleepRepeatUI
         private void ResetAllValues()
         {
             CurrentBaby = new();
+            DisableButtons();
             SetMaxDateOfDatePickers();
             dateOfBirthPicker.Value = DateTime.Today.Date;
             ageBox.Text = Constants.DefaultAge;
