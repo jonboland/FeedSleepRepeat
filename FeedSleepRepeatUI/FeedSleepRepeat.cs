@@ -241,9 +241,9 @@ namespace FeedSleepRepeatUI
                 SqliteDataAccess.CreateBabyDay(currentBabyDay);
             }
 
-            ResetAllValues();
-            LoadBabyList();
-            ConnectBabyNameCombo();
+            currentBaby.BabyDays = SqliteDataAccess.LoadBabyDays(currentBaby);
+            currentBabyDay = currentBaby.BabyDays.First(bd => bd.Date == datePicker.Value.Date);
+            currentBabyDay.Activities = SqliteDataAccess.LoadActivities(currentBabyDay);
             changed = false;
         }
 
