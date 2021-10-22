@@ -305,8 +305,6 @@ namespace FeedSleepRepeatUI
             }
         }
 
-        // TODO: Retain current field values after Update and Create
-        // TODO: Handle and log exceptions
         // TODO: Tab order
         // TODO: Add missing documentation comments
     }
