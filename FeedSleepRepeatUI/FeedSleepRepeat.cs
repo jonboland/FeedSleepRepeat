@@ -305,7 +305,6 @@ namespace FeedSleepRepeatUI
             }
         }
 
-        // TODO: Tab order
         // TODO: Add missing documentation comments
     }
 }
