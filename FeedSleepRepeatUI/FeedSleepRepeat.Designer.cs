@@ -83,7 +83,7 @@ namespace FeedSleepRepeatUI
             this.dateOfBirthLabel.Location = new System.Drawing.Point(217, 58);
             this.dateOfBirthLabel.Name = "dateOfBirthLabel";
             this.dateOfBirthLabel.Size = new System.Drawing.Size(90, 19);
-            this.dateOfBirthLabel.TabIndex = 3;
+            this.dateOfBirthLabel.TabIndex = 99;
             this.dateOfBirthLabel.Text = "Date of birth:";
             // 
             // ageLabel
@@ -93,7 +93,7 @@ namespace FeedSleepRepeatUI
             this.ageLabel.Location = new System.Drawing.Point(424, 58);
             this.ageLabel.Name = "ageLabel";
             this.ageLabel.Size = new System.Drawing.Size(36, 19);
-            this.ageLabel.TabIndex = 5;
+            this.ageLabel.TabIndex = 99;
             this.ageLabel.Text = "Age:";
             // 
             // ageBox
@@ -103,7 +103,8 @@ namespace FeedSleepRepeatUI
             this.ageBox.Name = "ageBox";
             this.ageBox.ReadOnly = true;
             this.ageBox.Size = new System.Drawing.Size(97, 25);
-            this.ageBox.TabIndex = 6;
+            this.ageBox.TabIndex = 99;
+            this.ageBox.TabStop = false;
             // 
             // dateOfBirthPicker
             // 
@@ -112,7 +113,7 @@ namespace FeedSleepRepeatUI
             this.dateOfBirthPicker.Location = new System.Drawing.Point(309, 55);
             this.dateOfBirthPicker.Name = "dateOfBirthPicker";
             this.dateOfBirthPicker.Size = new System.Drawing.Size(98, 25);
-            this.dateOfBirthPicker.TabIndex = 7;
+            this.dateOfBirthPicker.TabIndex = 1;
             // 
             // dateLabel
             // 
@@ -121,7 +122,7 @@ namespace FeedSleepRepeatUI
             this.dateLabel.Location = new System.Drawing.Point(60, 104);
             this.dateLabel.Name = "dateLabel";
             this.dateLabel.Size = new System.Drawing.Size(41, 19);
-            this.dateLabel.TabIndex = 8;
+            this.dateLabel.TabIndex = 99;
             this.dateLabel.Text = "Date:";
             // 
             // datePicker
@@ -130,7 +131,7 @@ namespace FeedSleepRepeatUI
             this.datePicker.Location = new System.Drawing.Point(105, 101);
             this.datePicker.Name = "datePicker";
             this.datePicker.Size = new System.Drawing.Size(98, 25);
-            this.datePicker.TabIndex = 9;
+            this.datePicker.TabIndex = 2;
             this.datePicker.ValueChanged += new System.EventHandler(this.datePicker_ValueChanged);
             // 
             // weightLabel
@@ -140,7 +141,7 @@ namespace FeedSleepRepeatUI
             this.weightLabel.Location = new System.Drawing.Point(232, 104);
             this.weightLabel.Name = "weightLabel";
             this.weightLabel.Size = new System.Drawing.Size(75, 19);
-            this.weightLabel.TabIndex = 10;
+            this.weightLabel.TabIndex = 99;
             this.weightLabel.Text = "Weight (g):";
             // 
             // weightBox
@@ -149,7 +150,7 @@ namespace FeedSleepRepeatUI
             this.weightBox.Location = new System.Drawing.Point(309, 101);
             this.weightBox.Name = "weightBox";
             this.weightBox.Size = new System.Drawing.Size(98, 25);
-            this.weightBox.TabIndex = 11;
+            this.weightBox.TabIndex = 3;
             // 
             // wetNappiesLabel
             // 
@@ -158,7 +159,7 @@ namespace FeedSleepRepeatUI
             this.wetNappiesLabel.Location = new System.Drawing.Point(15, 149);
             this.wetNappiesLabel.Name = "wetNappiesLabel";
             this.wetNappiesLabel.Size = new System.Drawing.Size(87, 19);
-            this.wetNappiesLabel.TabIndex = 12;
+            this.wetNappiesLabel.TabIndex = 99;
             this.wetNappiesLabel.Text = "Wet nappies:";
             // 
             // dirtyNappiesLabel
@@ -168,7 +169,7 @@ namespace FeedSleepRepeatUI
             this.dirtyNappiesLabel.Location = new System.Drawing.Point(214, 149);
             this.dirtyNappiesLabel.Name = "dirtyNappiesLabel";
             this.dirtyNappiesLabel.Size = new System.Drawing.Size(93, 19);
-            this.dirtyNappiesLabel.TabIndex = 14;
+            this.dirtyNappiesLabel.TabIndex = 99;
             this.dirtyNappiesLabel.Text = "Dirty nappies:";
             // 
             // nappiesTotal
@@ -178,7 +179,8 @@ namespace FeedSleepRepeatUI
             this.nappiesTotal.Name = "nappiesTotal";
             this.nappiesTotal.ReadOnly = true;
             this.nappiesTotal.Size = new System.Drawing.Size(97, 25);
-            this.nappiesTotal.TabIndex = 16;
+            this.nappiesTotal.TabIndex = 99;
+            this.nappiesTotal.TabStop = false;
             this.nappiesTotal.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // nappiesTotalLabel
@@ -188,7 +190,7 @@ namespace FeedSleepRepeatUI
             this.nappiesTotalLabel.Location = new System.Drawing.Point(419, 148);
             this.nappiesTotalLabel.Name = "nappiesTotalLabel";
             this.nappiesTotalLabel.Size = new System.Drawing.Size(41, 19);
-            this.nappiesTotalLabel.TabIndex = 15;
+            this.nappiesTotalLabel.TabIndex = 99;
             this.nappiesTotalLabel.Text = "Total:";
             // 
             // feedStartLabel
@@ -198,7 +200,7 @@ namespace FeedSleepRepeatUI
             this.feedStartLabel.Location = new System.Drawing.Point(17, 49);
             this.feedStartLabel.Name = "feedStartLabel";
             this.feedStartLabel.Size = new System.Drawing.Size(73, 19);
-            this.feedStartLabel.TabIndex = 18;
+            this.feedStartLabel.TabIndex = 99;
             this.feedStartLabel.Text = "Feed start:";
             // 
             // feedEndLabel
@@ -208,7 +210,7 @@ namespace FeedSleepRepeatUI
             this.feedEndLabel.Location = new System.Drawing.Point(161, 49);
             this.feedEndLabel.Name = "feedEndLabel";
             this.feedEndLabel.Size = new System.Drawing.Size(68, 19);
-            this.feedEndLabel.TabIndex = 20;
+            this.feedEndLabel.TabIndex = 99;
             this.feedEndLabel.Text = "Feed end:";
             // 
             // feedAmountLabel
@@ -218,7 +220,7 @@ namespace FeedSleepRepeatUI
             this.feedAmountLabel.Location = new System.Drawing.Point(410, 49);
             this.feedAmountLabel.Name = "feedAmountLabel";
             this.feedAmountLabel.Size = new System.Drawing.Size(78, 19);
-            this.feedAmountLabel.TabIndex = 22;
+            this.feedAmountLabel.TabIndex = 99;
             this.feedAmountLabel.Text = "Amt (ml/g):";
             // 
             // feedTypeLabel
@@ -228,7 +230,7 @@ namespace FeedSleepRepeatUI
             this.feedTypeLabel.Location = new System.Drawing.Point(299, 49);
             this.feedTypeLabel.Name = "feedTypeLabel";
             this.feedTypeLabel.Size = new System.Drawing.Size(40, 19);
-            this.feedTypeLabel.TabIndex = 24;
+            this.feedTypeLabel.TabIndex = 99;
             this.feedTypeLabel.Text = "Type:";
             // 
             // feedTypeCombo
@@ -239,7 +241,7 @@ namespace FeedSleepRepeatUI
             this.feedTypeCombo.Location = new System.Drawing.Point(340, 47);
             this.feedTypeCombo.Name = "feedTypeCombo";
             this.feedTypeCombo.Size = new System.Drawing.Size(63, 25);
-            this.feedTypeCombo.TabIndex = 25;
+            this.feedTypeCombo.TabIndex = 8;
             // 
             // babyNameCombo
             // 
@@ -260,7 +262,7 @@ namespace FeedSleepRepeatUI
             this.sleepEndLabel.Location = new System.Drawing.Point(158, 86);
             this.sleepEndLabel.Name = "sleepEndLabel";
             this.sleepEndLabel.Size = new System.Drawing.Size(71, 19);
-            this.sleepEndLabel.TabIndex = 29;
+            this.sleepEndLabel.TabIndex = 99;
             this.sleepEndLabel.Text = "Sleep end:";
             // 
             // sleepStartLabel
@@ -270,7 +272,7 @@ namespace FeedSleepRepeatUI
             this.sleepStartLabel.Location = new System.Drawing.Point(13, 86);
             this.sleepStartLabel.Name = "sleepStartLabel";
             this.sleepStartLabel.Size = new System.Drawing.Size(76, 19);
-            this.sleepStartLabel.TabIndex = 27;
+            this.sleepStartLabel.TabIndex = 99;
             this.sleepStartLabel.Text = "Sleep start:";
             // 
             // sleepPlaceBox
@@ -279,7 +281,7 @@ namespace FeedSleepRepeatUI
             this.sleepPlaceBox.Location = new System.Drawing.Point(340, 83);
             this.sleepPlaceBox.Name = "sleepPlaceBox";
             this.sleepPlaceBox.Size = new System.Drawing.Size(207, 25);
-            this.sleepPlaceBox.TabIndex = 32;
+            this.sleepPlaceBox.TabIndex = 13;
             // 
             // locationLabel
             // 
@@ -288,7 +290,7 @@ namespace FeedSleepRepeatUI
             this.locationLabel.Location = new System.Drawing.Point(296, 86);
             this.locationLabel.Name = "locationLabel";
             this.locationLabel.Size = new System.Drawing.Size(43, 19);
-            this.locationLabel.TabIndex = 31;
+            this.locationLabel.TabIndex = 99;
             this.locationLabel.Text = "Place:";
             // 
             // wetNappiesNumericUpDown
@@ -296,7 +298,7 @@ namespace FeedSleepRepeatUI
             this.wetNappiesNumericUpDown.Location = new System.Drawing.Point(104, 146);
             this.wetNappiesNumericUpDown.Name = "wetNappiesNumericUpDown";
             this.wetNappiesNumericUpDown.Size = new System.Drawing.Size(99, 25);
-            this.wetNappiesNumericUpDown.TabIndex = 33;
+            this.wetNappiesNumericUpDown.TabIndex = 4;
             this.wetNappiesNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.wetNappiesNumericUpDown.ValueChanged += new System.EventHandler(this.wetNappiesNumericUpDown_ValueChanged);
             // 
@@ -305,7 +307,7 @@ namespace FeedSleepRepeatUI
             this.dirtyNappiesNumericUpDown.Location = new System.Drawing.Point(309, 146);
             this.dirtyNappiesNumericUpDown.Name = "dirtyNappiesNumericUpDown";
             this.dirtyNappiesNumericUpDown.Size = new System.Drawing.Size(98, 25);
-            this.dirtyNappiesNumericUpDown.TabIndex = 34;
+            this.dirtyNappiesNumericUpDown.TabIndex = 5;
             this.dirtyNappiesNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.dirtyNappiesNumericUpDown.ValueChanged += new System.EventHandler(this.dirtyNappiesNumericUpDown_ValueChanged);
             // 
@@ -315,7 +317,7 @@ namespace FeedSleepRepeatUI
             this.addFeedButton.Location = new System.Drawing.Point(580, 43);
             this.addFeedButton.Name = "addFeedButton";
             this.addFeedButton.Size = new System.Drawing.Size(112, 29);
-            this.addFeedButton.TabIndex = 35;
+            this.addFeedButton.TabIndex = 10;
             this.addFeedButton.Text = "Add Feed";
             this.addFeedButton.UseVisualStyleBackColor = true;
             this.addFeedButton.Click += new System.EventHandler(this.addFeedButton_Click);
@@ -326,7 +328,7 @@ namespace FeedSleepRepeatUI
             this.addSleepButton.Location = new System.Drawing.Point(580, 81);
             this.addSleepButton.Name = "addSleepButton";
             this.addSleepButton.Size = new System.Drawing.Size(112, 30);
-            this.addSleepButton.TabIndex = 36;
+            this.addSleepButton.TabIndex = 14;
             this.addSleepButton.Text = "Add Sleep";
             this.addSleepButton.UseVisualStyleBackColor = true;
             this.addSleepButton.Click += new System.EventHandler(this.addSleepButton_Click);
@@ -337,7 +339,7 @@ namespace FeedSleepRepeatUI
             this.dayGraphButton.Location = new System.Drawing.Point(17, 24);
             this.dayGraphButton.Name = "dayGraphButton";
             this.dayGraphButton.Size = new System.Drawing.Size(112, 30);
-            this.dayGraphButton.TabIndex = 38;
+            this.dayGraphButton.TabIndex = 19;
             this.dayGraphButton.Text = "Day";
             this.dayGraphButton.UseVisualStyleBackColor = true;
             // 
@@ -347,7 +349,7 @@ namespace FeedSleepRepeatUI
             this.weekGraphButton.Location = new System.Drawing.Point(17, 70);
             this.weekGraphButton.Name = "weekGraphButton";
             this.weekGraphButton.Size = new System.Drawing.Size(112, 30);
-            this.weekGraphButton.TabIndex = 39;
+            this.weekGraphButton.TabIndex = 20;
             this.weekGraphButton.Text = "Week";
             this.weekGraphButton.UseVisualStyleBackColor = true;
             // 
@@ -357,7 +359,7 @@ namespace FeedSleepRepeatUI
             this.monthGraphButton.Location = new System.Drawing.Point(17, 115);
             this.monthGraphButton.Name = "monthGraphButton";
             this.monthGraphButton.Size = new System.Drawing.Size(112, 30);
-            this.monthGraphButton.TabIndex = 40;
+            this.monthGraphButton.TabIndex = 21;
             this.monthGraphButton.Text = "Month";
             this.monthGraphButton.UseVisualStyleBackColor = true;
             // 
@@ -384,7 +386,7 @@ namespace FeedSleepRepeatUI
             this.activitiesGroupBox.Location = new System.Drawing.Point(12, 210);
             this.activitiesGroupBox.Name = "activitiesGroupBox";
             this.activitiesGroupBox.Size = new System.Drawing.Size(707, 385);
-            this.activitiesGroupBox.TabIndex = 41;
+            this.activitiesGroupBox.TabIndex = 6;
             this.activitiesGroupBox.TabStop = false;
             this.activitiesGroupBox.Text = "Activities";
             // 
@@ -398,7 +400,7 @@ namespace FeedSleepRepeatUI
             this.sleepEndPicker.Name = "sleepEndPicker";
             this.sleepEndPicker.ShowUpDown = true;
             this.sleepEndPicker.Size = new System.Drawing.Size(57, 25);
-            this.sleepEndPicker.TabIndex = 49;
+            this.sleepEndPicker.TabIndex = 12;
             // 
             // sleepStartPicker
             // 
@@ -410,7 +412,7 @@ namespace FeedSleepRepeatUI
             this.sleepStartPicker.Name = "sleepStartPicker";
             this.sleepStartPicker.ShowUpDown = true;
             this.sleepStartPicker.Size = new System.Drawing.Size(57, 25);
-            this.sleepStartPicker.TabIndex = 48;
+            this.sleepStartPicker.TabIndex = 11;
             // 
             // feedStartPicker
             // 
@@ -422,7 +424,7 @@ namespace FeedSleepRepeatUI
             this.feedStartPicker.Name = "feedStartPicker";
             this.feedStartPicker.ShowUpDown = true;
             this.feedStartPicker.Size = new System.Drawing.Size(57, 25);
-            this.feedStartPicker.TabIndex = 47;
+            this.feedStartPicker.TabIndex = 6;
             // 
             // feedEndPicker
             // 
@@ -434,7 +436,7 @@ namespace FeedSleepRepeatUI
             this.feedEndPicker.Name = "feedEndPicker";
             this.feedEndPicker.ShowUpDown = true;
             this.feedEndPicker.Size = new System.Drawing.Size(57, 25);
-            this.feedEndPicker.TabIndex = 46;
+            this.feedEndPicker.TabIndex = 7;
             // 
             // feedAmountBox
             // 
@@ -442,7 +444,7 @@ namespace FeedSleepRepeatUI
             this.feedAmountBox.Location = new System.Drawing.Point(490, 46);
             this.feedAmountBox.Name = "feedAmountBox";
             this.feedAmountBox.Size = new System.Drawing.Size(57, 25);
-            this.feedAmountBox.TabIndex = 38;
+            this.feedAmountBox.TabIndex = 9;
             // 
             // activitiesListBox
             // 
@@ -452,7 +454,7 @@ namespace FeedSleepRepeatUI
             this.activitiesListBox.Location = new System.Drawing.Point(14, 138);
             this.activitiesListBox.Name = "activitiesListBox";
             this.activitiesListBox.Size = new System.Drawing.Size(678, 191);
-            this.activitiesListBox.TabIndex = 37;
+            this.activitiesListBox.TabIndex = 15;
             // 
             // graphsGroupBox
             // 
@@ -463,7 +465,7 @@ namespace FeedSleepRepeatUI
             this.graphsGroupBox.Location = new System.Drawing.Point(576, 28);
             this.graphsGroupBox.Name = "graphsGroupBox";
             this.graphsGroupBox.Size = new System.Drawing.Size(143, 166);
-            this.graphsGroupBox.TabIndex = 42;
+            this.graphsGroupBox.TabIndex = 19;
             this.graphsGroupBox.TabStop = false;
             this.graphsGroupBox.Text = "Graphs";
             // 
@@ -473,7 +475,7 @@ namespace FeedSleepRepeatUI
             this.babyNameLabel.Location = new System.Drawing.Point(21, 58);
             this.babyNameLabel.Name = "babyNameLabel";
             this.babyNameLabel.Size = new System.Drawing.Size(80, 19);
-            this.babyNameLabel.TabIndex = 43;
+            this.babyNameLabel.TabIndex = 99;
             this.babyNameLabel.Text = "Baby name:";
             // 
             // createButton
@@ -482,7 +484,7 @@ namespace FeedSleepRepeatUI
             this.createButton.Location = new System.Drawing.Point(447, 616);
             this.createButton.Name = "createButton";
             this.createButton.Size = new System.Drawing.Size(112, 30);
-            this.createButton.TabIndex = 44;
+            this.createButton.TabIndex = 17;
             this.createButton.Text = "Create";
             this.createButton.UseVisualStyleBackColor = true;
             this.createButton.Click += new System.EventHandler(this.createButton_Click);
@@ -493,7 +495,7 @@ namespace FeedSleepRepeatUI
             this.deleteButton.Location = new System.Drawing.Point(26, 616);
             this.deleteButton.Name = "deleteButton";
             this.deleteButton.Size = new System.Drawing.Size(112, 30);
-            this.deleteButton.TabIndex = 45;
+            this.deleteButton.TabIndex = 16;
             this.deleteButton.Text = "Delete";
             this.deleteButton.UseVisualStyleBackColor = true;
             this.deleteButton.Click += new System.EventHandler(this.deleteButton_Click);
@@ -504,7 +506,7 @@ namespace FeedSleepRepeatUI
             this.updateButton.Location = new System.Drawing.Point(593, 616);
             this.updateButton.Name = "updateButton";
             this.updateButton.Size = new System.Drawing.Size(112, 30);
-            this.updateButton.TabIndex = 45;
+            this.updateButton.TabIndex = 18;
             this.updateButton.Text = "Update";
             this.updateButton.UseVisualStyleBackColor = true;
             this.updateButton.Click += new System.EventHandler(this.updateButton_Click);
