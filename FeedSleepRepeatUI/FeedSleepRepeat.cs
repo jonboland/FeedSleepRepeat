@@ -21,7 +21,7 @@ namespace FeedSleepRepeatUI
         public FeedForm()
         {
             InitializeComponent();
-            DisableGraphButtons();
+            //DisableGraphButtons();
             SetMaxDateOfDatePickers();
             SetFeedTypeDropdownValues();
             AddActivitiesKeyDownEventHandler();
@@ -68,6 +68,13 @@ namespace FeedSleepRepeatUI
             if (string.IsNullOrEmpty(babyNameCombo.Text))
             {
                 DisableButtons();
+                return;
+            }
+
+            else if (babyNameCombo.Text == currentBaby.FullName)
+            {
+                DisableButtons();
+                EnableButtonsExistingBaby();
                 return;
             }
 
