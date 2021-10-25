@@ -37,7 +37,7 @@ namespace FeedSleepRepeatUI
         /// <param name="sender">Reference to the object that raised the event</param>
         /// <param name="e">Object specific to the event that is being handled</param>
         private void babyNameCombo_SelectedIndexChanged(object sender, EventArgs e)
-        {
+        {   
             ResetAllValues();
 
             currentBaby = babies.First(b => b.FullName == babyNameCombo.Text);
@@ -287,31 +287,35 @@ namespace FeedSleepRepeatUI
 
         private void FeedForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (changed == true && updateButton.Enabled)
+            if (e.CloseReason == CloseReason.UserClosing && changed == true)
             {
-                if (MessageBox.Show(
-                    Constants.FormCloseYesNoUpdate, 
-                    Constants.FormCloseCaption, 
-                    MessageBoxButtons.YesNo) 
-                    == DialogResult.No)
+                if (updateButton.Enabled)
                 {
-                    e.Cancel = true;
+                    if (MessageBox.Show(
+                        Constants.FormCloseYesNoUpdate,
+                        Constants.FormCloseCaption,
+                        MessageBoxButtons.YesNo)
+                        == DialogResult.No)
+                    {
+                        e.Cancel = true;
+                    }
                 }
-            }
 
-            else if (changed == true && createButton.Enabled)
-            {
-                if (MessageBox.Show(
-                    Constants.FormCloseYesNoCreate,
-                    Constants.FormCloseCaption,
-                    MessageBoxButtons.YesNo)
-                    == DialogResult.No)
+                else if (createButton.Enabled)
                 {
-                    e.Cancel = true;
+                    if (MessageBox.Show(
+                        Constants.FormCloseYesNoCreate,
+                        Constants.FormCloseCaption,
+                        MessageBoxButtons.YesNo)
+                        == DialogResult.No)
+                    {
+                        e.Cancel = true;
+                    }
                 }
             }
         }
 
         // TODO: Add missing documentation comments
+        // TODO: Review all access modifiers
     }
 }
