@@ -5,13 +5,14 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using FeedSleepRepeatLibrary;
 
 namespace FeedSleepRepeatUI
 {
     static class Program
     {
         static readonly string LocalAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        static readonly string DataDir = Path.Combine(LocalAppData, "FSR");
+        static readonly string DataDir = Path.Combine(LocalAppData, Constants.DataFolder);
 
         /// <summary>
         ///  The main entry point for the application.
@@ -30,17 +31,15 @@ namespace FeedSleepRepeatUI
         }
 
         /// <summary>
-        /// Shows message box id fatal error occurs and exits application when user clicks OK.
+        /// Shows message box if fatal error occurs and exits application when user clicks OK.
         /// </summary>
         static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
         {
             // TODO: Add exception logging
 
             MessageBox.Show(
-                "Sorry for the disruption.\n\n"
-                + "Unfortunately, FeedSleepRepeat has stopped working because the following fatal error occured:\n\n"
-                + e.Exception.Message,
-                "Fatal Error",
+                Constants.FatalErrorOccured + e.Exception.Message,
+                Constants.FatalErrorCaption,
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Stop);
 
@@ -63,8 +62,8 @@ namespace FeedSleepRepeatUI
         /// </summary>
         static void CopyDatabaseToDataDirIfDoesNotExist()
         {
-            string sourceFilePath = Path.Combine(Application.StartupPath, "FeedSleepRepeatDB.db");
-            string destFilePath = Path.Combine(DataDir, "FeedSleepRepeatDB.db");
+            string sourceFilePath = Path.Combine(Application.StartupPath, Constants.DatabaseName);
+            string destFilePath = Path.Combine(DataDir, Constants.DatabaseName);
 
             if (!File.Exists(destFilePath))
             {
