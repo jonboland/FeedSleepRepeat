@@ -156,7 +156,7 @@ namespace FeedSleepRepeatLibrary
             }
         }
 
-        private static string LoadConnectionString(string id = "Default")
+        private static string LoadConnectionString(string id = "DataDir")
         {
             return ConfigurationManager.ConnectionStrings[id].ConnectionString;
         }
