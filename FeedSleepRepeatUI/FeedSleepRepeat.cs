@@ -15,13 +15,14 @@ namespace FeedSleepRepeatUI
     {
         private List<Baby> babies = new();
         private Baby currentBaby = new();
-        private BabyDay currentBabyDay = new();
+        private BabyDay currentBabyDay = new();       
+        private Timer timer = new();
         private bool changed = false;
 
         public FeedForm()
         {
             InitializeComponent();
-            //DisableGraphButtons();
+            DisableGraphButtons();
             SetMaxDateOfDatePickers();
             SetFeedTypeDropdownValues();
             AddActivitiesKeyDownEventHandler();
@@ -252,6 +253,14 @@ namespace FeedSleepRepeatUI
             currentBabyDay = currentBaby.BabyDays.First(bd => bd.Date == datePicker.Value.Date);
             currentBabyDay.Activities = SqliteDataAccess.LoadActivities(currentBabyDay);
             changed = false;
+
+            DisableUpdateButtonForHalfASecond();
+        }
+
+        private void timer_Tick(object sender, EventArgs e)
+        {
+            updateButton.Enabled = true;
+            timer.Stop();
         }
 
         /// <summary>
