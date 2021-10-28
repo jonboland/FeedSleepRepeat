@@ -41,6 +41,14 @@ namespace FeedSleepRepeatUI
             addSleepButton.Enabled = true;
         }
 
+        private void DisableUpdateButtonForHalfASecond()
+        {
+            timer.Interval = 500;
+            timer.Tick += timer_Tick;
+            timer.Start();
+            updateButton.Enabled = false;
+        }
+
         /// <summary>
         /// Sets the maximum date for the date and date of birth pickers to today.
         /// </summary>
@@ -63,7 +71,7 @@ namespace FeedSleepRepeatUI
         /// </summary>
         private void AddActivitiesKeyDownEventHandler()
         {
-            activitiesListBox.KeyDown += new KeyEventHandler(activitiesListBox_KeyDown);
+            activitiesListBox.KeyDown += activitiesListBox_KeyDown;
         }
 
         /// <summary>
