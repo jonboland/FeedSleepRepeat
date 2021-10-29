@@ -107,7 +107,7 @@ namespace FeedSleepRepeatUI
         /// </summary>
         private void datePicker_ValueChanged(object sender, EventArgs e)
         {
-            // Warn user if activities have been added an attempt is made to change date without updating
+            // Warn user if activities have been added and attempt is made to change date without updating
             if (currentBabyDay.Activities.Any(b => b.Id == 0))
             {
                 if (MessageBox.Show(
