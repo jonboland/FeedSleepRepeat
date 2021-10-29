@@ -104,7 +104,7 @@ namespace FeedSleepRepeatUI
         /// <summary>
         /// If the selected baby day exists, populates baby day fields and activity list with its values.
         /// NB: Method is triggered at runtime.
-        /// </summary>        
+        /// </summary>
         private void datePicker_ValueChanged(object sender, EventArgs e)
         {
             // Warn user if activities have been added an attempt is made to change date without updating
@@ -139,7 +139,7 @@ namespace FeedSleepRepeatUI
             else
             {
                 currentBabyDay = new();
-            }           
+            }
         }
 
         /// <summary>
