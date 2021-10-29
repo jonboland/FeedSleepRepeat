@@ -15,7 +15,7 @@ namespace FeedSleepRepeatUI
     {
         private List<Baby> babies = new();
         private Baby currentBaby = new();
-        private BabyDay currentBabyDay = new();       
+        private BabyDay currentBabyDay = new();
         private Timer timer = new();
         private bool changed = false;
 
@@ -38,7 +38,7 @@ namespace FeedSleepRepeatUI
         /// <param name="sender">Reference to the object that raised the event</param>
         /// <param name="e">Object specific to the event that is being handled</param>
         private void babyNameCombo_SelectedIndexChanged(object sender, EventArgs e)
-        {   
+        {
             ResetAllValues();
 
             currentBaby = babies.First(b => b.FullName == babyNameCombo.Text);
@@ -104,9 +104,26 @@ namespace FeedSleepRepeatUI
         /// <summary>
         /// If the selected baby day exists, populates baby day fields and activity list with its values.
         /// NB: Method is triggered at runtime.
-        /// </summary>
+        /// </summary>        
         private void datePicker_ValueChanged(object sender, EventArgs e)
         {
+            // Warn user if activities have been added an attempt is made to change date without updating
+            if (currentBabyDay.Activities.Any(b => b.Id == 0))
+            {
+                if (MessageBox.Show(
+                Constants.ChangeDateYesNo,
+                Constants.ChangeDateCaption,
+                MessageBoxButtons.YesNo)
+                == DialogResult.No)
+                {
+                    // Undo datePicker change without firing warning twice
+                    datePicker.ValueChanged -= datePicker_ValueChanged;
+                    datePicker.Value = currentBabyDay.Date;
+                    datePicker.ValueChanged += datePicker_ValueChanged;
+                    return;
+                }
+            }
+
             ResetBabyDayValues();
             changed = false;
 
@@ -122,7 +139,7 @@ namespace FeedSleepRepeatUI
             else
             {
                 currentBabyDay = new();
-            }
+            }           
         }
 
         /// <summary>
