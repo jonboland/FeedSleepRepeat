@@ -19,7 +19,7 @@ namespace FeedSleepRepeatLibrary
         {
             get
             {
-                return $"{FirstName} {LastName}".Trim();
+                return $"{FirstName} {LastName}";
             }
         }
     }

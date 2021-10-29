@@ -24,9 +24,9 @@ namespace FeedSleepRepeatUI
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            CreateDataDirIfDoesNotExist();
-            CopyDatabaseToDataDirIfDoesNotExist();
             AppDomain.CurrentDomain.SetData("DataDirectory", DataDir);
+            CreateDataDirIfNotPresent();
+            CopyDatabaseToDataDirIfNotPresent();           
             Application.Run(new FeedForm());
         }
 
@@ -49,7 +49,7 @@ namespace FeedSleepRepeatUI
         /// <summary>
         /// Creates the DataDir folder in AppData/Local if it doesn't already exist.
         /// </summary>
-        static void CreateDataDirIfDoesNotExist()
+        static void CreateDataDirIfNotPresent()
         {
             if (!Directory.Exists(DataDir))
             {
@@ -60,7 +60,7 @@ namespace FeedSleepRepeatUI
         /// <summary>
         /// Copies the database file from the deployment location to the DataDir folder if it doesn't already exist.
         /// </summary>
-        static void CopyDatabaseToDataDirIfDoesNotExist()
+        static void CopyDatabaseToDataDirIfNotPresent()
         {
             string sourceFilePath = Path.Combine(Application.StartupPath, Constants.DatabaseName);
             string destFilePath = Path.Combine(DataDir, Constants.DatabaseName);

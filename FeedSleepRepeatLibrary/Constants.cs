@@ -16,6 +16,9 @@ namespace FeedSleepRepeatLibrary
         public const string FeedNotAddedNoBabySelected = "Feed could not be added because a baby hasn't been selected.";
         public const string SleepNotAddedNoBabySelected = "Sleep could not be added because a baby hasn't been selected.";
 
+        public const string ChangeDateYesNo = "Activity changes will be lost if you select a different day without updating.\n\nDo you wish to proceed?";
+        public const string ChangeDateCaption = "Change Date Confirmation";
+
         public const string CreationFailedBabyAlreadyExists = "Creation was unsuccessful because a baby with this name already exists.";
         public const string CreationFailedInvalidNameFormat = "Creation was unsuccessful because babies must have exactly one first name and one last name.";
 
