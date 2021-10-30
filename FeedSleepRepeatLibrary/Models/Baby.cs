@@ -19,7 +19,8 @@ namespace FeedSleepRepeatLibrary
         {
             get
             {
-                return $"{FirstName} {LastName}";
+                // Trimmed so a blank (default) baby name contains no whitespace
+                return $"{FirstName} {LastName}".Trim();
             }
         }
     }
