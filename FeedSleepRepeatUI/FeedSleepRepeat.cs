@@ -118,7 +118,7 @@ namespace FeedSleepRepeatUI
                 == DialogResult.No)
                 {
                     // Undo datePicker change without firing warning twice
-                    datePicker.ValueChanged -= datePicker_ValueChanged;                   
+                    datePicker.ValueChanged -= datePicker_ValueChanged;
                     datePicker.Value = lastDateValue;
                     datePicker.ValueChanged += datePicker_ValueChanged;
                     return;
