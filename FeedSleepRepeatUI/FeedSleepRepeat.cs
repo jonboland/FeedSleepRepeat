@@ -16,6 +16,7 @@ namespace FeedSleepRepeatUI
         private List<Baby> babies = new();
         private Baby currentBaby = new();
         private BabyDay currentBabyDay = new();
+        private DateTime lastDateValue = new();
         private Timer timer = new();
         private bool changed = false;
 
@@ -118,7 +119,7 @@ namespace FeedSleepRepeatUI
                 {
                     // Undo datePicker change without firing warning twice
                     datePicker.ValueChanged -= datePicker_ValueChanged;
-                    datePicker.Value = currentBabyDay.Date;
+                    datePicker.Value = lastDateValue;
                     datePicker.ValueChanged += datePicker_ValueChanged;
                     return;
                 }

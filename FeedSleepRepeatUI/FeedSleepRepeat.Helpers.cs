@@ -122,6 +122,8 @@ namespace FeedSleepRepeatUI
         private void ResetBabyDayValues()
         {
             currentBabyDay = new();
+            // Store datePicker value so date can be reverted when date changed without updating
+            lastDateValue = datePicker.Value;
             weightBox.Text = string.Empty;
             wetNappiesNumericUpDown.Value = 0;
             dirtyNappiesNumericUpDown.Value = 0;
