@@ -18,6 +18,7 @@ namespace FeedSleepRepeatUI
         private BabyDay currentBabyDay = new();
         private DateTime lastDateValue = new();
         private Timer timer = new();
+        private bool datePickerDroppedDown = false;
         private bool changed = false;
 
         public FeedForm()
@@ -61,12 +62,12 @@ namespace FeedSleepRepeatUI
                     RefreshActivitiesListbox();
                 }
             }
+
+            changed = false;
         }
 
         private void babyNameCombo_TextChanged(object sender, EventArgs e)
         {
-            changed = false;
-
             if (string.IsNullOrEmpty(babyNameCombo.Text))
             {
                 DisableButtons();
@@ -82,6 +83,17 @@ namespace FeedSleepRepeatUI
 
             DisableButtons();
             EnableButtonsNewBaby();
+            changed = false;
+        }
+
+        private void dateOfBirthPicker_ValueChanged(object sender, EventArgs e)
+        {
+            changed = true;
+        }
+
+        private void weightBox_TextChanged(object sender, EventArgs e)
+        {
+            changed = true;
         }
 
         /// <summary>
@@ -91,6 +103,8 @@ namespace FeedSleepRepeatUI
         {
             nappiesTotal.Text = FeedSleepRepeatLogic.RefreshTotalNappies(
                 wetNappiesNumericUpDown.Value, dirtyNappiesNumericUpDown.Value);
+
+            changed = true;
         }
 
         /// <summary>
@@ -100,6 +114,26 @@ namespace FeedSleepRepeatUI
         {
             nappiesTotal.Text = FeedSleepRepeatLogic.RefreshTotalNappies(
                 wetNappiesNumericUpDown.Value, dirtyNappiesNumericUpDown.Value);
+
+            changed = true;
+        }
+
+        private void datePicker_DropDown(object sender, EventArgs e)
+        {
+            datePickerDroppedDown = true;
+        }
+
+        private void datePicker_CloseUp(object sender, EventArgs e)
+        {
+            // No need to handle date picker change if date ends up being the same
+            if (datePicker.Value == lastDateValue)
+            {
+                datePickerDroppedDown = false;
+                return;
+            }
+
+            HandleDatePickerChange();
+            datePickerDroppedDown = false;
         }
 
         /// <summary>
@@ -108,39 +142,13 @@ namespace FeedSleepRepeatUI
         /// </summary>
         private void datePicker_ValueChanged(object sender, EventArgs e)
         {
-            // Warn user if activities have been added and attempt is made to change date without updating
-            if (currentBabyDay.Activities.Any(b => b.Id == 0))
+            // If calendar is being used, let datePicker_CloseUp handle any changes
+            if (datePickerDroppedDown == true)
             {
-                if (MessageBox.Show(
-                Constants.ChangeDateYesNo,
-                Constants.ChangeDateCaption,
-                MessageBoxButtons.YesNo)
-                == DialogResult.No)
-                {
-                    // Undo datePicker change without firing warning twice
-                    datePicker.ValueChanged -= datePicker_ValueChanged;
-                    datePicker.Value = lastDateValue;
-                    datePicker.ValueChanged += datePicker_ValueChanged;
-                    return;
-                }
+                return;
             }
 
-            ResetBabyDayValues();
-            changed = false;
-
-            currentBabyDay = currentBaby.BabyDays.FirstOrDefault(bd => bd.Date == datePicker.Value.Date);
-
-            if (currentBabyDay != null)
-            {
-                RefreshBabyDayValues();
-                currentBabyDay.Activities = SqliteDataAccess.LoadActivities(currentBabyDay);
-                currentBabyDay.Activities = FeedSleepRepeatLogic.SortActivities(currentBabyDay.Activities);
-                RefreshActivitiesListbox();
-            }
-            else
-            {
-                currentBabyDay = new();
-            }
+            HandleDatePickerChange();
         }
 
         /// <summary>
@@ -277,7 +285,12 @@ namespace FeedSleepRepeatUI
 
         private void timer_Tick(object sender, EventArgs e)
         {
-            updateButton.Enabled = true;
+            // If statement handles possibility of user typing new name while update button disabled
+            if (createButton.Enabled == false)
+            {
+                updateButton.Enabled = true;
+            }
+            
             timer.Stop();
         }
 

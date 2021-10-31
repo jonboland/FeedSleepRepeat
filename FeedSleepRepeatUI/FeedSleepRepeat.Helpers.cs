@@ -94,6 +94,50 @@ namespace FeedSleepRepeatUI
             babyNameCombo.DataSource = babies;
         }
 
+        private void HandleDatePickerChange()
+        {
+            // Do nothing if the default baby is selected
+            if (string.IsNullOrEmpty(babyNameCombo.Text))
+            {
+                return;
+            }
+
+            // Warn user if changes have been made and new date selected without updating
+            if (changed == true)
+            {
+                if (MessageBox.Show(
+                Constants.ChangeDateYesNo,
+                Constants.ChangeDateCaption,
+                MessageBoxButtons.YesNo)
+                == DialogResult.No)
+                {
+                    // Undo datePicker change without firing warning twice
+                    datePicker.ValueChanged -= datePicker_ValueChanged;
+                    datePicker.Value = lastDateValue;
+                    datePicker.ValueChanged += datePicker_ValueChanged;
+                    return;
+                }
+            }
+
+            ResetBabyDayValues();
+
+            currentBabyDay = currentBaby.BabyDays.FirstOrDefault(bd => bd.Date == datePicker.Value.Date);
+
+            if (currentBabyDay != null)
+            {
+                RefreshBabyDayValues();
+                currentBabyDay.Activities = SqliteDataAccess.LoadActivities(currentBabyDay);
+                currentBabyDay.Activities = FeedSleepRepeatLogic.SortActivities(currentBabyDay.Activities);
+                RefreshActivitiesListbox();
+            }
+            else
+            {
+                currentBabyDay = new();
+            }
+
+            changed = false;
+        }
+
         /// <summary>
         /// Resets all feed activity values.
         /// </summary>

@@ -114,6 +114,7 @@ namespace FeedSleepRepeatUI
             this.dateOfBirthPicker.Name = "dateOfBirthPicker";
             this.dateOfBirthPicker.Size = new System.Drawing.Size(98, 25);
             this.dateOfBirthPicker.TabIndex = 1;
+            this.dateOfBirthPicker.ValueChanged += new System.EventHandler(this.dateOfBirthPicker_ValueChanged);
             // 
             // dateLabel
             // 
@@ -132,7 +133,9 @@ namespace FeedSleepRepeatUI
             this.datePicker.Name = "datePicker";
             this.datePicker.Size = new System.Drawing.Size(98, 25);
             this.datePicker.TabIndex = 2;
+            this.datePicker.CloseUp += new System.EventHandler(this.datePicker_CloseUp);
             this.datePicker.ValueChanged += new System.EventHandler(this.datePicker_ValueChanged);
+            this.datePicker.DropDown += new System.EventHandler(this.datePicker_DropDown);
             // 
             // weightLabel
             // 
@@ -151,6 +154,7 @@ namespace FeedSleepRepeatUI
             this.weightBox.Name = "weightBox";
             this.weightBox.Size = new System.Drawing.Size(98, 25);
             this.weightBox.TabIndex = 3;
+            this.weightBox.TextChanged += new System.EventHandler(this.weightBox_TextChanged);
             // 
             // wetNappiesLabel
             // 
