@@ -61,12 +61,12 @@ namespace FeedSleepRepeatUI
                     RefreshActivitiesListbox();
                 }
             }
+
+            changed = false;
         }
 
         private void babyNameCombo_TextChanged(object sender, EventArgs e)
         {
-            changed = false;
-
             if (string.IsNullOrEmpty(babyNameCombo.Text))
             {
                 DisableButtons();
@@ -82,6 +82,17 @@ namespace FeedSleepRepeatUI
 
             DisableButtons();
             EnableButtonsNewBaby();
+            changed = false;
+        }
+
+        private void dateOfBirthPicker_ValueChanged(object sender, EventArgs e)
+        {
+            changed = true;
+        }
+
+        private void weightBox_TextChanged(object sender, EventArgs e)
+        {
+            changed = true;
         }
 
         /// <summary>
@@ -91,6 +102,8 @@ namespace FeedSleepRepeatUI
         {
             nappiesTotal.Text = FeedSleepRepeatLogic.RefreshTotalNappies(
                 wetNappiesNumericUpDown.Value, dirtyNappiesNumericUpDown.Value);
+
+            changed = true;
         }
 
         /// <summary>
@@ -100,6 +113,8 @@ namespace FeedSleepRepeatUI
         {
             nappiesTotal.Text = FeedSleepRepeatLogic.RefreshTotalNappies(
                 wetNappiesNumericUpDown.Value, dirtyNappiesNumericUpDown.Value);
+
+            changed = true;
         }
 
         /// <summary>
@@ -108,8 +123,14 @@ namespace FeedSleepRepeatUI
         /// </summary>
         private void datePicker_ValueChanged(object sender, EventArgs e)
         {
-            // Warn user if activities have been added and attempt is made to change date without updating
-            if (currentBabyDay.Activities.Any(b => b.Id == 0))
+            // Do nothing if the default baby is selected
+            if (string.IsNullOrEmpty(babyNameCombo.Text))
+            {
+                return;
+            }
+            
+            // Warn user if changes have been made and new date selected without updating
+            if (changed == true)
             {
                 if (MessageBox.Show(
                 Constants.ChangeDateYesNo,
@@ -126,7 +147,6 @@ namespace FeedSleepRepeatUI
             }
 
             ResetBabyDayValues();
-            changed = false;
 
             currentBabyDay = currentBaby.BabyDays.FirstOrDefault(bd => bd.Date == datePicker.Value.Date);
 
@@ -141,6 +161,8 @@ namespace FeedSleepRepeatUI
             {
                 currentBabyDay = new();
             }
+
+            changed = false;
         }
 
         /// <summary>

@@ -114,6 +114,7 @@ namespace FeedSleepRepeatUI
             this.dateOfBirthPicker.Name = "dateOfBirthPicker";
             this.dateOfBirthPicker.Size = new System.Drawing.Size(98, 25);
             this.dateOfBirthPicker.TabIndex = 1;
+            this.dateOfBirthPicker.ValueChanged += new System.EventHandler(this.dateOfBirthPicker_ValueChanged);
             // 
             // dateLabel
             // 
@@ -151,6 +152,7 @@ namespace FeedSleepRepeatUI
             this.weightBox.Name = "weightBox";
             this.weightBox.Size = new System.Drawing.Size(98, 25);
             this.weightBox.TabIndex = 3;
+            this.weightBox.TextChanged += new System.EventHandler(this.weightBox_TextChanged);
             // 
             // wetNappiesLabel
             // 
