@@ -18,6 +18,7 @@ namespace FeedSleepRepeatUI
         private BabyDay currentBabyDay = new();
         private DateTime lastDateValue = new();
         private Timer timer = new();
+        private bool datePickerDroppedDown = false;
         private bool changed = false;
 
         public FeedForm()
@@ -117,52 +118,37 @@ namespace FeedSleepRepeatUI
             changed = true;
         }
 
+        private void datePicker_DropDown(object sender, EventArgs e)
+        {
+            datePickerDroppedDown = true;
+        }
+
+        private void datePicker_CloseUp(object sender, EventArgs e)
+        {
+            // No need to handle date picker change if date ends up being the same
+            if (datePicker.Value == lastDateValue)
+            {
+                datePickerDroppedDown = false;
+                return;
+            }
+
+            HandleDatePickerChange();
+            datePickerDroppedDown = false;
+        }
+
         /// <summary>
         /// If the selected baby day exists, populates baby day fields and activity list with its values.
         /// NB: Method is triggered at runtime.
         /// </summary>
         private void datePicker_ValueChanged(object sender, EventArgs e)
         {
-            // Do nothing if the default baby is selected
-            if (string.IsNullOrEmpty(babyNameCombo.Text))
+            // If calendar is being used, let datePicker_CloseUp handle any changes
+            if (datePickerDroppedDown == true)
             {
                 return;
             }
-            
-            // Warn user if changes have been made and new date selected without updating
-            if (changed == true)
-            {
-                if (MessageBox.Show(
-                Constants.ChangeDateYesNo,
-                Constants.ChangeDateCaption,
-                MessageBoxButtons.YesNo)
-                == DialogResult.No)
-                {
-                    // Undo datePicker change without firing warning twice
-                    datePicker.ValueChanged -= datePicker_ValueChanged;
-                    datePicker.Value = lastDateValue;
-                    datePicker.ValueChanged += datePicker_ValueChanged;
-                    return;
-                }
-            }
 
-            ResetBabyDayValues();
-
-            currentBabyDay = currentBaby.BabyDays.FirstOrDefault(bd => bd.Date == datePicker.Value.Date);
-
-            if (currentBabyDay != null)
-            {
-                RefreshBabyDayValues();
-                currentBabyDay.Activities = SqliteDataAccess.LoadActivities(currentBabyDay);
-                currentBabyDay.Activities = FeedSleepRepeatLogic.SortActivities(currentBabyDay.Activities);
-                RefreshActivitiesListbox();
-            }
-            else
-            {
-                currentBabyDay = new();
-            }
-
-            changed = false;
+            HandleDatePickerChange();
         }
 
         /// <summary>
@@ -299,7 +285,12 @@ namespace FeedSleepRepeatUI
 
         private void timer_Tick(object sender, EventArgs e)
         {
-            updateButton.Enabled = true;
+            // If statement handles possibility of user typing new name while update button disabled
+            if (createButton.Enabled == false)
+            {
+                updateButton.Enabled = true;
+            }
+            
             timer.Stop();
         }
 

@@ -133,7 +133,9 @@ namespace FeedSleepRepeatUI
             this.datePicker.Name = "datePicker";
             this.datePicker.Size = new System.Drawing.Size(98, 25);
             this.datePicker.TabIndex = 2;
+            this.datePicker.CloseUp += new System.EventHandler(this.datePicker_CloseUp);
             this.datePicker.ValueChanged += new System.EventHandler(this.datePicker_ValueChanged);
+            this.datePicker.DropDown += new System.EventHandler(this.datePicker_DropDown);
             // 
             // weightLabel
             // 
