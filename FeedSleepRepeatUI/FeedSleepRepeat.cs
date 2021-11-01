@@ -41,29 +41,52 @@ namespace FeedSleepRepeatUI
         /// <param name="e">Object specific to the event that is being handled</param>
         private void babyNameCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ResetAllValues();
-
-            currentBaby = babies.First(b => b.FullName == babyNameCombo.Text);
-
-            if (!string.IsNullOrEmpty(currentBaby.FullName))
+            if (changed == true
+                && !string.IsNullOrEmpty(currentBaby.FullName)
+                // No need to warn that changes will be lost if the currentBaby is reselected
+                && currentBaby.FullName != babyNameCombo.Text)
             {
-                EnableButtonsExistingBaby();
-                dateOfBirthPicker.Value = currentBaby.DateOfBirth;
-                ageBox.Text = FeedSleepRepeatLogic.CalculateAge(currentBaby.DateOfBirth);
-                currentBaby.BabyDays = SqliteDataAccess.LoadBabyDays(currentBaby);
-                BabyDay today = currentBaby.BabyDays.FirstOrDefault(bd => bd.Date == DateTime.Today);
-
-                if (today != null)
+                if (MessageBox.Show(
+                    Constants.ChangeBabyYesNo,
+                    Constants.ChangeBabyCaption,
+                    MessageBoxButtons.YesNo)
+                    == DialogResult.No)
                 {
-                    currentBabyDay = today;
-                    RefreshBabyDayValues();
-                    currentBabyDay.Activities = SqliteDataAccess.LoadActivities(currentBabyDay);
-                    currentBabyDay.Activities = FeedSleepRepeatLogic.SortActivities(currentBabyDay.Activities);
-                    RefreshActivitiesListbox();
+                    // Undo babyNameCombo change without firing warning twice
+                    babyNameCombo.SelectedIndexChanged -= babyNameCombo_SelectedIndexChanged;
+                    babyNameCombo.Text = currentBaby.FullName;
+                    babyNameCombo.SelectedIndexChanged += babyNameCombo_SelectedIndexChanged;
+
+                    return;
                 }
             }
+            // Don't reset and reloaad if the selected baby is already the currentBaby
+            if (currentBaby.FullName != babyNameCombo.Text)
+            {
+                ResetAllValues();
 
-            changed = false;
+                currentBaby = babies.First(b => b.FullName == babyNameCombo.Text);
+
+                if (!string.IsNullOrEmpty(currentBaby.FullName))
+                {
+                    EnableButtonsExistingBaby();
+                    dateOfBirthPicker.Value = currentBaby.DateOfBirth;
+                    ageBox.Text = FeedSleepRepeatLogic.CalculateAge(currentBaby.DateOfBirth);
+                    currentBaby.BabyDays = SqliteDataAccess.LoadBabyDays(currentBaby);
+                    BabyDay today = currentBaby.BabyDays.FirstOrDefault(bd => bd.Date == DateTime.Today);
+
+                    if (today != null)
+                    {
+                        currentBabyDay = today;
+                        RefreshBabyDayValues();
+                        currentBabyDay.Activities = SqliteDataAccess.LoadActivities(currentBabyDay);
+                        currentBabyDay.Activities = FeedSleepRepeatLogic.SortActivities(currentBabyDay.Activities);
+                        RefreshActivitiesListbox();
+                    }
+                }
+
+                changed = false;
+            }          
         }
 
         private void babyNameCombo_TextChanged(object sender, EventArgs e)
@@ -83,7 +106,6 @@ namespace FeedSleepRepeatUI
 
             DisableButtons();
             EnableButtonsNewBaby();
-            changed = false;
         }
 
         private void dateOfBirthPicker_ValueChanged(object sender, EventArgs e)
