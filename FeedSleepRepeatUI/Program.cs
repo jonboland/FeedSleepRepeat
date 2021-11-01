@@ -47,7 +47,7 @@ namespace FeedSleepRepeatUI
         }
 
         /// <summary>
-        /// Creates the DataDir folder in AppData/Local if it doesn't already exist.
+        /// Creates the DataDir folder in AppData/Local if it's not already present.
         /// </summary>
         static void CreateDataDirIfNotPresent()
         {
@@ -58,7 +58,7 @@ namespace FeedSleepRepeatUI
         }
 
         /// <summary>
-        /// Copies the database file from the deployment location to the DataDir folder if it doesn't already exist.
+        /// Copies the database file from the deployment location to the DataDir folder if it's not already present.
         /// </summary>
         static void CopyDatabaseToDataDirIfNotPresent()
         {
