@@ -10,6 +10,9 @@ namespace FeedSleepRepeatUI
 {
     partial class FeedForm
     {
+        /// <summary>
+        /// Disables graph buttons.
+        /// </summary>
         private void DisableGraphButtons()
         {
             dayGraphButton.Enabled = false;
@@ -17,6 +20,9 @@ namespace FeedSleepRepeatUI
             monthGraphButton.Enabled = false;
         }
 
+        /// <summary>
+        /// Disables all buttons except graph buttons.
+        /// </summary>
         private void DisableButtons()
         {
             deleteButton.Enabled = false;
@@ -26,6 +32,9 @@ namespace FeedSleepRepeatUI
             addSleepButton.Enabled = false;
         }
 
+        /// <summary>
+        /// Enables the delete, update, and activity buttons.
+        /// </summary>
         private void EnableButtonsExistingBaby()
         {
             deleteButton.Enabled = true;
@@ -34,6 +43,9 @@ namespace FeedSleepRepeatUI
             addSleepButton.Enabled = true;
         }
 
+        /// <summary>
+        /// Enables the create and activity buttons.
+        /// </summary>
         private void EnableButtonsNewBaby()
         {
             createButton.Enabled = true;
@@ -41,6 +53,9 @@ namespace FeedSleepRepeatUI
             addSleepButton.Enabled = true;
         }
 
+        /// <summary>
+        /// Disables the update button for 500 milliseconds.
+        /// </summary>
         private void DisableUpdateButtonForHalfASecond()
         {
             timer.Interval = 500;
@@ -94,6 +109,10 @@ namespace FeedSleepRepeatUI
             babyNameCombo.DataSource = babies;
         }
 
+        /// <summary>
+        /// If the selected baby day exists, populates baby day fields and activity list with its values.
+        /// Warns user and gives option to cancel if changes have been made and new date selected without updating.
+        /// </summary>
         private void HandleDatePickerChange()
         {
             // Do nothing if the default baby is selected
@@ -102,7 +121,6 @@ namespace FeedSleepRepeatUI
                 return;
             }
 
-            // Warn user if changes have been made and new date selected without updating
             if (changed == true)
             {
                 if (MessageBox.Show(

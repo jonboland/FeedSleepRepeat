@@ -89,6 +89,9 @@ namespace FeedSleepRepeatUI
             }          
         }
 
+        /// <summary>
+        /// Disables and enables buttons based on the babyNameCombo.Text value.
+        /// </summary>
         private void babyNameCombo_TextChanged(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(babyNameCombo.Text))
@@ -108,18 +111,30 @@ namespace FeedSleepRepeatUI
             EnableButtonsNewBaby();
         }
 
+        /// <summary>
+        /// Sets the changed state to true if the dateOfBirthPicker value is changed.
+        /// 
+        /// The changed state is used to determine whether warnings about 
+        /// potential loss of changes are displayed.
+        /// </summary>
         private void dateOfBirthPicker_ValueChanged(object sender, EventArgs e)
         {
             changed = true;
         }
 
+        /// <summary>
+        /// Sets the changed state to true if the weightBox.Text value is changed.
+        /// 
+        /// The changed state is used to determine whether warnings about 
+        /// potential loss of changes are displayed. 
+        /// </summary>
         private void weightBox_TextChanged(object sender, EventArgs e)
         {
             changed = true;
         }
 
         /// <summary>
-        /// Updates the total nappies textbox when the number of wet nappies is changed
+        /// Updates the total nappies textbox when the number of wet nappies is changed.
         /// </summary>
         private void wetNappiesNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
@@ -130,7 +145,7 @@ namespace FeedSleepRepeatUI
         }
 
         /// <summary>
-        /// Updates the total nappies textbox when the number of dirty nappies is changed
+        /// Updates the total nappies textbox when the number of dirty nappies is changed.
         /// </summary>
         private void dirtyNappiesNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
@@ -140,14 +155,20 @@ namespace FeedSleepRepeatUI
             changed = true;
         }
 
+        /// <summary>
+        /// Sets the datePickerDroppedDown state to true when the calendar is open.
+        /// </summary>
         private void datePicker_DropDown(object sender, EventArgs e)
         {
             datePickerDroppedDown = true;
         }
 
+        /// <summary>
+        /// If the calendar is open and the selected baby day exists,
+        /// populates baby day fields and activity list with its values.
+        /// </summary>
         private void datePicker_CloseUp(object sender, EventArgs e)
         {
-            // No need to handle date picker change if date ends up being the same
             if (datePicker.Value == lastDateValue)
             {
                 datePickerDroppedDown = false;
@@ -159,12 +180,14 @@ namespace FeedSleepRepeatUI
         }
 
         /// <summary>
-        /// If the selected baby day exists, populates baby day fields and activity list with its values.
+        /// If the calendar is closed and the selected baby day exists,
+        /// populates baby day fields and activity list with its values.
+        /// 
         /// NB: Method is triggered at runtime.
         /// </summary>
         private void datePicker_ValueChanged(object sender, EventArgs e)
         {
-            // If calendar is being used, let datePicker_CloseUp handle any changes
+            // If the calendar is being used, let datePicker_CloseUp handle any changes
             if (datePickerDroppedDown == true)
             {
                 return;
@@ -305,9 +328,12 @@ namespace FeedSleepRepeatUI
             DisableUpdateButtonForHalfASecond();
         }
 
+        /// <summary>
+        /// Reenables the Update button and stops the timer.
+        /// </summary>
         private void timer_Tick(object sender, EventArgs e)
         {
-            // If statement handles possibility of user typing new name while update button disabled
+            // Handles possibility of user typing new name while update button disabled
             if (createButton.Enabled == false)
             {
                 updateButton.Enabled = true;
@@ -347,6 +373,9 @@ namespace FeedSleepRepeatUI
             }
         }
 
+        /// <summary>
+        /// Confirms decision if application closed without updating/creating.
+        /// </summary>
         private void FeedForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (e.CloseReason == CloseReason.UserClosing && changed == true)
