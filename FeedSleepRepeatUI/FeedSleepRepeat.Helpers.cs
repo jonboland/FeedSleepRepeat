@@ -110,6 +110,37 @@ namespace FeedSleepRepeatUI
         }
 
         /// <summary>
+        /// Displays a YesNo MessageBox to confirm whether the user wishes to proceed
+        /// with selecting a different baby if changes will be lost.
+        /// Cancels the change if the user selects No.
+        /// </summary>
+        /// <returns>Bool value indicating whether the change was cancelled.</returns>
+        private bool ConfirmBabySelectionIfChangesWillBeLost()
+        {
+            if (changed == true
+                && !string.IsNullOrEmpty(currentBaby.FullName)
+                && currentBaby.FullName != babyNameCombo.Text
+                && babies.Any(b => b.FullName == lastBabyName))
+            {
+                if (MessageBox.Show(
+                    Constants.ChangeBabyYesNo,
+                    Constants.ChangeBabyCaption,
+                    MessageBoxButtons.YesNo)
+                    == DialogResult.No)
+                {
+                    // Undo babyNameCombo change without firing warning twice
+                    babyNameCombo.SelectedIndexChanged -= babyNameCombo_SelectedIndexChanged;
+                    babyNameCombo.Text = currentBaby.FullName;
+                    babyNameCombo.SelectedIndexChanged += babyNameCombo_SelectedIndexChanged;
+
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// If the selected baby day exists, populates baby day fields and activity list with its values.
         /// Warns user and gives option to cancel if changes have been made and new date selected without updating.
         /// </summary>
@@ -121,20 +152,11 @@ namespace FeedSleepRepeatUI
                 return;
             }
 
-            if (changed == true)
+            bool cancelSelection = ConfirmDateSelectionIfChangesWillBeLost();
+
+            if (cancelSelection)
             {
-                if (MessageBox.Show(
-                Constants.ChangeDateYesNo,
-                Constants.ChangeDateCaption,
-                MessageBoxButtons.YesNo)
-                == DialogResult.No)
-                {
-                    // Undo datePicker change without firing warning twice
-                    datePicker.ValueChanged -= datePicker_ValueChanged;
-                    datePicker.Value = lastDateValue;
-                    datePicker.ValueChanged += datePicker_ValueChanged;
-                    return;
-                }
+                return;
             }
 
             ResetBabyDayValues();
@@ -154,6 +176,34 @@ namespace FeedSleepRepeatUI
             }
 
             changed = false;
+        }
+
+        /// <summary>
+        /// Displays a YesNo MessageBox to confirm whether the user wishes to proceed
+        /// with selecting a different date if changes will be lost.
+        /// Cancels the change if the user selects No.
+        /// </summary>
+        /// <returns>Bool value indicating whether the change was cancelled.</returns>
+        private bool ConfirmDateSelectionIfChangesWillBeLost()
+        {
+            if (changed == true)
+            {
+                if (MessageBox.Show(
+                Constants.ChangeDateYesNo,
+                Constants.ChangeDateCaption,
+                MessageBoxButtons.YesNo)
+                == DialogResult.No)
+                {
+                    // Undo datePicker change without firing warning twice
+                    datePicker.ValueChanged -= datePicker_ValueChanged;
+                    datePicker.Value = lastDateValue;
+                    datePicker.ValueChanged += datePicker_ValueChanged;
+
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -206,7 +256,9 @@ namespace FeedSleepRepeatUI
             SetMaxDateOfDatePickers();
             dateOfBirthPicker.Value = DateTime.Today.Date;
             ageBox.Text = Constants.DefaultAge;
+            datePicker.ValueChanged -= datePicker_ValueChanged;
             datePicker.Value = DateTime.Today.Date;
+            datePicker.ValueChanged += datePicker_ValueChanged;
             ResetBabyDayValues();
         }
 
