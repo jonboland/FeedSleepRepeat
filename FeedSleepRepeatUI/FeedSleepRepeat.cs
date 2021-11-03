@@ -16,14 +16,16 @@ namespace FeedSleepRepeatUI
         private List<Baby> babies = new();
         private Baby currentBaby = new();
         private BabyDay currentBabyDay = new();
+        private string lastBabyName = string.Empty;
         private DateTime lastDateValue = new();
-        private Timer timer = new();
+        private readonly Timer timer = new();
         private bool datePickerDroppedDown = false;
         private bool changed = false;
 
         public FeedForm()
         {
             InitializeComponent();
+            DisableButtons();
             DisableGraphButtons();
             SetMaxDateOfDatePickers();
             SetFeedTypeDropdownValues();
@@ -35,35 +37,23 @@ namespace FeedSleepRepeatUI
         /// <summary>
         /// Populates fields with the selected baby's details, unless the default (blank) baby is selected.
         /// This includes the baby day fields and activity list if data for today's date is present.
+        /// 
         /// NB: Method is triggered at runtime.
         /// </summary>
         /// <param name="sender">Reference to the object that raised the event</param>
         /// <param name="e">Object specific to the event that is being handled</param>
         private void babyNameCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (changed == true
-                && !string.IsNullOrEmpty(currentBaby.FullName)
-                // No need to warn that changes will be lost if the currentBaby is reselected
-                && currentBaby.FullName != babyNameCombo.Text)
-            {
-                if (MessageBox.Show(
-                    Constants.ChangeBabyYesNo,
-                    Constants.ChangeBabyCaption,
-                    MessageBoxButtons.YesNo)
-                    == DialogResult.No)
-                {
-                    // Undo babyNameCombo change without firing warning twice
-                    babyNameCombo.SelectedIndexChanged -= babyNameCombo_SelectedIndexChanged;
-                    babyNameCombo.Text = currentBaby.FullName;
-                    babyNameCombo.SelectedIndexChanged += babyNameCombo_SelectedIndexChanged;
+            bool cancelSelection = ConfirmBabySelectionIfChangesWillBeLost();
 
-                    return;
-                }
+            if (cancelSelection)
+            {
+                return;
             }
-            // Don't reset and reloaad if the selected baby is already the currentBaby
+
             if (currentBaby.FullName != babyNameCombo.Text)
             {
-                ResetAllValues();
+                ResetAllValues();             
 
                 currentBaby = babies.First(b => b.FullName == babyNameCombo.Text);
 
@@ -78,7 +68,9 @@ namespace FeedSleepRepeatUI
                     if (today != null)
                     {
                         currentBabyDay = today;
+                        datePicker.ValueChanged -= datePicker_ValueChanged;
                         RefreshBabyDayValues();
+                        datePicker.ValueChanged += datePicker_ValueChanged;
                         currentBabyDay.Activities = SqliteDataAccess.LoadActivities(currentBabyDay);
                         currentBabyDay.Activities = FeedSleepRepeatLogic.SortActivities(currentBabyDay.Activities);
                         RefreshActivitiesListbox();
@@ -86,6 +78,7 @@ namespace FeedSleepRepeatUI
                 }
 
                 changed = false;
+                lastBabyName = string.Empty;
             }          
         }
 
@@ -97,18 +90,20 @@ namespace FeedSleepRepeatUI
             if (string.IsNullOrEmpty(babyNameCombo.Text))
             {
                 DisableButtons();
-                return;
             }
 
-            else if (babyNameCombo.Text == currentBaby.FullName)
+            else if (babies.Any(b => b.FullName == babyNameCombo.Text))
             {
                 DisableButtons();
                 EnableButtonsExistingBaby();
-                return;
             }
 
-            DisableButtons();
-            EnableButtonsNewBaby();
+            else
+            {
+                DisableButtons();
+                EnableButtonsNewBaby();
+                lastBabyName = babyNameCombo.Text;
+            }
         }
 
         /// <summary>
@@ -406,7 +401,6 @@ namespace FeedSleepRepeatUI
             }
         }
 
-        // TODO: Add missing documentation comments
-        // TODO: Review all access modifiers
+
     }
 }
