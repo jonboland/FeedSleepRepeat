@@ -109,6 +109,12 @@ namespace FeedSleepRepeatUI
             babyNameCombo.DataSource = babies;
         }
 
+        /// <summary>
+        /// Displays a YesNo MessageBox to confirm whether the user wishes to proceed
+        /// with selecting a different baby if changes will be lost.
+        /// Cancels the change if the user selects No.
+        /// </summary>
+        /// <returns>Bool value indicating whether the change was cancelled.</returns>
         private bool ConfirmBabySelectionIfChangesWillBeLost()
         {
             if (changed == true
@@ -172,6 +178,12 @@ namespace FeedSleepRepeatUI
             changed = false;
         }
 
+        /// <summary>
+        /// Displays a YesNo MessageBox to confirm whether the user wishes to proceed
+        /// with selecting a different date if changes will be lost.
+        /// Cancels the change if the user selects No.
+        /// </summary>
+        /// <returns>Bool value indicating whether the change was cancelled.</returns>
         private bool ConfirmDateSelectionIfChangesWillBeLost()
         {
             if (changed == true)
