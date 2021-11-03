@@ -53,7 +53,7 @@ namespace FeedSleepRepeatUI
 
             if (currentBaby.FullName != babyNameCombo.Text)
             {
-                ResetAllValues();             
+                ResetAllValues();
 
                 currentBaby = babies.First(b => b.FullName == babyNameCombo.Text);
 
