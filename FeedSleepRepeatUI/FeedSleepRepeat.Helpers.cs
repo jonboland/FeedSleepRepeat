@@ -65,15 +65,6 @@ namespace FeedSleepRepeatUI
         }
 
         /// <summary>
-        /// Sets the maximum date for the date and date of birth pickers to today.
-        /// </summary>
-        private void SetMaxDateOfDatePickers()
-        {
-            dateOfBirthPicker.MaxDate = DateTime.Today;
-            datePicker.MaxDate = DateTime.Today;
-        }
-
-        /// <summary>
         /// Calls assemble feed type method and sets the feed type combo values based on the result.
         /// </summary>
         private void SetFeedTypeDropdownValues()
@@ -253,7 +244,6 @@ namespace FeedSleepRepeatUI
         {
             currentBaby = new();
             DisableButtons();
-            SetMaxDateOfDatePickers();
             dateOfBirthPicker.Value = DateTime.Today.Date;
             ageBox.Text = Constants.DefaultAge;
             datePicker.ValueChanged -= datePicker_ValueChanged;

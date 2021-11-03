@@ -27,7 +27,6 @@ namespace FeedSleepRepeatUI
             InitializeComponent();
             DisableButtons();
             DisableGraphButtons();
-            SetMaxDateOfDatePickers();
             SetFeedTypeDropdownValues();
             AddActivitiesKeyDownEventHandler();
             LoadBabyList();
@@ -107,6 +106,14 @@ namespace FeedSleepRepeatUI
         }
 
         /// <summary>
+        /// Sets the dateOfBirthPicker's MaxDate property to today when the control is entered.
+        /// </summary>
+        private void dateOfBirthPicker_Enter(object sender, EventArgs e)
+        {
+            dateOfBirthPicker.MaxDate = DateTime.Today;
+        }
+
+        /// <summary>
         /// Sets the changed state to true if the dateOfBirthPicker value is changed.
         /// 
         /// The changed state is used to determine whether warnings about 
@@ -148,6 +155,14 @@ namespace FeedSleepRepeatUI
                 wetNappiesNumericUpDown.Value, dirtyNappiesNumericUpDown.Value);
 
             changed = true;
+        }
+
+        /// <summary>
+        /// Sets the datePicker's MaxDate property to today when the control is entered.
+        /// </summary>
+        private void datePicker_Enter(object sender, EventArgs e)
+        {
+            datePicker.MaxDate = DateTime.Today;
         }
 
         /// <summary>
@@ -400,7 +415,5 @@ namespace FeedSleepRepeatUI
                 }
             }
         }
-
-
     }
 }
