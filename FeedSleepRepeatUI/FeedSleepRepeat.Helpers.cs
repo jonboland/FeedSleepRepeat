@@ -15,9 +15,8 @@ namespace FeedSleepRepeatUI
         /// </summary>
         private void DisableGraphButtons()
         {
-            dayGraphButton.Enabled = false;
-            weekGraphButton.Enabled = false;
-            monthGraphButton.Enabled = false;
+            activityChartButton.Enabled = false;
+            weightChartButton.Enabled = false;
         }
 
         /// <summary>
@@ -25,6 +24,7 @@ namespace FeedSleepRepeatUI
         /// </summary>
         private void DisableButtons()
         {
+            nappyChartButton.Enabled = false;
             deleteButton.Enabled = false;
             createButton.Enabled = false;
             updateButton.Enabled = false;
@@ -37,6 +37,7 @@ namespace FeedSleepRepeatUI
         /// </summary>
         private void EnableButtonsExistingBaby()
         {
+            nappyChartButton.Enabled = true;
             deleteButton.Enabled = true;
             updateButton.Enabled = true;
             addFeedButton.Enabled = true;
@@ -109,8 +110,8 @@ namespace FeedSleepRepeatUI
         private bool ConfirmBabySelectionIfChangesWillBeLost()
         {
             if (changed == true
-                && !string.IsNullOrEmpty(currentBaby.FullName)
-                && currentBaby.FullName != babyNameCombo.Text
+                && !string.IsNullOrEmpty(CurrentBaby.FullName)
+                && CurrentBaby.FullName != babyNameCombo.Text
                 && babies.Any(b => b.FullName == lastBabyName))
             {
                 if (MessageBox.Show(
@@ -121,7 +122,7 @@ namespace FeedSleepRepeatUI
                 {
                     // Undo babyNameCombo change without firing warning twice
                     babyNameCombo.SelectedIndexChanged -= babyNameCombo_SelectedIndexChanged;
-                    babyNameCombo.Text = currentBaby.FullName;
+                    babyNameCombo.Text = CurrentBaby.FullName;
                     babyNameCombo.SelectedIndexChanged += babyNameCombo_SelectedIndexChanged;
 
                     return true;
@@ -152,7 +153,7 @@ namespace FeedSleepRepeatUI
 
             ResetBabyDayValues();
 
-            currentBabyDay = currentBaby.BabyDays.FirstOrDefault(bd => bd.Date == datePicker.Value.Date);
+            currentBabyDay = CurrentBaby.BabyDays.FirstOrDefault(bd => bd.Date == datePicker.Value.Date);
 
             if (currentBabyDay != null)
             {
@@ -242,7 +243,7 @@ namespace FeedSleepRepeatUI
         /// </summary>
         private void ResetAllValues()
         {
-            currentBaby = new();
+            CurrentBaby = new();
             DisableButtons();
             dateOfBirthPicker.Value = DateTime.Today.Date;
             ageBox.Text = Constants.DefaultAge;
@@ -271,9 +272,9 @@ namespace FeedSleepRepeatUI
         /// <param name="name">Array of two strings containing a baby's first and last names.</param>
         private void SetCurrentBabyValues(string[] name)
         {
-            currentBaby.FirstName = name[0];
-            currentBaby.LastName = name[1];
-            currentBaby.DateOfBirth = dateOfBirthPicker.Value.Date;
+            CurrentBaby.FirstName = name[0];
+            CurrentBaby.LastName = name[1];
+            CurrentBaby.DateOfBirth = dateOfBirthPicker.Value.Date;
         }
 
         /// <summary>
