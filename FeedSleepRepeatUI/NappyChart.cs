@@ -22,18 +22,18 @@ namespace FeedSleepRepeatUI
             InitializeComponent();
         }
        
-        private void DayGraph_Load(object sender, EventArgs e)
+        private void NappyChart_Load(object sender, EventArgs e)
         {
-            fillChart();
+            FillChart();
         }
  
-        private void fillChart()
-        {   
-            nappiesChart.Titles.Add(CurrentBaby.FullName);
+        private void FillChart(int period = -6)
+        {
+            ResetChart();
 
             DateTime firstDay = DateTime.Today;
 
-            for (int i = -6; i < 1; i++)
+            for (int i = period; i < 1; i++)
             {
                 decimal wetNappies = 0;
                 decimal dirtyNappies = 0;
@@ -50,6 +50,32 @@ namespace FeedSleepRepeatUI
                 nappiesChart.Series["Dirty Nappies"].Points.AddXY(date, dirtyNappies);
                 nappiesChart.Series["Total"].Points.AddXY(date, wetNappies + dirtyNappies);
             }
+        }
+
+        private void ResetChart()
+        {
+            nappiesChart.Titles.Clear();
+            nappiesChart.Titles.Add(CurrentBaby.FullName);
+
+            foreach (var series in nappiesChart.Series)
+            {
+                series.Points.Clear();
+            }
+        }
+
+        private void nappyChart7Button_Click(object sender, EventArgs e)
+        {
+            FillChart(-6);
+        }
+
+        private void nappyChart14Button_Click(object sender, EventArgs e)
+        {
+            FillChart(-13);
+        }
+
+        private void nappyChart30Button_Click(object sender, EventArgs e)
+        {
+            FillChart(-29);
         }
     }
 }

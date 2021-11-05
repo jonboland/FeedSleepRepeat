@@ -11,7 +11,7 @@ namespace FeedSleepRepeatUI
     partial class FeedForm
     {
         /// <summary>
-        /// Disables graph buttons.
+        /// Disables chart buttons.
         /// </summary>
         private void DisableGraphButtons()
         {
@@ -20,7 +20,7 @@ namespace FeedSleepRepeatUI
         }
 
         /// <summary>
-        /// Disables all buttons except graph buttons.
+        /// Disables all buttons except activity and weight chart buttons.
         /// </summary>
         private void DisableButtons()
         {
