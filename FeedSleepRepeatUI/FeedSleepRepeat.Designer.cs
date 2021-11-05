@@ -55,9 +55,9 @@ namespace FeedSleepRepeatUI
             this.dirtyNappiesNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.addFeedButton = new System.Windows.Forms.Button();
             this.addSleepButton = new System.Windows.Forms.Button();
-            this.dayGraphButton = new System.Windows.Forms.Button();
-            this.weekGraphButton = new System.Windows.Forms.Button();
-            this.monthGraphButton = new System.Windows.Forms.Button();
+            this.activityChartButton = new System.Windows.Forms.Button();
+            this.weightChartButton = new System.Windows.Forms.Button();
+            this.nappyChartButton = new System.Windows.Forms.Button();
             this.activitiesGroupBox = new System.Windows.Forms.GroupBox();
             this.sleepEndPicker = new System.Windows.Forms.DateTimePicker();
             this.sleepStartPicker = new System.Windows.Forms.DateTimePicker();
@@ -65,7 +65,7 @@ namespace FeedSleepRepeatUI
             this.feedEndPicker = new System.Windows.Forms.DateTimePicker();
             this.feedAmountBox = new System.Windows.Forms.TextBox();
             this.activitiesListBox = new System.Windows.Forms.ListBox();
-            this.graphsGroupBox = new System.Windows.Forms.GroupBox();
+            this.chartsGroupBox = new System.Windows.Forms.GroupBox();
             this.babyNameLabel = new System.Windows.Forms.Label();
             this.createButton = new System.Windows.Forms.Button();
             this.deleteButton = new System.Windows.Forms.Button();
@@ -73,7 +73,7 @@ namespace FeedSleepRepeatUI
             ((System.ComponentModel.ISupportInitialize)(this.wetNappiesNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dirtyNappiesNumericUpDown)).BeginInit();
             this.activitiesGroupBox.SuspendLayout();
-            this.graphsGroupBox.SuspendLayout();
+            this.chartsGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // dateOfBirthLabel
@@ -339,35 +339,36 @@ namespace FeedSleepRepeatUI
             this.addSleepButton.UseVisualStyleBackColor = true;
             this.addSleepButton.Click += new System.EventHandler(this.addSleepButton_Click);
             // 
-            // dayGraphButton
+            // activityChartButton
             // 
-            this.dayGraphButton.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.dayGraphButton.Location = new System.Drawing.Point(17, 24);
-            this.dayGraphButton.Name = "dayGraphButton";
-            this.dayGraphButton.Size = new System.Drawing.Size(112, 30);
-            this.dayGraphButton.TabIndex = 19;
-            this.dayGraphButton.Text = "Day";
-            this.dayGraphButton.UseVisualStyleBackColor = true;
+            this.activityChartButton.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.activityChartButton.Location = new System.Drawing.Point(17, 24);
+            this.activityChartButton.Name = "activityChartButton";
+            this.activityChartButton.Size = new System.Drawing.Size(112, 30);
+            this.activityChartButton.TabIndex = 19;
+            this.activityChartButton.Text = "Activity";
+            this.activityChartButton.UseVisualStyleBackColor = true;
             // 
-            // weekGraphButton
+            // weightChartButton
             // 
-            this.weekGraphButton.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.weekGraphButton.Location = new System.Drawing.Point(17, 70);
-            this.weekGraphButton.Name = "weekGraphButton";
-            this.weekGraphButton.Size = new System.Drawing.Size(112, 30);
-            this.weekGraphButton.TabIndex = 20;
-            this.weekGraphButton.Text = "Week";
-            this.weekGraphButton.UseVisualStyleBackColor = true;
+            this.weightChartButton.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.weightChartButton.Location = new System.Drawing.Point(17, 70);
+            this.weightChartButton.Name = "weightChartButton";
+            this.weightChartButton.Size = new System.Drawing.Size(112, 30);
+            this.weightChartButton.TabIndex = 20;
+            this.weightChartButton.Text = "Weight";
+            this.weightChartButton.UseVisualStyleBackColor = true;
             // 
-            // monthGraphButton
+            // nappyChartButton
             // 
-            this.monthGraphButton.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.monthGraphButton.Location = new System.Drawing.Point(17, 115);
-            this.monthGraphButton.Name = "monthGraphButton";
-            this.monthGraphButton.Size = new System.Drawing.Size(112, 30);
-            this.monthGraphButton.TabIndex = 21;
-            this.monthGraphButton.Text = "Month";
-            this.monthGraphButton.UseVisualStyleBackColor = true;
+            this.nappyChartButton.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.nappyChartButton.Location = new System.Drawing.Point(17, 115);
+            this.nappyChartButton.Name = "nappyChartButton";
+            this.nappyChartButton.Size = new System.Drawing.Size(112, 30);
+            this.nappyChartButton.TabIndex = 21;
+            this.nappyChartButton.Text = "Nappy";
+            this.nappyChartButton.UseVisualStyleBackColor = true;
+            this.nappyChartButton.Click += new System.EventHandler(this.nappyChartButton_Click);
             // 
             // activitiesGroupBox
             // 
@@ -462,18 +463,18 @@ namespace FeedSleepRepeatUI
             this.activitiesListBox.Size = new System.Drawing.Size(678, 191);
             this.activitiesListBox.TabIndex = 15;
             // 
-            // graphsGroupBox
+            // chartsGroupBox
             // 
-            this.graphsGroupBox.Controls.Add(this.dayGraphButton);
-            this.graphsGroupBox.Controls.Add(this.monthGraphButton);
-            this.graphsGroupBox.Controls.Add(this.weekGraphButton);
-            this.graphsGroupBox.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.graphsGroupBox.Location = new System.Drawing.Point(576, 28);
-            this.graphsGroupBox.Name = "graphsGroupBox";
-            this.graphsGroupBox.Size = new System.Drawing.Size(143, 166);
-            this.graphsGroupBox.TabIndex = 19;
-            this.graphsGroupBox.TabStop = false;
-            this.graphsGroupBox.Text = "Graphs";
+            this.chartsGroupBox.Controls.Add(this.activityChartButton);
+            this.chartsGroupBox.Controls.Add(this.nappyChartButton);
+            this.chartsGroupBox.Controls.Add(this.weightChartButton);
+            this.chartsGroupBox.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.chartsGroupBox.Location = new System.Drawing.Point(576, 28);
+            this.chartsGroupBox.Name = "chartsGroupBox";
+            this.chartsGroupBox.Size = new System.Drawing.Size(143, 166);
+            this.chartsGroupBox.TabIndex = 19;
+            this.chartsGroupBox.TabStop = false;
+            this.chartsGroupBox.Text = "Charts";
             // 
             // babyNameLabel
             // 
@@ -521,12 +522,13 @@ namespace FeedSleepRepeatUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(733, 664);
             this.Controls.Add(this.updateButton);
             this.Controls.Add(this.deleteButton);
             this.Controls.Add(this.createButton);
             this.Controls.Add(this.babyNameLabel);
-            this.Controls.Add(this.graphsGroupBox);
+            this.Controls.Add(this.chartsGroupBox);
             this.Controls.Add(this.activitiesGroupBox);
             this.Controls.Add(this.dirtyNappiesNumericUpDown);
             this.Controls.Add(this.wetNappiesNumericUpDown);
@@ -552,7 +554,7 @@ namespace FeedSleepRepeatUI
             ((System.ComponentModel.ISupportInitialize)(this.dirtyNappiesNumericUpDown)).EndInit();
             this.activitiesGroupBox.ResumeLayout(false);
             this.activitiesGroupBox.PerformLayout();
-            this.graphsGroupBox.ResumeLayout(false);
+            this.chartsGroupBox.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -584,11 +586,11 @@ namespace FeedSleepRepeatUI
         private System.Windows.Forms.NumericUpDown dirtyNappiesNumericUpDown;
         private System.Windows.Forms.Button addFeedButton;
         private System.Windows.Forms.Button addSleepButton;
-        private System.Windows.Forms.Button dayGraphButton;
-        private System.Windows.Forms.Button weekGraphButton;
-        private System.Windows.Forms.Button monthGraphButton;
+        private System.Windows.Forms.Button activityChartButton;
+        private System.Windows.Forms.Button weightChartButton;
+        private System.Windows.Forms.Button nappyChartButton;
         private System.Windows.Forms.GroupBox activitiesGroupBox;
-        private System.Windows.Forms.GroupBox graphsGroupBox;
+        private System.Windows.Forms.GroupBox chartsGroupBox;
         private System.Windows.Forms.Label babyNameLabel;
         private System.Windows.Forms.TextBox feedAmountBox;
         private System.Windows.Forms.Button createButton;
