@@ -1,0 +1,24 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using FeedSleepRepeatLibrary;
+
+namespace FeedSleepRepeatUI
+{
+    public partial class WeightChart : Form
+    {
+        public Baby CurrentBaby { get; set; }
+
+        public WeightChart(Baby currentBaby)
+        {
+            InitializeComponent();
+            CurrentBaby = currentBaby;
+        }
+    }
+}

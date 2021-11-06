@@ -358,6 +358,7 @@ namespace FeedSleepRepeatUI
             this.weightChartButton.TabIndex = 20;
             this.weightChartButton.Text = "Weight";
             this.weightChartButton.UseVisualStyleBackColor = true;
+            this.weightChartButton.Click += new System.EventHandler(this.weightChartButton_Click);
             // 
             // nappyChartButton
             // 
