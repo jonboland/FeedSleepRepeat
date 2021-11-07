@@ -207,6 +207,12 @@ namespace FeedSleepRepeatUI
             changed = true;
         }
 
+        private void weightChartButton_Click(object sender, EventArgs e)
+        {
+            WeightChart weightChartForm = new(CurrentBaby);
+            weightChartForm.Show();
+        }
+
         private void nappyChartButton_Click(object sender, EventArgs e)
         {
             NappyChart nappyChartForm = new(CurrentBaby);

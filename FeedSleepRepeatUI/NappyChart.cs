@@ -14,11 +14,11 @@ namespace FeedSleepRepeatUI
 {
     public partial class NappyChart : Form
     {
-        public Baby CurrentBaby { get; set; }
+        private readonly Baby currentBaby;
 
-        public NappyChart(Baby currentBaby)
+        public NappyChart(Baby baby)
         {
-            CurrentBaby = currentBaby;
+            currentBaby = baby;
             InitializeComponent();
         }
        
@@ -38,7 +38,7 @@ namespace FeedSleepRepeatUI
                 decimal wetNappies = 0;
                 decimal dirtyNappies = 0;
                 DateTime date = firstDay.AddDays(i);
-                BabyDay day = CurrentBaby.BabyDays.FirstOrDefault(b => b.Date == date);
+                BabyDay day = currentBaby.BabyDays.FirstOrDefault(b => b.Date == date);
 
                 if (day != null)
                 {
@@ -55,7 +55,7 @@ namespace FeedSleepRepeatUI
         private void ResetChart()
         {
             nappiesChart.Titles.Clear();
-            nappiesChart.Titles.Add(CurrentBaby.FullName);
+            nappiesChart.Titles.Add(currentBaby.FullName);
 
             foreach (var series in nappiesChart.Series)
             {

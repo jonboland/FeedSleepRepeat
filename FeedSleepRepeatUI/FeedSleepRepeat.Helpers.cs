@@ -16,7 +16,6 @@ namespace FeedSleepRepeatUI
         private void DisableGraphButtons()
         {
             activityChartButton.Enabled = false;
-            weightChartButton.Enabled = false;
         }
 
         /// <summary>
@@ -24,6 +23,7 @@ namespace FeedSleepRepeatUI
         /// </summary>
         private void DisableButtons()
         {
+            weightChartButton.Enabled = false;
             nappyChartButton.Enabled = false;
             deleteButton.Enabled = false;
             createButton.Enabled = false;
@@ -37,6 +37,7 @@ namespace FeedSleepRepeatUI
         /// </summary>
         private void EnableButtonsExistingBaby()
         {
+            weightChartButton.Enabled = true;
             nappyChartButton.Enabled = true;
             deleteButton.Enabled = true;
             updateButton.Enabled = true;
