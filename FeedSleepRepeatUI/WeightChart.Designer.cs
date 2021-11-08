@@ -45,16 +45,13 @@ namespace FeedSleepRepeatUI
             this.weightsChart.Location = new System.Drawing.Point(12, 12);
             this.weightsChart.Name = "weightsChart";
             this.weightsChart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.None;
-            this.weightsChart.PaletteCustomColors = new System.Drawing.Color[] {
-        System.Drawing.Color.MediumSeaGreen};
             series1.BorderDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dash;
             series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
-            series1.EmptyPointStyle.BorderDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dash;
-            series1.EmptyPointStyle.Color = System.Drawing.Color.MediumSeaGreen;
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.SplineArea;
+            series1.EmptyPointStyle.BorderDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.NotSet;
             series1.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             series1.Legend = "Legend1";
-            series1.Name = "Weights";
+            series1.Name = "Weights (gm)";
             series1.YValuesPerPoint = 2;
             this.weightsChart.Series.Add(series1);
             this.weightsChart.Size = new System.Drawing.Size(776, 426);
