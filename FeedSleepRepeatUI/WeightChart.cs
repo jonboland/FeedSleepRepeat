@@ -19,7 +19,7 @@ namespace FeedSleepRepeatUI
         public WeightChart(Baby baby)
         {
             InitializeComponent();
-            SetEmptyPointStyle();
+            SetStyle();
             currentBaby = baby;
         }
 
@@ -46,14 +46,15 @@ namespace FeedSleepRepeatUI
                     weight = Convert.ToDouble(day.Weight);
                 }
 
-                weightsChart.Series["Weights"].Points.AddXY(date, weight);
+                weightsChart.Series["Weights (gm)"].Points.AddXY(date, weight);
             }
         }
 
-        private void SetEmptyPointStyle()
+        private void SetStyle()
         {
-            weightsChart.Series["Weights"].EmptyPointStyle.BorderDashStyle = ChartDashStyle.Dash;
-            weightsChart.Series["Weights"].CustomProperties = "EmptyPointValue = Average";
+            weightsChart.Series["Weights (gm)"].Color = Color.FromArgb(170, Color.Blue);
+            weightsChart.Series["Weights (gm)"].EmptyPointStyle.Color = Color.FromArgb(170, Color.Blue);
+            weightsChart.Series["Weights (gm)"].CustomProperties = "EmptyPointValue = Average";
         }
     }
 }
