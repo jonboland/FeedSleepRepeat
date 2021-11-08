@@ -348,6 +348,7 @@ namespace FeedSleepRepeatUI
             this.activityChartButton.TabIndex = 19;
             this.activityChartButton.Text = "Activity";
             this.activityChartButton.UseVisualStyleBackColor = true;
+            this.activityChartButton.Click += new System.EventHandler(this.activityChartButton_Click);
             // 
             // weightChartButton
             // 

@@ -25,7 +25,6 @@ namespace FeedSleepRepeatUI
         {
             InitializeComponent();
             DisableButtons();
-            DisableGraphButtons();
             SetFeedTypeDropdownValues();
             AddActivitiesKeyDownEventHandler();
             LoadBabyList();
@@ -205,6 +204,12 @@ namespace FeedSleepRepeatUI
                 wetNappiesNumericUpDown.Value, dirtyNappiesNumericUpDown.Value);
 
             changed = true;
+        }
+
+        private void activityChartButton_Click(object sender, EventArgs e)
+        {
+            ActivityChart activityChartForm = new();
+            activityChartForm.Show();
         }
 
         private void weightChartButton_Click(object sender, EventArgs e)
