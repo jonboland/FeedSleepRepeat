@@ -208,7 +208,7 @@ namespace FeedSleepRepeatUI
 
         private void activityChartButton_Click(object sender, EventArgs e)
         {
-            ActivityChart activityChartForm = new();
+            ActivityChart activityChartForm = new(CurrentBaby);
             activityChartForm.Show();
         }
 

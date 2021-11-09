@@ -14,42 +14,77 @@ namespace FeedSleepRepeatUI
 {
     public partial class ActivityChart : Form
     {
-        public ActivityChart()
+        private readonly Baby currentBaby;
+        private readonly DateTime day = DateTime.Today;
+
+        public ActivityChart(Baby baby)
         {
+            currentBaby = baby;
             InitializeComponent();
+            SetChartProperties();
+            SetSeriesProperties();
+            FillChart();
+        }
 
-            DateTime currentData = DateTime.Today;
-            activitiesChart.Series["Feeds"].Points.AddXY(1, currentData.AddHours(4.5), currentData.AddHours(5));
-            activitiesChart.Series["Sleeps"].Points.AddXY(1, currentData.AddHours(5), currentData.AddHours(7));
-            activitiesChart.Series["Feeds"].Points.AddXY(1, currentData.AddHours(9), currentData.AddHours(9.25));
-            activitiesChart.Series["Sleeps"].Points.AddXY(1, currentData.AddHours(10), currentData.AddHours(13));
+        private void FillChart(int period = 7)
+        {
+            activitiesChart.Titles.Add(currentBaby.FullName);
+            List<Activity> currentActivities;
 
-            // Set axis labels
-            activitiesChart.Series["Feeds"].Points[0].AxisLabel = " ";
-            activitiesChart.Series["Feeds"].Points[1].AxisLabel = " ";
+            for (int i = 0; i < period; i++)
+            {
+                
+                currentActivities = new();
+                BabyDay currentBabyDay = currentBaby.BabyDays.FirstOrDefault(d => d.Date == day.AddDays(-i));
 
+                if (currentBabyDay != null)
+                {
+                    currentActivities = SqliteDataAccess.LoadActivities(currentBabyDay);
+                }
+
+                foreach (var activity in currentActivities)
+                {
+                    DateTime start = activity.Start.AddDays(i);
+                    DateTime end = activity.End.AddDays(i);
+
+                    if (activity.ActivityType == ActivityType.Feed)
+                    {
+                        activitiesChart.Series["Feeds"].Points.AddXY(i, start, end);
+                    }
+                    else if (activity.ActivityType == ActivityType.Sleep)
+                    {
+                        activitiesChart.Series["Sleeps"].Points.AddXY(i, start, end);
+                    }
+                }               
+                // Customise Y axis labels
+                activitiesChart.ChartAreas["ChartArea1"].AxisX.CustomLabels.Add(i - 0.5, i + 0.5, day.AddDays(-i).ToShortDateString());
+            }
+        }
+
+        private void SetChartProperties()
+        {
+            // Set Y axis interval and style
+            activitiesChart.ChartAreas["ChartArea1"].AxisY.Interval = 120; // Show 2 hour intervals.
+            activitiesChart.ChartAreas["ChartArea1"].AxisY.IntervalType = DateTimeIntervalType.Minutes;
+            activitiesChart.ChartAreas["ChartArea1"].AxisY.LabelStyle.Format = "HH:mm"; // Set the format to show hours and minutes.
+
+            // Set viewable area of Y axis
+            activitiesChart.ChartAreas["ChartArea1"].AxisY.Minimum = day.ToOADate();
+            activitiesChart.ChartAreas[0].AxisY.IsMarginVisible = false;
+        }
+
+        private void SetSeriesProperties()
+        {
             // Set Range Bar chart type
             activitiesChart.Series["Feeds"].ChartType = SeriesChartType.RangeBar;
             activitiesChart.Series["Sleeps"].ChartType = SeriesChartType.RangeBar;
 
             // Set point width
-            activitiesChart.Series["Feeds"]["PointWidth"] = "0.3";
-            activitiesChart.Series["Sleeps"]["PointWidth"] = "0.3";
+            activitiesChart.Series["Feeds"]["PointWidth"] = "0.6";
+            activitiesChart.Series["Sleeps"]["PointWidth"] = "0.6";
 
-            // Draw series side-by-side
+            // Set draw style to overlapped
             activitiesChart.Series["Sleeps"]["DrawSideBySide"] = "false";
-
-            // Set Y axis Minimum and Maximum
-            //activityChart.ChartAreas["Default"].AxisY.LabelStyle.Format = "HH:mm";
-            //activityChart.ChartAreas["Default"].AxisY.Interval = 0.0834;
-
-            activitiesChart.ChartAreas["ChartArea1"].AxisY.Interval = 60; // Show 1 hour intervals.
-            activitiesChart.ChartAreas["ChartArea1"].AxisY.IntervalType = DateTimeIntervalType.Minutes;
-            activitiesChart.ChartAreas["ChartArea1"].AxisY.LabelStyle.Format = "HH:mm"; // Set the format to show hours and minutes.
-
-            // Set Y axis Minimum and Maximum
-            //activityChart.ChartAreas["Default"].AxisY.Minimum = currentData.AddDays(-1).ToOADate();
-            //activityChart.ChartAreas["Default"].AxisY.Maximum = currentData.AddDays(28).ToOADate();
         }
     }
 }
