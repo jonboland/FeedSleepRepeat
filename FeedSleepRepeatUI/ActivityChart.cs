@@ -56,9 +56,16 @@ namespace FeedSleepRepeatUI
                         activitiesChart.Series["Sleeps"].Points.AddXY(i, start, end);
                     }
                 }               
-                // Customise Y axis labels
-                activitiesChart.ChartAreas["ChartArea1"].AxisX.CustomLabels.Add(i - 0.5, i + 0.5, day.AddDays(-i).ToShortDateString());
+
+                CustomiseYAxisLabels(i);
             }
+        }
+
+        private void CustomiseYAxisLabels(int i)
+        {
+            activitiesChart
+                .ChartAreas["ChartArea1"].AxisX.CustomLabels
+                .Add(i - 0.5, i + 0.5, day.AddDays(-i).ToShortDateString());
         }
 
         private void SetChartProperties()

@@ -18,13 +18,13 @@ namespace FeedSleepRepeatUI
 
         public WeightChart(Baby baby)
         {
-            InitializeComponent();
-            SetStyle();
             currentBaby = baby;
+            InitializeComponent();
         }
 
         private void WeightChart_Load(object sender, EventArgs e)
         {
+            SetStyle();
             FillChart();
         }
 
