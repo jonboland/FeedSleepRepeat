@@ -30,6 +30,8 @@ namespace FeedSleepRepeatUI
 
         private void FillChart()
         {
+            weightsChart.Titles.Add(currentBaby.FullName);
+
             DateTime earliestDay = currentBaby.BabyDays.Min(d => d.Date);
             DateTime latestDay = currentBaby.BabyDays.Max(d => d.Date);
             double totalDays = (latestDay - earliestDay).TotalDays;
