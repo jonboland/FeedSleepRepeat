@@ -96,7 +96,9 @@ namespace FeedSleepRepeatUI
         
         private void SetDatePickerMaxDate()
         {
+            activityChartDatePicker.ValueChanged -= activityChartDatePicker_ValueChanged;
             activityChartDatePicker.MaxDate = today.AddDays(-6);
+            activityChartDatePicker.ValueChanged += activityChartDatePicker_ValueChanged;
         }
 
         private void SetChartTitle()
