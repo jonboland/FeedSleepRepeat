@@ -15,20 +15,21 @@ namespace FeedSleepRepeatUI
     public partial class ActivityChart : Form
     {
         private readonly Baby currentBaby;
-        private readonly DateTime day = DateTime.Today;
+        private readonly DateTime today = DateTime.Today;
 
         public ActivityChart(Baby baby)
         {
             currentBaby = baby;
             InitializeComponent();
-            SetChartProperties();
             SetSeriesProperties();
-            FillChart();
+            SetDatePickerMaxDate();
+            SetChartTitle();
+            SetChartProperties(today);
+            FillChart(today);
         }
 
-        private void FillChart(int period = 7)
+        private void FillChart(DateTime day, int period = 7)
         {
-            activitiesChart.Titles.Add(currentBaby.FullName);
             List<Activity> currentActivities;
 
             for (int i = 0; i < period; i++)
@@ -57,23 +58,23 @@ namespace FeedSleepRepeatUI
                     }
                 }               
 
-                CustomiseYAxisLabels(i);
+                CustomiseYAxisLabels(day, i);
             }
         }
 
-        private void CustomiseYAxisLabels(int i)
+        private void CustomiseYAxisLabels(DateTime day, int i)
         {
             activitiesChart
                 .ChartAreas["ChartArea1"].AxisX.CustomLabels
                 .Add(i - 0.5, i + 0.5, day.AddDays(-i).ToShortDateString());
         }
 
-        private void SetChartProperties()
+        private void SetChartProperties(DateTime day)
         {
             // Set Y axis interval and style
-            activitiesChart.ChartAreas["ChartArea1"].AxisY.Interval = 120; // Show 2 hour intervals.
+            activitiesChart.ChartAreas["ChartArea1"].AxisY.Interval = 120;
             activitiesChart.ChartAreas["ChartArea1"].AxisY.IntervalType = DateTimeIntervalType.Minutes;
-            activitiesChart.ChartAreas["ChartArea1"].AxisY.LabelStyle.Format = "HH:mm"; // Set the format to show hours and minutes.
+            activitiesChart.ChartAreas["ChartArea1"].AxisY.LabelStyle.Format = "HH:mm";
 
             // Set viewable area of Y axis
             activitiesChart.ChartAreas["ChartArea1"].AxisY.Minimum = day.ToOADate();
@@ -92,6 +93,37 @@ namespace FeedSleepRepeatUI
 
             // Set draw style to overlapped
             activitiesChart.Series["Sleeps"]["DrawSideBySide"] = "false";
+        }
+        
+        private void SetDatePickerMaxDate()
+        {
+            activityChartDatePicker.MaxDate = today.AddDays(-6);
+        }
+
+        private void SetChartTitle()
+        {
+            Title title = new();
+            title.Font = new Font("Segoe UI", 9, FontStyle.Bold);
+            title.Text = currentBaby.FullName;
+            activitiesChart.Titles.Add(title);
+        }
+
+        private void ClearChart()
+        {
+            foreach (var series in activitiesChart.Series)
+            {
+                series.Points.Clear();
+            }
+
+            activitiesChart.ChartAreas["ChartArea1"].AxisX.CustomLabels.Clear();
+        }
+              
+        private void activityChartDatePicker_CloseUp(object sender, EventArgs e)
+        {
+            var selectedDate = activityChartDatePicker.Value.Date.AddDays(6);
+            ClearChart();
+            SetChartProperties(selectedDate);
+            FillChart(selectedDate);
         }
     }
 }
