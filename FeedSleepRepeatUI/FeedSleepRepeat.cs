@@ -206,18 +206,27 @@ namespace FeedSleepRepeatUI
             changed = true;
         }
 
+        /// <summary>
+        /// Creates and shows a new ActivityChart form instance.
+        /// </summary>
         private void activityChartButton_Click(object sender, EventArgs e)
         {
             ActivityChart activityChartForm = new(CurrentBaby);
             activityChartForm.Show();
         }
 
+        /// <summary>
+        /// Creates and shows a new WeightChart form instance.
+        /// </summary>
         private void weightChartButton_Click(object sender, EventArgs e)
         {
             WeightChart weightChartForm = new(CurrentBaby);
             weightChartForm.Show();
         }
 
+        /// <summary>
+        /// Creates and shows a new NappyChart form instance.
+        /// </summary>
         private void nappyChartButton_Click(object sender, EventArgs e)
         {
             NappyChart nappyChartForm = new(CurrentBaby);
