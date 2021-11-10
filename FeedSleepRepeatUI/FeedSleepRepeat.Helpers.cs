@@ -11,18 +11,19 @@ namespace FeedSleepRepeatUI
     partial class FeedForm
     {
         /// <summary>
-        /// Disables chart buttons.
+        /// Sets the form's icon.
         /// </summary>
-        private void DisableGraphButtons()
+        private void SetIcon()
         {
-            activityChartButton.Enabled = false;
+            this.Icon = Properties.Resources.babybottle;
         }
 
         /// <summary>
-        /// Disables all buttons except activity and weight chart buttons.
+        /// Disables all buttons.
         /// </summary>
         private void DisableButtons()
         {
+            activityChartButton.Enabled = false;
             weightChartButton.Enabled = false;
             nappyChartButton.Enabled = false;
             deleteButton.Enabled = false;
@@ -33,10 +34,11 @@ namespace FeedSleepRepeatUI
         }
 
         /// <summary>
-        /// Enables the delete, update, and activity buttons.
+        /// Enables the chart, delete, update, and activity buttons.
         /// </summary>
         private void EnableButtonsExistingBaby()
         {
+            activityChartButton.Enabled = true;
             weightChartButton.Enabled = true;
             nappyChartButton.Enabled = true;
             deleteButton.Enabled = true;

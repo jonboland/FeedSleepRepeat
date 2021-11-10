@@ -67,7 +67,6 @@ namespace FeedSleepRepeatUI
             this.Name = "WeightChart";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Weight Chart";
-            this.Load += new System.EventHandler(this.WeightChart_Load);
             ((System.ComponentModel.ISupportInitialize)(this.weightsChart)).EndInit();
             this.ResumeLayout(false);
 

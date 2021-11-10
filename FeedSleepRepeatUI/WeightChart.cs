@@ -18,13 +18,10 @@ namespace FeedSleepRepeatUI
 
         public WeightChart(Baby baby)
         {
+            currentBaby = baby;
             InitializeComponent();
             SetStyle();
-            currentBaby = baby;
-        }
-
-        private void WeightChart_Load(object sender, EventArgs e)
-        {
+            SetChartIconAndTitle();
             FillChart();
         }
 
@@ -55,6 +52,15 @@ namespace FeedSleepRepeatUI
             weightsChart.Series["Weights (gm)"].Color = Color.FromArgb(170, Color.Blue);
             weightsChart.Series["Weights (gm)"].EmptyPointStyle.Color = Color.FromArgb(170, Color.Blue);
             weightsChart.Series["Weights (gm)"].CustomProperties = "EmptyPointValue = Average";
+        }
+
+        private void SetChartIconAndTitle()
+        {
+            this.Icon = Properties.Resources.babybottle;
+            Title title = new();
+            title.Font = new Font("Segoe UI", 9, FontStyle.Bold);
+            title.Text = currentBaby.FullName;
+            weightsChart.Titles.Add(title);
         }
     }
 }

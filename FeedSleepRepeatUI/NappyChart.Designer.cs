@@ -108,7 +108,6 @@ namespace FeedSleepRepeatUI
             this.Name = "NappyChart";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Nappy Chart";
-            this.Load += new System.EventHandler(this.NappyChart_Load);
             ((System.ComponentModel.ISupportInitialize)(this.nappiesChart)).EndInit();
             this.ResumeLayout(false);
 
