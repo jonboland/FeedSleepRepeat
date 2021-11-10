@@ -20,17 +20,12 @@ namespace FeedSleepRepeatUI
         {
             currentBaby = baby;
             InitializeComponent();
-        }
-       
-        private void NappyChart_Load(object sender, EventArgs e)
-        {
+            SetChartTitle();
             FillChart();
         }
  
         private void FillChart(int period = -6)
         {
-            ResetChart();
-
             DateTime firstDay = DateTime.Today;
 
             for (int i = period; i < 1; i++)
@@ -52,11 +47,16 @@ namespace FeedSleepRepeatUI
             }
         }
 
-        private void ResetChart()
+        private void SetChartTitle()
         {
-            nappiesChart.Titles.Clear();
-            nappiesChart.Titles.Add(currentBaby.FullName);
+            Title title = new();
+            title.Font = new Font("Segoe UI", 9, FontStyle.Bold);
+            title.Text = currentBaby.FullName;
+            nappiesChart.Titles.Add(title);
+        }
 
+        private void ClearPoints()
+        {
             foreach (var series in nappiesChart.Series)
             {
                 series.Points.Clear();
@@ -65,16 +65,19 @@ namespace FeedSleepRepeatUI
 
         private void nappyChart7Button_Click(object sender, EventArgs e)
         {
+            ClearPoints();
             FillChart(-6);
         }
 
         private void nappyChart14Button_Click(object sender, EventArgs e)
         {
+            ClearPoints();
             FillChart(-13);
         }
 
         private void nappyChart30Button_Click(object sender, EventArgs e)
         {
+            ClearPoints();
             FillChart(-29);
         }
     }

@@ -20,18 +20,13 @@ namespace FeedSleepRepeatUI
         {
             currentBaby = baby;
             InitializeComponent();
-        }
-
-        private void WeightChart_Load(object sender, EventArgs e)
-        {
             SetStyle();
+            SetChartTitle();
             FillChart();
         }
 
         private void FillChart()
         {
-            weightsChart.Titles.Add(currentBaby.FullName);
-
             DateTime earliestDay = currentBaby.BabyDays.Min(d => d.Date);
             DateTime latestDay = currentBaby.BabyDays.Max(d => d.Date);
             double totalDays = (latestDay - earliestDay).TotalDays;
@@ -57,6 +52,14 @@ namespace FeedSleepRepeatUI
             weightsChart.Series["Weights (gm)"].Color = Color.FromArgb(170, Color.Blue);
             weightsChart.Series["Weights (gm)"].EmptyPointStyle.Color = Color.FromArgb(170, Color.Blue);
             weightsChart.Series["Weights (gm)"].CustomProperties = "EmptyPointValue = Average";
+        }
+
+        private void SetChartTitle()
+        {
+            Title title = new();
+            title.Font = new Font("Segoe UI", 9, FontStyle.Bold);
+            title.Text = currentBaby.FullName;
+            weightsChart.Titles.Add(title);
         }
     }
 }

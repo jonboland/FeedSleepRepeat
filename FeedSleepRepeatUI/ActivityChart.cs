@@ -34,7 +34,6 @@ namespace FeedSleepRepeatUI
 
             for (int i = 0; i < period; i++)
             {
-                
                 currentActivities = new();
                 BabyDay currentBabyDay = currentBaby.BabyDays.FirstOrDefault(d => d.Date == day.AddDays(-i));
 
@@ -108,6 +107,14 @@ namespace FeedSleepRepeatUI
             activitiesChart.Titles.Add(title);
         }
 
+        private void activityChartDatePicker_ValueChanged(object sender, EventArgs e)
+        {
+            var selectedDate = activityChartDatePicker.Value.Date.AddDays(6);
+            ClearChart();
+            SetChartProperties(selectedDate);
+            FillChart(selectedDate);
+        }
+
         private void ClearChart()
         {
             foreach (var series in activitiesChart.Series)
@@ -116,14 +123,6 @@ namespace FeedSleepRepeatUI
             }
 
             activitiesChart.ChartAreas["ChartArea1"].AxisX.CustomLabels.Clear();
-        }
-              
-        private void activityChartDatePicker_CloseUp(object sender, EventArgs e)
-        {
-            var selectedDate = activityChartDatePicker.Value.Date.AddDays(6);
-            ClearChart();
-            SetChartProperties(selectedDate);
-            FillChart(selectedDate);
         }
     }
 }
