@@ -19,7 +19,7 @@ namespace FeedSleepRepeatUI
         }
 
         /// <summary>
-        /// Disables all buttons except activity and weight chart buttons.
+        /// Disables all buttons.
         /// </summary>
         private void DisableButtons()
         {
@@ -34,7 +34,7 @@ namespace FeedSleepRepeatUI
         }
 
         /// <summary>
-        /// Enables the delete, update, and activity buttons.
+        /// Enables the chart, delete, update, and activity buttons.
         /// </summary>
         private void EnableButtonsExistingBaby()
         {
