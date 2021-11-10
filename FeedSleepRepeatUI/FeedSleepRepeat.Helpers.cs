@@ -11,6 +11,14 @@ namespace FeedSleepRepeatUI
     partial class FeedForm
     {
         /// <summary>
+        /// Sets the form's icon.
+        /// </summary>
+        private void SetIcon()
+        {
+            this.Icon = Properties.Resources.babybottle;
+        }
+
+        /// <summary>
         /// Disables all buttons except activity and weight chart buttons.
         /// </summary>
         private void DisableButtons()

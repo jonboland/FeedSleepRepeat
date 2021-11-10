@@ -23,23 +23,33 @@ namespace FeedSleepRepeatUI
             InitializeComponent();
             SetSeriesProperties();
             SetDatePickerMaxDate();
-            SetChartTitle();
+            SetChartIconAndTitle();
             SetChartProperties(today);
             FillChart(today);
         }
 
         private void FillChart(DateTime day, int period = 7)
         {
-            List<Activity> currentActivities;
-
             for (int i = 0; i < period; i++)
             {
-                currentActivities = new();
-                BabyDay currentBabyDay = currentBaby.BabyDays.FirstOrDefault(d => d.Date == day.AddDays(-i));
+                List<Activity> currentActivities = new();
+                List<Activity> previousActivities = new();
+
+                DateTime currentDay = day.AddDays(-i);
+                DateTime previousDay = day.AddDays(-(i + 1));
+
+                BabyDay currentBabyDay = currentBaby.BabyDays.FirstOrDefault(d => d.Date == currentDay);
+                BabyDay previousBabyDay = currentBaby.BabyDays.FirstOrDefault(d => d.Date == previousDay);
 
                 if (currentBabyDay != null)
                 {
                     currentActivities = SqliteDataAccess.LoadActivities(currentBabyDay);
+
+                    if (previousBabyDay != null)
+                    {
+                        previousActivities = SqliteDataAccess.LoadActivities(previousBabyDay);
+                        currentActivities.AddRange(previousActivities.Where(p => p.End > currentDay));
+                    }                   
                 }
 
                 foreach (var activity in currentActivities)
@@ -77,6 +87,7 @@ namespace FeedSleepRepeatUI
 
             // Set viewable area of Y axis
             activitiesChart.ChartAreas["ChartArea1"].AxisY.Minimum = day.ToOADate();
+            activitiesChart.ChartAreas["ChartArea1"].AxisY.Maximum = day.AddDays(1).ToOADate();
             activitiesChart.ChartAreas[0].AxisY.IsMarginVisible = false;
         }
 
@@ -87,11 +98,14 @@ namespace FeedSleepRepeatUI
             activitiesChart.Series["Sleeps"].ChartType = SeriesChartType.RangeBar;
 
             // Set point width
-            activitiesChart.Series["Feeds"]["PointWidth"] = "0.6";
+            activitiesChart.Series["Feeds"]["PointWidth"] = "0.9";
             activitiesChart.Series["Sleeps"]["PointWidth"] = "0.6";
 
             // Set draw style to overlapped
             activitiesChart.Series["Sleeps"]["DrawSideBySide"] = "false";
+
+            // Set sleeps series colour
+            activitiesChart.Series["Sleeps"].Color = Color.FromArgb(170, Color.LightGray);
         }
         
         private void SetDatePickerMaxDate()
@@ -101,8 +115,9 @@ namespace FeedSleepRepeatUI
             activityChartDatePicker.ValueChanged += activityChartDatePicker_ValueChanged;
         }
 
-        private void SetChartTitle()
+        private void SetChartIconAndTitle()
         {
+            this.Icon = Properties.Resources.babybottle;
             Title title = new();
             title.Font = new Font("Segoe UI", 9, FontStyle.Bold);
             title.Text = currentBaby.FullName;

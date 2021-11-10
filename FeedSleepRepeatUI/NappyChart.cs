@@ -20,7 +20,8 @@ namespace FeedSleepRepeatUI
         {
             currentBaby = baby;
             InitializeComponent();
-            SetChartTitle();
+            SetChartIconAndTitle();
+            SetSeriesColours();
             FillChart();
         }
  
@@ -47,8 +48,15 @@ namespace FeedSleepRepeatUI
             }
         }
 
-        private void SetChartTitle()
+        private void SetSeriesColours()
         {
+            nappiesChart.Series["Dirty Nappies"].Color = Color.FromArgb(170, Color.Blue);
+            nappiesChart.Series["Total"].Color = Color.FromArgb(170, Color.LightGray);
+        }
+
+        private void SetChartIconAndTitle()
+        {
+            this.Icon = Properties.Resources.babybottle;
             Title title = new();
             title.Font = new Font("Segoe UI", 9, FontStyle.Bold);
             title.Text = currentBaby.FullName;

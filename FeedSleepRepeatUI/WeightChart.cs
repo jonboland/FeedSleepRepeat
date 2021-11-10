@@ -21,7 +21,7 @@ namespace FeedSleepRepeatUI
             currentBaby = baby;
             InitializeComponent();
             SetStyle();
-            SetChartTitle();
+            SetChartIconAndTitle();
             FillChart();
         }
 
@@ -54,8 +54,9 @@ namespace FeedSleepRepeatUI
             weightsChart.Series["Weights (gm)"].CustomProperties = "EmptyPointValue = Average";
         }
 
-        private void SetChartTitle()
+        private void SetChartIconAndTitle()
         {
+            this.Icon = Properties.Resources.babybottle;
             Title title = new();
             title.Font = new Font("Segoe UI", 9, FontStyle.Bold);
             title.Text = currentBaby.FullName;

@@ -24,6 +24,7 @@ namespace FeedSleepRepeatUI
         public FeedForm()
         {
             InitializeComponent();
+            SetIcon();
             DisableButtons();
             SetFeedTypeDropdownValues();
             AddActivitiesKeyDownEventHandler();
