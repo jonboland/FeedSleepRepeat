@@ -340,6 +340,14 @@ namespace FeedSleepRepeatUI
                 return;
             }
 
+            string weight = weightBox.Text;
+            
+            if (weight != String.Empty && !weight.All(char.IsDigit))
+            {
+                MessageBox.Show(Constants.UpdateFailedWeightNotValid);
+                return;
+            }
+
             if (CurrentBaby.DateOfBirth != dateOfBirthPicker.Value.Date)
             {
                 CurrentBaby.DateOfBirth = dateOfBirthPicker.Value.Date;
