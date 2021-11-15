@@ -257,6 +257,17 @@ namespace FeedSleepRepeatUI
         }
 
         /// <summary>
+        /// Sets activity start and end picker values to today at midnight.
+        /// </summary>
+        private void ZeroActivityTimePickers()
+        {
+            feedStartPicker.Value = DateTime.Today.Date;
+            feedEndPicker.Value = DateTime.Today.Date;
+            sleepStartPicker.Value = DateTime.Today.Date;
+            sleepEndPicker.Value = DateTime.Today.Date;
+        }
+
+        /// <summary>
         /// Refreshes baby day values when a different baby or day is selected.
         /// </summary>
         private void RefreshBabyDayValues()

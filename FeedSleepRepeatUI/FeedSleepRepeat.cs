@@ -27,6 +27,7 @@ namespace FeedSleepRepeatUI
             SetIcon();
             DisableButtons();
             SetFeedTypeDropdownValues();
+            ZeroActivityTimePickers();
             AddActivitiesKeyDownEventHandler();
             LoadBabyList();
             ConnectBabyNameCombo();
