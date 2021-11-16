@@ -27,6 +27,7 @@ namespace FeedSleepRepeatLibrary
 
         public const string UpdateFailedBabyNotCreated = "This baby couldn't be updated because it hasn't been created yet.";
         public const string UpdateFailedBabyNotSelected = "Updating was unsuccessful because a baby hasn't been selected.";
+        public const string UpdateFailedWeightNotValid = "Updating was unsuccessful because the weight field contains one or more characters that are not digits.";
 
         public const string DeleteFailedBabyNotCreated = "This baby couldn't be deleted because it hasn't been created yet.";
         public const string DeleteFailedBabyNotSelected = "Deleting was unsuccessful because a baby hasn't been selected.";

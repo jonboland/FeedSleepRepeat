@@ -27,6 +27,7 @@ namespace FeedSleepRepeatUI
             SetIcon();
             DisableButtons();
             SetFeedTypeDropdownValues();
+            ZeroActivityTimePickers();
             AddActivitiesKeyDownEventHandler();
             LoadBabyList();
             ConnectBabyNameCombo();
@@ -339,6 +340,14 @@ namespace FeedSleepRepeatUI
                 return;
             }
 
+            string weight = weightBox.Text;
+            
+            if (weight != String.Empty && !weight.All(char.IsDigit))
+            {
+                MessageBox.Show(Constants.UpdateFailedWeightNotValid);
+                return;
+            }
+
             if (CurrentBaby.DateOfBirth != dateOfBirthPicker.Value.Date)
             {
                 CurrentBaby.DateOfBirth = dateOfBirthPicker.Value.Date;
@@ -361,6 +370,7 @@ namespace FeedSleepRepeatUI
             CurrentBaby.BabyDays = SqliteDataAccess.LoadBabyDays(CurrentBaby);
             currentBabyDay = CurrentBaby.BabyDays.First(bd => bd.Date == datePicker.Value.Date);
             currentBabyDay.Activities = SqliteDataAccess.LoadActivities(currentBabyDay);
+            ageBox.Text = FeedSleepRepeatLogic.CalculateAge(CurrentBaby.DateOfBirth);
             changed = false;
 
             DisableUpdateButtonForHalfASecond();
