@@ -43,17 +43,30 @@ namespace FeedSleepRepeatLibrary
         /// <returns>Baby's age in string format.</returns>
         public static string CalculateAge(DateTime currentBabyDateOfBirth, string today = null)
         {
-            DateTime currentDate = DateTime.Now;
+            DateTime currentDate = DateTime.Today;
 
             if (today != null)
             {
                 currentDate = DateTime.Parse(today);
             }
 
-            TimeSpan timeSpan = currentDate.Subtract(currentBabyDateOfBirth);
-            DateTime age = DateTime.MinValue + timeSpan;
+            int months = currentDate.Month - currentBabyDateOfBirth.Month;
+            int years = currentDate.Year - currentBabyDateOfBirth.Year;
 
-            return $"{age.Year - 1}y {age.Month - 1}m {age.Day - 1}d";
+            if (currentDate.Day < currentBabyDateOfBirth.Day)
+            {
+                months--;
+            }
+
+            if (months < 0)
+            {
+                years--;
+                months += 12;
+            }
+
+            int days = (currentDate - currentBabyDateOfBirth.AddMonths((years * 12) + months)).Days;
+
+            return $"{years}y {months}m {days}d";
         }
 
         /// <summary>
