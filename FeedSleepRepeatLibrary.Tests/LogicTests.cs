@@ -44,7 +44,7 @@ namespace FeedSleepRepeatLibrary.Tests
         [InlineData("15/10/2021", "15/10/2021", "0y 0m 0d")]
         [InlineData("09/09/2021", "22/09/2021", "0y 0m 13d")]
         [InlineData("28/05/2019", "28/06/2019", "0y 1m 0d")]
-        [InlineData("02/02/2024", "13/03/2024", "0y 1m 9d")]
+        [InlineData("02/02/2024", "13/03/2024", "0y 1m 11d")]
         [InlineData("10/12/2021", "15/01/2023", "1y 1m 5d")]
         public void CalculateAge_DateOfBirthShouldConvertToAge(string dob, string today, string expected)
         {
