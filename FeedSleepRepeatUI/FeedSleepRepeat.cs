@@ -370,6 +370,7 @@ namespace FeedSleepRepeatUI
             CurrentBaby.BabyDays = SqliteDataAccess.LoadBabyDays(CurrentBaby);
             currentBabyDay = CurrentBaby.BabyDays.First(bd => bd.Date == datePicker.Value.Date);
             currentBabyDay.Activities = SqliteDataAccess.LoadActivities(currentBabyDay);
+            ageBox.Text = FeedSleepRepeatLogic.CalculateAge(CurrentBaby.DateOfBirth);
             changed = false;
 
             DisableUpdateButtonForHalfASecond();
