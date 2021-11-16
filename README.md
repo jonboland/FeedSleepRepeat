@@ -7,8 +7,16 @@ You can then view charts that help you monitor progress and identify patterns of
 
 ## Usage
 
-Feed Sleep Repeat is a Windows desktop app written in C# that can be run via an executable file.
-You need to have .Net 5 installed to use it.
+Feed Sleep Repeat is a Windows desktop application written in C# that you can install with 
+[this file](https://feedsleeprepeat.azurewebsites.net/FeedSleepRepeatUI.application).
+Please bear in mind that you also need .Net 5 installed to use it.
+
+Also, the app isn't currently signed, so you may receive one or more warning messages 
+the first time you launch it.
+
+Feed Sleep Repeat will check for an application update each time it's opened and, 
+if one is found, you will be asked whether you want to download it.
+
 
 ## Instructions
 
