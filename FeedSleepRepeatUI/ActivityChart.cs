@@ -114,7 +114,7 @@ namespace FeedSleepRepeatUI
 
         private void SetChartIconAndTitle()
         {
-            this.Icon = Properties.Resources.babybottle;
+            this.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
             Title title = new();
             title.Font = new Font("Segoe UI", 9, FontStyle.Bold);
             title.Text = currentBaby.FullName;

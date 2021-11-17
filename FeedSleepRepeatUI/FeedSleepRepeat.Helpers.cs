@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using FeedSleepRepeatLibrary;
@@ -12,7 +13,7 @@ namespace FeedSleepRepeatUI
         /// </summary>
         private void SetIcon()
         {
-            this.Icon = Properties.Resources.babybottle;
+            this.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
         }
 
         /// <summary>
