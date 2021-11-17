@@ -3,13 +3,13 @@
     public enum ActivityType
     {
         Feed,
-        Sleep
+        Sleep,
     }
 
     public enum FeedType
     {
         Bottle,
         Breast,
-        Solid
+        Solid,
     }
 }
