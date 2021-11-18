@@ -46,7 +46,7 @@ namespace FeedSleepRepeatUI
                     {
                         previousActivities = SqliteDataAccess.LoadActivities(previousBabyDay);
                         currentActivities.AddRange(previousActivities.Where(p => p.End > currentDay));
-                    }                   
+                    }
                 }
 
                 foreach (var activity in currentActivities)
@@ -62,7 +62,7 @@ namespace FeedSleepRepeatUI
                     {
                         activitiesChart.Series["Sleeps"].Points.AddXY(i, start, end);
                     }
-                }               
+                }
 
                 CustomiseYAxisLabels(day, i);
             }
@@ -104,7 +104,7 @@ namespace FeedSleepRepeatUI
             // Set sleeps series colour
             activitiesChart.Series["Sleeps"].Color = Color.FromArgb(170, Color.LightGray);
         }
-        
+
         private void SetDatePickerMaxDate()
         {
             activityChartDatePicker.ValueChanged -= activityChartDatePicker_ValueChanged;

@@ -23,7 +23,7 @@ namespace FeedSleepRepeatUI
             Application.SetCompatibleTextRenderingDefault(false);
             AppDomain.CurrentDomain.SetData("DataDirectory", DataDir);
             CreateDataDirIfNotPresent();
-            CopyDatabaseToDataDirIfNotPresent();           
+            CopyDatabaseToDataDirIfNotPresent();
             Application.Run(new FeedForm());
         }
 

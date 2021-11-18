@@ -26,7 +26,6 @@ namespace FeedSleepRepeatUI
             DateTime latestDay = currentBaby.BabyDays.Max(d => d.Date);
             double totalDays = (latestDay - earliestDay).TotalDays;
 
-
             for (int i = 0; i <= totalDays; i++)
             {
                 double weight = double.NaN;

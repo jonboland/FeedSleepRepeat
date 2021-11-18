@@ -19,7 +19,7 @@ namespace FeedSleepRepeatUI
             SetSeriesColours();
             FillChart();
         }
- 
+
         private void FillChart(int period = -6)
         {
             DateTime firstDay = DateTime.Today;

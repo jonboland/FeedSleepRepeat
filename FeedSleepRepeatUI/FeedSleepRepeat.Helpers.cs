@@ -86,7 +86,7 @@ namespace FeedSleepRepeatUI
         /// Calls load babies method to load all baby details from the database.
         /// Inserts default baby that can be used to reset all values.
         /// </summary>
-        public void LoadBabyList()
+        private void LoadBabyList()
         {
             babies = SqliteDataAccess.LoadBabies();
             babies = FeedSleepRepeatLogic.InsertDefaultBaby(babies);
@@ -312,7 +312,7 @@ namespace FeedSleepRepeatUI
         }
 
         /// <summary>
-        /// Refreshes the activities list box when activities are added/deleted, 
+        /// Refreshes the activities list box when activities are added/deleted,
         /// or when a new baby or date is selected.
         /// </summary>
         private void RefreshActivitiesListbox()
