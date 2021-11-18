@@ -37,15 +37,15 @@ namespace FeedSleepRepeatUI
                     weight = Convert.ToDouble(day.Weight);
                 }
 
-                weightsChart.Series["Weights (gm)"].Points.AddXY(date, weight);
+                weightsChart.Series["Weights (g)"].Points.AddXY(date, weight);
             }
         }
 
         private void SetStyle()
         {
-            weightsChart.Series["Weights (gm)"].Color = Color.FromArgb(170, Color.Blue);
-            weightsChart.Series["Weights (gm)"].EmptyPointStyle.Color = Color.FromArgb(170, Color.Blue);
-            weightsChart.Series["Weights (gm)"].CustomProperties = "EmptyPointValue = Average";
+            weightsChart.Series["Weights (g)"].Color = Color.FromArgb(170, Color.Blue);
+            weightsChart.Series["Weights (g)"].EmptyPointStyle.Color = Color.FromArgb(170, Color.Blue);
+            weightsChart.Series["Weights (g)"].CustomProperties = "EmptyPointValue = Average";
         }
 
         private void SetChartIconAndTitle()

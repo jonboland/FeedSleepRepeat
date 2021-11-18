@@ -82,7 +82,7 @@ You'll see a summary of the details you entered in the large list box at the bot
 Sleep start and end times are added in the same way. And the location is recorded in the *Place* field before clicking the 
 *Add Sleep* button.
 
-![Feed Sleep Repeat's main screen with one feed activity added](docs/addsleep.png)
+![Feed Sleep Repeat's main screen with one feed activity and one sleep activity added](docs/addsleep.png)
 
 Feed and sleep activities are automatically sorted in start time order. So, if you forget to add
 an activity and enter it later, it will be slotted into the right place.
