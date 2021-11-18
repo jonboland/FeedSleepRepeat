@@ -51,7 +51,7 @@ namespace FeedSleepRepeatUI
             series1.EmptyPointStyle.BorderDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.NotSet;
             series1.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             series1.Legend = "Legend1";
-            series1.Name = "Weights (gm)";
+            series1.Name = "Weights (g)";
             series1.YValuesPerPoint = 2;
             this.weightsChart.Series.Add(series1);
             this.weightsChart.Size = new System.Drawing.Size(776, 426);

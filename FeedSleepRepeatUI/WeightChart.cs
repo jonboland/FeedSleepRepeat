@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using FeedSleepRepeatLibrary;
@@ -31,7 +26,6 @@ namespace FeedSleepRepeatUI
             DateTime latestDay = currentBaby.BabyDays.Max(d => d.Date);
             double totalDays = (latestDay - earliestDay).TotalDays;
 
-
             for (int i = 0; i <= totalDays; i++)
             {
                 double weight = double.NaN;
@@ -43,20 +37,20 @@ namespace FeedSleepRepeatUI
                     weight = Convert.ToDouble(day.Weight);
                 }
 
-                weightsChart.Series["Weights (gm)"].Points.AddXY(date, weight);
+                weightsChart.Series["Weights (g)"].Points.AddXY(date, weight);
             }
         }
 
         private void SetStyle()
         {
-            weightsChart.Series["Weights (gm)"].Color = Color.FromArgb(170, Color.Blue);
-            weightsChart.Series["Weights (gm)"].EmptyPointStyle.Color = Color.FromArgb(170, Color.Blue);
-            weightsChart.Series["Weights (gm)"].CustomProperties = "EmptyPointValue = Average";
+            weightsChart.Series["Weights (g)"].Color = Color.FromArgb(170, Color.Blue);
+            weightsChart.Series["Weights (g)"].EmptyPointStyle.Color = Color.FromArgb(170, Color.Blue);
+            weightsChart.Series["Weights (g)"].CustomProperties = "EmptyPointValue = Average";
         }
 
         private void SetChartIconAndTitle()
         {
-            this.Icon = Properties.Resources.babybottle;
+            this.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
             Title title = new();
             title.Font = new Font("Segoe UI", 9, FontStyle.Bold);
             title.Text = currentBaby.FullName;

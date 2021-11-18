@@ -1,6 +1,6 @@
 ﻿using System;
-using Xunit;
 using System.Globalization;
+using Xunit;
 
 namespace FeedSleepRepeatLibrary.Tests
 {
@@ -51,7 +51,7 @@ namespace FeedSleepRepeatLibrary.Tests
 
         [Theory]
         [InlineData(
-            "12/10/2021 08:15:00", "12/10/2021 08:30:00", nameof(FeedType.Bottle), "105", 
+            "12/10/2021 08:15:00", "12/10/2021 08:30:00", nameof(FeedType.Bottle), "105",
             " Activity Type: Feed     Start: 08:15  End: 08:30     Length: 0h 15m\tFeed Type: Bottle\tAmount: 105ml")]
         [InlineData(
             "29/02/2024 21:00:00", "29/02/2024 21:25:00", nameof(FeedType.Breast), "60",

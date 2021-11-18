@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FeedSleepRepeatLibrary
 {
@@ -99,6 +97,16 @@ namespace FeedSleepRepeatLibrary
         }
 
         /// <summary>
+        /// Sorts a list of activity instances by the time of day of the Start property.
+        /// </summary>
+        /// <param name="currentBabyDayActivities">List of activity instances prior to sorting.</param>
+        /// <returns>Sorted list of activity instances.</returns>
+        public static List<Activity> SortActivities(List<Activity> currentBabyDayActivities)
+        {
+            return currentBabyDayActivities.OrderBy(a => a.Start.TimeOfDay).ToList();
+        }
+
+        /// <summary>
         /// Generates a feed or sleep activity instance and sets the instance's BabyDayId 
         /// to the current baby day's Id.
         /// 
@@ -111,9 +119,9 @@ namespace FeedSleepRepeatLibrary
             int babyDayId, ActivityType activityType, DateTime start, DateTime end,
             string sleepPlace = null, string feedAmount = null, string feedType = null)
         {
-            var activity = new Activity 
+            var activity = new Activity
             { 
-                BabyDayId = babyDayId, 
+                BabyDayId = babyDayId,
                 ActivityType = activityType,
                 Start = TruncateTime(start),
                 End = TruncateTime(end),
@@ -142,27 +150,17 @@ namespace FeedSleepRepeatLibrary
         /// <summary>
         /// Adds one day to the End DateTime object if its value is earlier than the Start object's value.
         /// </summary>
-        /// <param name="Start">DateTime object representing when an activity started.</param>
-        /// <param name="End">DateTime object representing when an activity ended.</param>
+        /// <param name="start">DateTime object representing when an activity started.</param>
+        /// <param name="end">DateTime object representing when an activity ended.</param>
         /// <returns>Processed DateTime object representing when an activity ended.</returns>
-        private static DateTime AddDayIfEndBeforeStart(DateTime Start, DateTime End)
+        private static DateTime AddDayIfEndBeforeStart(DateTime start, DateTime end)
         {
-            if (End < Start)
+            if (end < start)
             {
-                End = End.AddDays(1);
+                end = end.AddDays(1);
             }
 
-            return End;
-        }
-
-        /// <summary>
-        /// Sorts a list of activity instances by the time of day of the Start property.
-        /// </summary>
-        /// <param name="CurrentBabyDayActivities">List of activity instances prior to sorting.</param>
-        /// <returns>Sorted list of activity instances.</returns>
-        public static List<Activity> SortActivities(List<Activity> CurrentBabyDayActivities)
-        {
-            return CurrentBabyDayActivities.OrderBy(a => a.Start.TimeOfDay).ToList();
+            return end;
         }
     }
 }

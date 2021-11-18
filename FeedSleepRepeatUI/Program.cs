@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using FeedSleepRepeatLibrary;
 
@@ -26,7 +23,7 @@ namespace FeedSleepRepeatUI
             Application.SetCompatibleTextRenderingDefault(false);
             AppDomain.CurrentDomain.SetData("DataDirectory", DataDir);
             CreateDataDirIfNotPresent();
-            CopyDatabaseToDataDirIfNotPresent();           
+            CopyDatabaseToDataDirIfNotPresent();
             Application.Run(new FeedForm());
         }
 

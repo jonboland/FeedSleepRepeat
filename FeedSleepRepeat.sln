@@ -7,7 +7,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FeedSleepRepeatUI", "FeedSl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FeedSleepRepeatLibrary", "FeedSleepRepeatLibrary\FeedSleepRepeatLibrary.csproj", "{F3BD2673-95AE-48A2-AD5F-8957FAF323DC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeedSleepRepeatLibrary.Tests", "FeedSleepRepeatLibrary.Tests\FeedSleepRepeatLibrary.Tests.csproj", "{A9EF1016-CAC7-4B10-804C-E64E6B9A71AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FeedSleepRepeatLibrary.Tests", "FeedSleepRepeatLibrary.Tests\FeedSleepRepeatLibrary.Tests.csproj", "{A9EF1016-CAC7-4B10-804C-E64E6B9A71AF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{869D017B-1AF1-4EF6-8F69-0796ABC6E34F}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

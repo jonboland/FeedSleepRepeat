@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SQLite;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Dapper;
 
 namespace FeedSleepRepeatLibrary
@@ -50,8 +46,10 @@ namespace FeedSleepRepeatLibrary
                 {
                     // Insert baby into Baby table and add Id to babyDay
                     babyDay.BabyId = cnn.QueryFirst<int>(babySql, baby, trans);
+
                     // Insert babyDay into BabyDay table with BabyId as foreign key and assign Id to variable
                     int babyDayId = cnn.QueryFirst<int>(babyDaySql, babyDay, trans);
+
                     // Insert activities into Activity table with BabyDayId as foreign key
                     foreach (var activity in babyDay.Activities)
                     {
@@ -130,12 +128,14 @@ namespace FeedSleepRepeatLibrary
                 {
                     // Insert babyDay into BabyDay table with BabyId as foreign key and assign Id to variable
                     int babyDayId = cnn.QueryFirst<int>(babyDaySql, babyDay, trans);
+
                     // Insert activities into Activity table with BabyDayId as foreign key
                     foreach (var activity in babyDay.Activities)
                     {
                         activity.BabyDayId = babyDayId;
                         cnn.Execute(activitySql, activity, trans);
                     }
+
                     trans.Commit();
                 }
 

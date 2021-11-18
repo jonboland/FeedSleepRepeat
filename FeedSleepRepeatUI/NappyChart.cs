@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using FeedSleepRepeatLibrary;
@@ -24,7 +19,7 @@ namespace FeedSleepRepeatUI
             SetSeriesColours();
             FillChart();
         }
- 
+
         private void FillChart(int period = -6)
         {
             DateTime firstDay = DateTime.Today;
@@ -56,7 +51,7 @@ namespace FeedSleepRepeatUI
 
         private void SetChartIconAndTitle()
         {
-            this.Icon = Properties.Resources.babybottle;
+            this.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
             Title title = new();
             title.Font = new Font("Segoe UI", 9, FontStyle.Bold);
             title.Text = currentBaby.FullName;

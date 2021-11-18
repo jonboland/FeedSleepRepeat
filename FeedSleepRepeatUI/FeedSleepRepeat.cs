@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using FeedSleepRepeatLibrary;
 
@@ -15,7 +10,7 @@ namespace FeedSleepRepeatUI
     {
         private List<Baby> babies = new();
         private BabyDay currentBabyDay = new();
-        private string lastBabyName = string.Empty;
+        private string lastBabyName = String.Empty;
         private DateTime lastDateValue = new();
         private readonly Timer timer = new();
         private bool datePickerDroppedDown = false;
@@ -80,7 +75,7 @@ namespace FeedSleepRepeatUI
 
                 changed = false;
                 lastBabyName = string.Empty;
-            }          
+            }
         }
 
         /// <summary>
@@ -92,13 +87,11 @@ namespace FeedSleepRepeatUI
             {
                 DisableButtons();
             }
-
             else if (babies.Any(b => b.FullName == babyNameCombo.Text))
             {
                 DisableButtons();
                 EnableButtonsExistingBaby();
             }
-
             else
             {
                 DisableButtons();
@@ -117,8 +110,8 @@ namespace FeedSleepRepeatUI
 
         /// <summary>
         /// Sets the changed state to true if the dateOfBirthPicker value is changed.
-        /// 
-        /// The changed state is used to determine whether warnings about 
+        ///
+        /// The changed state is used to determine whether warnings about
         /// potential loss of changes are displayed.
         /// </summary>
         private void dateOfBirthPicker_ValueChanged(object sender, EventArgs e)
@@ -128,9 +121,9 @@ namespace FeedSleepRepeatUI
 
         /// <summary>
         /// Sets the changed state to true if the weightBox.Text value is changed.
-        /// 
-        /// The changed state is used to determine whether warnings about 
-        /// potential loss of changes are displayed. 
+        ///
+        /// The changed state is used to determine whether warnings about
+        /// potential loss of changes are displayed.
         /// </summary>
         private void weightBox_TextChanged(object sender, EventArgs e)
         {
@@ -247,8 +240,8 @@ namespace FeedSleepRepeatUI
                 return;
             }
 
-            Activity feed = FeedSleepRepeatLogic.GenerateActivityInstance( 
-                currentBabyDay.Id, ActivityType.Feed, feedStartPicker.Value, feedEndPicker.Value, 
+            Activity feed = FeedSleepRepeatLogic.GenerateActivityInstance(
+                currentBabyDay.Id, ActivityType.Feed, feedStartPicker.Value, feedEndPicker.Value,
                 feedAmount: feedAmountBox.Text, feedType: feedTypeCombo.Text);
 
             AddActivity(feed);
@@ -341,7 +334,7 @@ namespace FeedSleepRepeatUI
             }
 
             string weight = weightBox.Text;
-            
+
             if (weight != String.Empty && !weight.All(char.IsDigit))
             {
                 MessageBox.Show(Constants.UpdateFailedWeightNotValid);
@@ -358,7 +351,7 @@ namespace FeedSleepRepeatUI
 
             // ROWIDs assigned via Sqlite AUTOINCREMENT begin at 1
             if (currentBabyDay.BabyId != 0)
-            {               
+            {
                 SqliteDataAccess.UpdateBabyDay(currentBabyDay);
             }
             else
@@ -386,7 +379,7 @@ namespace FeedSleepRepeatUI
             {
                 updateButton.Enabled = true;
             }
-            
+
             timer.Stop();
         }
 
@@ -439,7 +432,6 @@ namespace FeedSleepRepeatUI
                         e.Cancel = true;
                     }
                 }
-
                 else if (createButton.Enabled)
                 {
                     if (MessageBox.Show(

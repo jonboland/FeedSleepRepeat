@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using Xunit;
-using FluentAssertions;
 using System.Globalization;
+using FluentAssertions;
+using Xunit;
 
 namespace FeedSleepRepeatLibrary.Tests
 {

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FeedSleepRepeatLibrary
 {
@@ -44,7 +40,7 @@ namespace FeedSleepRepeatLibrary
                     return $" Activity Type: {ActivityType}    Start: {Start:HH:mm}  End: {End:HH:mm}     "
                         + $"Length: {ActivityLength.Hours}h {ActivityLength.Minutes}m\tPlace: {SleepPlace}";
                 }
-                
+
                 return $" Activity Type: {ActivityType}     Start: {Start:HH:mm}  End: {End:HH:mm}     "
                     + $"Length: {ActivityLength.Hours}h {ActivityLength.Minutes}m\t"
                     + $"Feed Type: {FeedType}\tAmount: {FeedAmount}{FeedUnit}";
