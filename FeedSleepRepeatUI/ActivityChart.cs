@@ -44,9 +44,12 @@ namespace FeedSleepRepeatUI
 
                     if (previousBabyDay != null)
                     {
-                        previousActivities = SqliteDataAccess.LoadActivities(previousBabyDay);
-                        currentActivities.AddRange(previousActivities.Where(p => p.End > currentDay));
+                        AddActivitiesThatSpanTwoDays(currentDay, previousBabyDay, currentActivities, previousActivities);
                     }
+                }
+                else
+                {
+                    AddDummyActivityInstance(currentActivities, currentDay);
                 }
 
                 foreach (var activity in currentActivities)
@@ -64,11 +67,33 @@ namespace FeedSleepRepeatUI
                     }
                 }
 
-                CustomiseYAxisLabels(day, i);
+                CustomiseXAxisLabels(day, i);
             }
         }
 
-        private void CustomiseYAxisLabels(DateTime day, int i)
+        /// <summary>
+        /// Adds activities from the previous day to the current day if they finish in the current day.
+        /// </summary>
+        private void AddActivitiesThatSpanTwoDays(
+            DateTime currentDay,
+            BabyDay previousBabyDay,
+            List<Activity> currentActivities,
+            List<Activity> previousActivities)
+        {
+            previousActivities = SqliteDataAccess.LoadActivities(previousBabyDay);
+            currentActivities.AddRange(previousActivities.Where(p => p.End > currentDay));
+        }
+
+        /// <summary>
+        /// Adds a dummy activity instance to days with no recorded activity instances,
+        /// so a blank row is shown for the day in the chart.
+        /// </summary>
+        private void AddDummyActivityInstance(List<Activity> currentActivities, DateTime currentDay)
+        {
+            currentActivities.Add(new Activity { ActivityType = ActivityType.Feed, Start = currentDay, End = currentDay });
+        }
+
+        private void CustomiseXAxisLabels(DateTime day, int i)
         {
             activitiesChart
                 .ChartAreas["ChartArea1"].AxisX.CustomLabels
