@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SQLite;
@@ -7,13 +8,13 @@ using Dapper;
 
 namespace FeedSleepRepeatLibrary
 {
-    public static class SqliteDataAccess
+    public class SqliteDataAccess : ISqliteDataAccess
     {
         /// <summary>
         /// Loads all the babys from the database.
         /// </summary>
         /// <returns>A list of Baby instances.</returns>
-        public static List<Baby> LoadBabies()
+        public List<Baby> LoadBabies()
         {
             string sql = "SELECT * FROM Baby ORDER BY LastName";
 
@@ -29,7 +30,7 @@ namespace FeedSleepRepeatLibrary
         /// </summary>
         /// <param name="baby">The Baby instance to insert.</param>
         /// <param name="babyDay">The BabyDay instance to insert, including any associated activities.</param>
-        public static void CreateBaby(Baby baby, BabyDay babyDay)
+        public void CreateBaby(Baby baby, BabyDay babyDay)
         {
             string babySql = "INSERT INTO Baby (FirstName, LastName, DateOfBirth) VALUES (@FirstName, @LastName, @DateOfBirth); SELECT last_insert_rowid()";
 
@@ -65,7 +66,7 @@ namespace FeedSleepRepeatLibrary
         /// Sets the date of birth for the given baby.
         /// </summary>
         /// <param name="baby">The Baby instance to update.</param>
-        public static void UpdateDateOfBirth(Baby baby)
+        public void UpdateDateOfBirth(Baby baby)
         {
             string sql = "UPDATE Baby SET DateOfBirth = @DateOfBirth WHERE FirstName = @FirstName AND LastName = @LastName";
 
@@ -80,7 +81,7 @@ namespace FeedSleepRepeatLibrary
         /// and activities are also deleted via foreign key.
         /// </summary>
         /// <param name="baby">The baby instance to delete.</param>
-        public static void DeleteBaby(Baby baby)
+        public void DeleteBaby(Baby baby)
         {
             // ON DELETE CASCADE is applied to FOREIGN KEY in BabyDay and Activity
             string sql = @"PRAGMA foreign_keys = ON; 
@@ -98,7 +99,7 @@ namespace FeedSleepRepeatLibrary
         /// </summary>
         /// <param name="currentBaby">The baby whose day instances should be loaded.</param>
         /// <returns>A list of BabyDay instances.</returns>
-        public static List<BabyDay> LoadBabyDays(Baby currentBaby)
+        public List<BabyDay> LoadBabyDays(Baby currentBaby)
         {
             string sql = "SELECT * FROM BabyDay WHERE BabyId = @Id";
 
@@ -113,7 +114,7 @@ namespace FeedSleepRepeatLibrary
         /// For an existing baby, inserts a new baby day and any associated activities into the database. 
         /// </summary>
         /// <param name="babyDay">The BabyDay instance to insert, including any associated activities.</param>
-        public static void CreateBabyDay(BabyDay babyDay)
+        public void CreateBabyDay(BabyDay babyDay)
         {
             string babyDaySql = @"INSERT INTO BabyDay (BabyId, Date, Weight, WetNappies, DirtyNappies) 
                                   VALUES (@BabyId, @Date, @Weight, @WetNappies, @DirtyNappies); SELECT last_insert_rowid()";
@@ -146,7 +147,7 @@ namespace FeedSleepRepeatLibrary
         /// Updates the given baby day's values. Adds any new activities associated with the day and deletes any that have been removed.
         /// </summary>
         /// <param name="babyDay">The BabyDay instance to be updated.</param>
-        public static void UpdateBabyDay(BabyDay babyDay)
+        public void UpdateBabyDay(BabyDay babyDay)
         {
             string updateBabyDaySql = "UPDATE BabyDay SET Weight = @Weight, WetNappies = @WetNappies, DirtyNappies = @DirtyNappies WHERE Id = @Id";
 
@@ -181,7 +182,7 @@ namespace FeedSleepRepeatLibrary
         /// </summary>
         /// <param name="currentBabyDay">The baby day for which instances should be loaded.</param>
         /// <returns>A list of Activity instances.</returns>
-        public static List<Activity> LoadActivities(BabyDay currentBabyDay)
+        public List<Activity> LoadActivities(BabyDay currentBabyDay)
         {
             string sql = "SELECT * FROM Activity WHERE BabyDayId = @Id";
 
@@ -197,7 +198,7 @@ namespace FeedSleepRepeatLibrary
         /// </summary>
         /// <param name="id">The name of the connection string to load.</param>
         /// <returns>The connection string, detailing data source and version.</returns>
-        private static string LoadConnectionString(string id = "DataDir")
+        private string LoadConnectionString(string id = "DataDir")
         {
             return ConfigurationManager.ConnectionStrings[id].ConnectionString;
         }
