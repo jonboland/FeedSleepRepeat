@@ -71,7 +71,7 @@ namespace FeedSleepRepeatUI
         /// </summary>
         private void SetFeedTypeDropdownValues()
         {
-            feedTypeCombo.DataSource = FeedSleepRepeatLogic.AssembleFeedTypes();
+            feedTypeCombo.DataSource = feedSleepRepeatLogic.AssembleFeedTypes();
         }
 
         /// <summary>
@@ -88,8 +88,8 @@ namespace FeedSleepRepeatUI
         /// </summary>
         private void LoadBabyList()
         {
-            babies = SqliteDataAccess.LoadBabies();
-            babies = FeedSleepRepeatLogic.InsertDefaultBaby(babies);
+            babies = sqliteDataAccess.LoadBabies();
+            babies = feedSleepRepeatLogic.InsertDefaultBaby(babies);
         }
 
         /// <summary>
@@ -159,8 +159,8 @@ namespace FeedSleepRepeatUI
             if (currentBabyDay != null)
             {
                 RefreshBabyDayValues();
-                currentBabyDay.Activities = SqliteDataAccess.LoadActivities(currentBabyDay);
-                currentBabyDay.Activities = FeedSleepRepeatLogic.SortActivities(currentBabyDay.Activities);
+                currentBabyDay.Activities = sqliteDataAccess.LoadActivities(currentBabyDay);
+                currentBabyDay.Activities = feedSleepRepeatLogic.SortActivities(currentBabyDay.Activities);
                 RefreshActivitiesListbox();
             }
             else
@@ -273,7 +273,7 @@ namespace FeedSleepRepeatUI
             weightBox.Text = currentBabyDay.Weight;
             wetNappiesNumericUpDown.Value = currentBabyDay.WetNappies;
             dirtyNappiesNumericUpDown.Value = currentBabyDay.DirtyNappies;
-            nappiesTotal.Text = FeedSleepRepeatLogic.RefreshTotalNappies(
+            nappiesTotal.Text = feedSleepRepeatLogic.RefreshTotalNappies(
                 wetNappiesNumericUpDown.Value, dirtyNappiesNumericUpDown.Value);
         }
 
@@ -308,7 +308,7 @@ namespace FeedSleepRepeatUI
         private void AddActivity(Activity activity)
         {
             currentBabyDay.Activities.Add(activity);
-            currentBabyDay.Activities = FeedSleepRepeatLogic.SortActivities(currentBabyDay.Activities);
+            currentBabyDay.Activities = feedSleepRepeatLogic.SortActivities(currentBabyDay.Activities);
         }
 
         /// <summary>
