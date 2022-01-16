@@ -4,14 +4,14 @@ using System.Linq;
 
 namespace FeedSleepRepeatLibrary
 {
-    public static class FeedSleepRepeatLogic
+    public class FeedSleepRepeatLogic : IFeedSleepRepeatLogic
     {
         /// <summary>
         /// Inserts a default baby at the start of a list of babies.
         /// </summary>
         /// <param name="babies">List of baby instances.</param>
         /// <returns>List of baby instances with default baby added.</returns>
-        public static List<Baby> InsertDefaultBaby(List<Baby> babies)
+        public List<Baby> InsertDefaultBaby(List<Baby> babies)
         {
             babies.Insert(0, new Baby()
             {
@@ -28,7 +28,7 @@ namespace FeedSleepRepeatLibrary
         /// </summary>
         /// <param name="name">The baby name in string format.</param>
         /// <returns>Array of strings containing baby's first and last name.</returns>
-        public static string[] FormatName(string name)
+        public string[] FormatName(string name)
         {
             return name.Split(' ', StringSplitOptions.RemoveEmptyEntries);
         }
@@ -39,7 +39,7 @@ namespace FeedSleepRepeatLibrary
         /// <param name="currentBabyDateOfBirth">DateTime representing a baby's date of birth.</param>
         /// <param name="today">String used to define today's date for testing purposes.</param>
         /// <returns>Baby's age in string format.</returns>
-        public static string CalculateAge(DateTime currentBabyDateOfBirth, string today = null)
+        public string CalculateAge(DateTime currentBabyDateOfBirth, string today = null)
         {
             DateTime currentDate = DateTime.Today;
 
@@ -73,7 +73,7 @@ namespace FeedSleepRepeatLibrary
         /// <param name="wetNappiesValue">Decimal value representing number of wet nappies.</param>
         /// <param name="dirtyNappiesValue">Decimal value representing number of dirty nappies.</param>
         /// <returns>A string representing the total number of nappies.</returns>
-        public static string RefreshTotalNappies(decimal wetNappiesValue, decimal dirtyNappiesValue)
+        public string RefreshTotalNappies(decimal wetNappiesValue, decimal dirtyNappiesValue)
         {
             decimal totalNappies = wetNappiesValue + dirtyNappiesValue;
 
@@ -84,7 +84,7 @@ namespace FeedSleepRepeatLibrary
         /// Compile list of feedtypes from FeedType enum for use in feedtype dropdown menu.
         /// </summary>
         /// <returns>List of feedtypes in string format with blank string at index 0.</returns>
-        public static List<string> AssembleFeedTypes()
+        public List<string> AssembleFeedTypes()
         {
             var feedTypes = new List<string> { string.Empty };
 
@@ -101,7 +101,7 @@ namespace FeedSleepRepeatLibrary
         /// </summary>
         /// <param name="currentBabyDayActivities">List of activity instances prior to sorting.</param>
         /// <returns>Sorted list of activity instances.</returns>
-        public static List<Activity> SortActivities(List<Activity> currentBabyDayActivities)
+        public List<Activity> SortActivities(List<Activity> currentBabyDayActivities)
         {
             return currentBabyDayActivities.OrderBy(a => a.Start.TimeOfDay).ToList();
         }
@@ -115,12 +115,12 @@ namespace FeedSleepRepeatLibrary
         /// at the point that the update button is clicked to update the baby's records.)
         /// </summary>
         /// <returns>An activity instance of type feed or sleep, populated with activity data.</returns>
-        public static Activity GenerateActivityInstance(
+        public Activity GenerateActivityInstance(
             int babyDayId, ActivityType activityType, DateTime start, DateTime end,
             string sleepPlace = null, string feedAmount = null, string feedType = null)
         {
             var activity = new Activity
-            { 
+            {
                 BabyDayId = babyDayId,
                 ActivityType = activityType,
                 Start = TruncateTime(start),
@@ -140,7 +140,7 @@ namespace FeedSleepRepeatLibrary
         /// </summary>
         /// <param name="pickerValue">DateTime object to be truncated.</param>
         /// <returns>A truncated DateTime object.</returns>
-        private static DateTime TruncateTime(DateTime pickerValue)
+        private DateTime TruncateTime(DateTime pickerValue)
         {
             DateTime truncated = pickerValue.AddTicks(-(pickerValue.Ticks % TimeSpan.TicksPerMinute));
 
@@ -153,7 +153,7 @@ namespace FeedSleepRepeatLibrary
         /// <param name="start">DateTime object representing when an activity started.</param>
         /// <param name="end">DateTime object representing when an activity ended.</param>
         /// <returns>Processed DateTime object representing when an activity ended.</returns>
-        private static DateTime AddDayIfEndBeforeStart(DateTime start, DateTime end)
+        private DateTime AddDayIfEndBeforeStart(DateTime start, DateTime end)
         {
             if (end < start)
             {
