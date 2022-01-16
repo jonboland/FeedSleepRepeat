@@ -11,11 +11,13 @@ namespace FeedSleepRepeatUI
 {
     public partial class ActivityChart : Form
     {
+        private readonly ISqliteDataAccess sqliteDataAccess;
         private readonly Baby currentBaby;
         private readonly DateTime today = DateTime.Today;
 
-        public ActivityChart(Baby baby)
+        public ActivityChart(ISqliteDataAccess dataAccess, Baby baby)
         {
+            sqliteDataAccess = dataAccess;
             currentBaby = baby;
             InitializeComponent();
             SetSeriesProperties();
@@ -40,7 +42,7 @@ namespace FeedSleepRepeatUI
 
                 if (currentBabyDay != null)
                 {
-                    currentActivities = SqliteDataAccess.LoadActivities(currentBabyDay);
+                    currentActivities = sqliteDataAccess.LoadActivities(currentBabyDay);
 
                     if (previousBabyDay != null)
                     {
@@ -80,7 +82,7 @@ namespace FeedSleepRepeatUI
             List<Activity> currentActivities,
             List<Activity> previousActivities)
         {
-            previousActivities = SqliteDataAccess.LoadActivities(previousBabyDay);
+            previousActivities = sqliteDataAccess.LoadActivities(previousBabyDay);
             currentActivities.AddRange(previousActivities.Where(p => p.End > currentDay));
         }
 

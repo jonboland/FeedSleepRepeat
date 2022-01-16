@@ -3,11 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using FeedSleepRepeatLibrary;
+using Microsoft.Extensions.Logging;
 
 namespace FeedSleepRepeatUI
 {
     public partial class FeedForm : Form
     {
+        private readonly ILogger logger;
+        private readonly IFeedSleepRepeatLogic feedSleepRepeatLogic;
+        private readonly ISqliteDataAccess sqliteDataAccess;
+
         private List<Baby> babies = new();
         private BabyDay currentBabyDay = new();
         private string lastBabyName = String.Empty;
@@ -16,8 +21,12 @@ namespace FeedSleepRepeatUI
         private bool datePickerDroppedDown = false;
         private bool changed = false;
 
-        public FeedForm()
+        public FeedForm(ILogger<FeedForm> log, IFeedSleepRepeatLogic logic, ISqliteDataAccess dataAccess)
         {
+            logger = log;
+            feedSleepRepeatLogic = logic;
+            sqliteDataAccess = dataAccess;
+
             InitializeComponent();
             SetIcon();
             DisableButtons();
@@ -26,6 +35,7 @@ namespace FeedSleepRepeatUI
             AddActivitiesKeyDownEventHandler();
             LoadBabyList();
             ConnectBabyNameCombo();
+            logger.LogInformation(Constants.AppStart);
         }
 
         public Baby CurrentBaby { get; private set; } = new();
@@ -57,8 +67,8 @@ namespace FeedSleepRepeatUI
                 {
                     EnableButtonsExistingBaby();
                     dateOfBirthPicker.Value = CurrentBaby.DateOfBirth;
-                    ageBox.Text = FeedSleepRepeatLogic.CalculateAge(CurrentBaby.DateOfBirth);
-                    CurrentBaby.BabyDays = SqliteDataAccess.LoadBabyDays(CurrentBaby);
+                    ageBox.Text = feedSleepRepeatLogic.CalculateAge(CurrentBaby.DateOfBirth);
+                    CurrentBaby.BabyDays = sqliteDataAccess.LoadBabyDays(CurrentBaby);
                     BabyDay today = CurrentBaby.BabyDays.FirstOrDefault(bd => bd.Date == DateTime.Today);
 
                     if (today != null)
@@ -67,8 +77,8 @@ namespace FeedSleepRepeatUI
                         datePicker.ValueChanged -= datePicker_ValueChanged;
                         RefreshBabyDayValues();
                         datePicker.ValueChanged += datePicker_ValueChanged;
-                        currentBabyDay.Activities = SqliteDataAccess.LoadActivities(currentBabyDay);
-                        currentBabyDay.Activities = FeedSleepRepeatLogic.SortActivities(currentBabyDay.Activities);
+                        currentBabyDay.Activities = sqliteDataAccess.LoadActivities(currentBabyDay);
+                        currentBabyDay.Activities = feedSleepRepeatLogic.SortActivities(currentBabyDay.Activities);
                         RefreshActivitiesListbox();
                     }
                 }
@@ -184,7 +194,7 @@ namespace FeedSleepRepeatUI
         /// </summary>
         private void wetNappiesNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
-            nappiesTotal.Text = FeedSleepRepeatLogic.RefreshTotalNappies(
+            nappiesTotal.Text = feedSleepRepeatLogic.RefreshTotalNappies(
                 wetNappiesNumericUpDown.Value, dirtyNappiesNumericUpDown.Value);
 
             changed = true;
@@ -195,7 +205,7 @@ namespace FeedSleepRepeatUI
         /// </summary>
         private void dirtyNappiesNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
-            nappiesTotal.Text = FeedSleepRepeatLogic.RefreshTotalNappies(
+            nappiesTotal.Text = feedSleepRepeatLogic.RefreshTotalNappies(
                 wetNappiesNumericUpDown.Value, dirtyNappiesNumericUpDown.Value);
 
             changed = true;
@@ -206,7 +216,7 @@ namespace FeedSleepRepeatUI
         /// </summary>
         private void activityChartButton_Click(object sender, EventArgs e)
         {
-            ActivityChart activityChartForm = new(CurrentBaby);
+            ActivityChart activityChartForm = new(sqliteDataAccess, CurrentBaby);
             activityChartForm.Show();
         }
 
@@ -240,7 +250,7 @@ namespace FeedSleepRepeatUI
                 return;
             }
 
-            Activity feed = FeedSleepRepeatLogic.GenerateActivityInstance(
+            Activity feed = feedSleepRepeatLogic.GenerateActivityInstance(
                 currentBabyDay.Id, ActivityType.Feed, feedStartPicker.Value, feedEndPicker.Value,
                 feedAmount: feedAmountBox.Text, feedType: feedTypeCombo.Text);
 
@@ -262,7 +272,7 @@ namespace FeedSleepRepeatUI
                 return;
             }
 
-            Activity sleep = FeedSleepRepeatLogic.GenerateActivityInstance(
+            Activity sleep = feedSleepRepeatLogic.GenerateActivityInstance(
                 currentBabyDay.Id, ActivityType.Sleep, sleepStartPicker.Value, sleepEndPicker.Value,
                 sleepPlace: sleepPlaceBox.Text);
 
@@ -292,7 +302,7 @@ namespace FeedSleepRepeatUI
         /// </summary>
         private void createButton_Click(object sender, EventArgs e)
         {
-            string[] name = FeedSleepRepeatLogic.FormatName(babyNameCombo.Text);
+            string[] name = feedSleepRepeatLogic.FormatName(babyNameCombo.Text);
 
             if (name.Length != 2)
             {
@@ -308,7 +318,7 @@ namespace FeedSleepRepeatUI
 
             SetCurrentBabyValues(name);
             SetCurrentBabyDayValues();
-            SqliteDataAccess.CreateBaby(CurrentBaby, currentBabyDay);
+            sqliteDataAccess.CreateBaby(CurrentBaby, currentBabyDay);
             ResetAllValues();
             LoadBabyList();
             ConnectBabyNameCombo();
@@ -344,7 +354,7 @@ namespace FeedSleepRepeatUI
             if (CurrentBaby.DateOfBirth != dateOfBirthPicker.Value.Date)
             {
                 CurrentBaby.DateOfBirth = dateOfBirthPicker.Value.Date;
-                SqliteDataAccess.UpdateDateOfBirth(CurrentBaby);
+                sqliteDataAccess.UpdateDateOfBirth(CurrentBaby);
             }
 
             SetCurrentBabyDayValues();
@@ -352,18 +362,18 @@ namespace FeedSleepRepeatUI
             // ROWIDs assigned via Sqlite AUTOINCREMENT begin at 1
             if (currentBabyDay.BabyId != 0)
             {
-                SqliteDataAccess.UpdateBabyDay(currentBabyDay);
+                sqliteDataAccess.UpdateBabyDay(currentBabyDay);
             }
             else
             {
                 currentBabyDay.BabyId = CurrentBaby.Id;
-                SqliteDataAccess.CreateBabyDay(currentBabyDay);
+                sqliteDataAccess.CreateBabyDay(currentBabyDay);
             }
 
-            CurrentBaby.BabyDays = SqliteDataAccess.LoadBabyDays(CurrentBaby);
+            CurrentBaby.BabyDays = sqliteDataAccess.LoadBabyDays(CurrentBaby);
             currentBabyDay = CurrentBaby.BabyDays.First(bd => bd.Date == datePicker.Value.Date);
-            currentBabyDay.Activities = SqliteDataAccess.LoadActivities(currentBabyDay);
-            ageBox.Text = FeedSleepRepeatLogic.CalculateAge(CurrentBaby.DateOfBirth);
+            currentBabyDay.Activities = sqliteDataAccess.LoadActivities(currentBabyDay);
+            ageBox.Text = feedSleepRepeatLogic.CalculateAge(CurrentBaby.DateOfBirth);
             changed = false;
 
             DisableUpdateButtonForHalfASecond();
@@ -406,7 +416,7 @@ namespace FeedSleepRepeatUI
                 MessageBoxButtons.YesNo)
                 == DialogResult.Yes)
             {
-                SqliteDataAccess.DeleteBaby(CurrentBaby);
+                sqliteDataAccess.DeleteBaby(CurrentBaby);
                 ResetAllValues();
                 LoadBabyList();
                 ConnectBabyNameCombo();

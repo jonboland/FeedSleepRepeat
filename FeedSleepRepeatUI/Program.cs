@@ -3,6 +3,9 @@ using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 using FeedSleepRepeatLibrary;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Serilog;
 
 namespace FeedSleepRepeatUI
 {
@@ -17,28 +20,40 @@ namespace FeedSleepRepeatUI
         [STAThread]
         static void Main()
         {
-            Application.ThreadException += new ThreadExceptionEventHandler(Application_ThreadException);
+            Application.SetCompatibleTextRenderingDefault(false);
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            AppDomain.CurrentDomain.SetData("DataDirectory", DataDir);
+
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom.AppSettings()
+                .CreateLogger();
+
+            Application.ThreadException += new ThreadExceptionEventHandler(Application_ThreadException);
+
             CreateDataDirIfNotPresent();
             CopyDatabaseToDataDirIfNotPresent();
-            Application.Run(new FeedForm());
+            AppDomain.CurrentDomain.SetData("DataDirectory", DataDir);
+
+            IHost host = InitializeHost();
+            FeedForm feedForm = host.Services.GetRequiredService<FeedForm>();
+            Application.Run(feedForm);
+
+            LogClosureAndFlush();
         }
 
         /// <summary>
-        /// Shows message box if fatal error occurs and exits application when user clicks OK.
+        /// If fatal error occurs, shows message box, logs details, and exits application when user clicks OK.
         /// </summary>
         static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
         {
-            // TODO: Add exception logging
-
             MessageBox.Show(
                 Constants.FatalErrorOccured + e.Exception.Message,
                 Constants.FatalErrorCaption,
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Stop);
+
+            Log.Fatal(e.Exception.ToString());
+            Log.CloseAndFlush();
 
             Application.Exit();
         }
@@ -66,6 +81,34 @@ namespace FeedSleepRepeatUI
             {
                 File.Copy(sourceFilePath, destFilePath);
             }
+        }
+
+        /// <summary>
+        /// Creates builder, configures services, and initializes host.
+        /// </summary>
+        /// <returns>An initialized IHost.</returns>
+        static IHost InitializeHost()
+        {
+            IHost host = Host.CreateDefaultBuilder()
+                .ConfigureServices((context, services) =>
+                {
+                    services.AddTransient<IFeedSleepRepeatLogic, FeedSleepRepeatLogic>();
+                    services.AddTransient<ISqliteDataAccess, SqliteDataAccess>();
+                    services.AddSingleton<FeedForm>();
+                })
+                .UseSerilog()
+                .Build();
+
+            return host;
+        }
+
+        /// <summary>
+        /// Logs application closure then closes and flushes log.
+        /// </summary>
+        static void LogClosureAndFlush()
+        {
+            Log.Information(Constants.AppClosure);
+            Log.CloseAndFlush();
         }
     }
 }
