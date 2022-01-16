@@ -6,6 +6,8 @@
         public const string FatalErrorOccured = "Sorry for the disruption.\n\nUnfortunately, FeedSleepRepeat has stopped working because the following fatal error occured:\n\n";
         public const string FatalErrorCaption = "Fatal Error";
         public const string DatabaseName = "FeedSleepRepeatDB.db";
+        public const string AppStart = "Application started.";
+        public const string AppClosure = "Application closed.";
 
         public const string FeedNotAddedNoBabySelected = "Feed could not be added because a baby hasn't been selected.";
         public const string SleepNotAddedNoBabySelected = "Sleep could not be added because a baby hasn't been selected.";
