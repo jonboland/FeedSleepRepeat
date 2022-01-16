@@ -8,6 +8,13 @@ namespace FeedSleepRepeatLibrary.Tests
 {
     public class LogicTests
     {
+        private readonly IFeedSleepRepeatLogic feedSleepRepeatLogic;
+
+        public LogicTests(IFeedSleepRepeatLogic logic)
+        {
+            feedSleepRepeatLogic = logic;
+        }
+
         [Fact]
         public void InsertDefaultBaby_BabyShouldBeAddedAtIndexZero()
         {
@@ -20,7 +27,7 @@ namespace FeedSleepRepeatLibrary.Tests
 
             var expected = String.Empty;
 
-            List<Baby> added = FeedSleepRepeatLogic.InsertDefaultBaby(original);
+            List<Baby> added = feedSleepRepeatLogic.InsertDefaultBaby(original);
 
             var actual = added[0].FirstName;
 
@@ -35,7 +42,7 @@ namespace FeedSleepRepeatLibrary.Tests
         [InlineData("   Fifth    Baby  ", new string[] { "Fifth", "Baby" })]
         public void FormatName_WhiteSpaceShouldBeIgnored(string original, string[] expected)
         {
-            string[] actual = FeedSleepRepeatLogic.FormatName(original);
+            string[] actual = feedSleepRepeatLogic.FormatName(original);
 
             Assert.Equal(expected, actual);
         }
@@ -50,7 +57,7 @@ namespace FeedSleepRepeatLibrary.Tests
         {
             DateTime dateOfBirth = DateTime.Parse(dob, new CultureInfo("en-GB"));
 
-            string actual = FeedSleepRepeatLogic.CalculateAge(dateOfBirth, today);
+            string actual = feedSleepRepeatLogic.CalculateAge(dateOfBirth, today);
 
             Assert.Equal(expected, actual);
         }
@@ -62,7 +69,7 @@ namespace FeedSleepRepeatLibrary.Tests
         [InlineData(100, 100, "200")]
         public void RefreshTotalNappies_DecimalsShouldTotalAsString(decimal x, decimal y, string expected)
         {
-            string actual = FeedSleepRepeatLogic.RefreshTotalNappies(x, y);
+            string actual = feedSleepRepeatLogic.RefreshTotalNappies(x, y);
 
             Assert.Equal(expected, actual);
         }
@@ -78,7 +85,7 @@ namespace FeedSleepRepeatLibrary.Tests
                 nameof(FeedType.Solid),
             };
 
-            List<string> actual = FeedSleepRepeatLogic.AssembleFeedTypes();
+            List<string> actual = feedSleepRepeatLogic.AssembleFeedTypes();
 
             Assert.Equal(expected, actual);
         }
@@ -89,7 +96,7 @@ namespace FeedSleepRepeatLibrary.Tests
             var original = new DateTime(2021, 10, 8, 7, 14, 50);
             var expected = new DateTime(2021, 10, 8, 7, 14, 0);
 
-            Activity feed = FeedSleepRepeatLogic.GenerateActivityInstance(0, ActivityType.Feed, original, default);
+            Activity feed = feedSleepRepeatLogic.GenerateActivityInstance(0, ActivityType.Feed, original, default);
 
             DateTime actual = feed.Start;
 
@@ -102,7 +109,7 @@ namespace FeedSleepRepeatLibrary.Tests
             var original = new DateTime(2023, 2, 14, 17, 3, 50, 125);
             var expected = new DateTime(2023, 2, 14, 17, 3, 0, 0);
 
-            Activity sleep = FeedSleepRepeatLogic.GenerateActivityInstance(1, ActivityType.Sleep, default, original);
+            Activity sleep = feedSleepRepeatLogic.GenerateActivityInstance(1, ActivityType.Sleep, default, original);
 
             DateTime actual = sleep.End;
 
@@ -115,7 +122,7 @@ namespace FeedSleepRepeatLibrary.Tests
             var original = new DateTime(2019, 4, 28, 11, 9, 6, 139).AddTicks(5050);
             var expected = new DateTime(2019, 4, 28, 11, 9, 0, 0);
 
-            Activity feed = FeedSleepRepeatLogic.GenerateActivityInstance(101, ActivityType.Feed, default, original);
+            Activity feed = feedSleepRepeatLogic.GenerateActivityInstance(101, ActivityType.Feed, default, original);
 
             DateTime actual = feed.End;
 
@@ -129,7 +136,7 @@ namespace FeedSleepRepeatLibrary.Tests
             var end = new DateTime(2022, 5, 7, 4, 5, 0, 0);
             var expected = new DateTime(2022, 5, 8, 4, 5, 0, 0);
 
-            Activity sleep = FeedSleepRepeatLogic.GenerateActivityInstance(32, ActivityType.Sleep, start, end);
+            Activity sleep = feedSleepRepeatLogic.GenerateActivityInstance(32, ActivityType.Sleep, start, end);
 
             DateTime actual = sleep.End;
 
@@ -181,7 +188,7 @@ namespace FeedSleepRepeatLibrary.Tests
 
             actual.Activities.AddRange(new List<Activity> { activity, activity2, activity3, activity4 });
 
-            actual.Activities = FeedSleepRepeatLogic.SortActivities(actual.Activities);
+            actual.Activities = feedSleepRepeatLogic.SortActivities(actual.Activities);
 
             actual.Should().BeEquivalentTo(expected, options => options.WithStrictOrdering());
         }
